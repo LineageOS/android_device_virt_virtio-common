@@ -28,5 +28,8 @@ vendor_dlkm /vendor_dlkm erofs ro logical,first_stage_mount
 /dev/block/vdb /data ext4 nodev,noatime,nosuid latemount,check,quota,formattable,checkpoint=block
 /dev/block/vdb /data f2fs nodev,noatime,nosuid,reserve_root=32768 latemount,check,quota,formattable,fscompress,checkpoint=fs
 
+# CD-ROM
+/devices/*/block/sr* auto auto defaults voldmanaged=cdrom:auto
+
 # USB
 /devices/*/usb* auto auto defaults voldmanaged=usb:auto
