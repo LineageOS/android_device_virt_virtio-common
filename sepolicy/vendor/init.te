@@ -12,3 +12,7 @@ r_dir_file(init, vendor_sysfs_dmi_id)
 
 # Kernel
 allow init kernel:system module_request;
+
+# Mount
+## permit mount of virtiofs on /mnt/vendor/shared
+allow init mnt_vendor_file:dir mounton;
