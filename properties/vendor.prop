@@ -4,5 +4,8 @@ persist.demo.rotationlock=1
 # Input
 qemu.hw.mainkeys=0
 
+# Media
+debug.c2.use_dmabufheaps=1
+
 # Incremental FS
 ro.incremental.enable=1
