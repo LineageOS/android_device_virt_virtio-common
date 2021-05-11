@@ -1,2 +1,5 @@
+# Display
+debug.sf.vsync_reactor_ignore_present_fences=true
+
 # Recovery
 ro.recovery.supported_fs=9p,virtiofs
