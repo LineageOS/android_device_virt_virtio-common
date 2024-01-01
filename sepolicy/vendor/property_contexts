@@ -1,0 +1,2 @@
+# Net
+vendor.net.		u:object_r:vendor_net_prop:s0 exact string
