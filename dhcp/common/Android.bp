@@ -18,11 +18,11 @@ package {
     // all of the 'license_kinds' from "device_generic_goldfish_license"
     // to get the below license kinds:
     //   SPDX-license-identifier-Apache-2.0
-    default_applicable_licenses: ["device_generic_goldfish_license"],
+    default_applicable_licenses: ["virtio_dhcpclient_license"],
 }
 
 cc_library_static {
-    name: "libdhcpclient",
+    name: "libvirtiodhcpclient",
     srcs: [
         "message.cpp",
         "socket.cpp",
@@ -34,5 +34,6 @@ cc_library_static {
         "-Wextra",
         "-Werror",
     ],
-    proprietary: true,
+    recovery_available: true,
+    vendor_available: true,
 }
