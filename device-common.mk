@@ -139,3 +139,6 @@ PRODUCT_SOONG_NAMESPACES += \
 # Suspend blocker
 PRODUCT_PACKAGES += \
     suspend_blocker
+
+# UFFD GC
+PRODUCT_ENABLE_UFFD_GC := true
