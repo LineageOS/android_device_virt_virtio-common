@@ -1,0 +1,21 @@
+# fastboot-info for virtio
+version 1
+
+flash EFI
+
+update-super
+
+flash odm
+flash product
+flash system
+flash system_dlkm
+flash system_ext
+flash vendor
+flash vendor_dlkm
+
+flash boot
+flash recovery
+
+if-wipe erase cache
+if-wipe erase metadata
+if-wipe erase userdata
