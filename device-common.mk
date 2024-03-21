@@ -19,7 +19,7 @@ PRODUCT_COPY_FILES += \
 
 # Bluetooth
 PRODUCT_PACKAGES += \
-    android.hardware.bluetooth@1.1-service.btlinux
+    android.hardware.bluetooth-service.default
 
 # Dynamic partitions
 PRODUCT_BUILD_SUPER_PARTITION := true
