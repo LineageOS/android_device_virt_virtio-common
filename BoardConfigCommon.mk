@@ -33,7 +33,7 @@ BOARD_KERNEL_CMDLINE := \
     rw \
     androidboot.boot_devices=any \
     androidboot.hardware=virtio \
-    androidboot.partition_map=vda,vendor;vdb,system;vdc,userdata \
+    androidboot.partition_map=vda,vendor;vdb,system \
     androidboot.verifiedbootstate=orange
 TARGET_NO_KERNEL := true
 
