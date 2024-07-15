@@ -1,5 +1,5 @@
-/dev/block/vdc /data f2fs nodev,noatime,nosuid,reserve_root=32768 latemount,wait,check,quota,formattable,fscompress,checkpoint=fs
 /dev/block/vdc /data ext4 nodev,noatime,nosuid latemount,wait,check,quota,formattable,checkpoint=block
+/dev/block/vdc /data f2fs nodev,noatime,nosuid,reserve_root=32768 latemount,wait,check,quota,formattable,fscompress,checkpoint=fs
 
 /dev/block/by-name/system /system ext4 noatime,ro wait,first_stage_mount
 /dev/block/by-name/vendor /vendor ext4 noatime,ro wait,first_stage_mount
