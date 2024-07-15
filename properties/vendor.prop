@@ -1,0 +1,8 @@
+# Display
+persist.demo.rotationlock=1
+
+# Input
+qemu.hw.mainkeys=0
+
+# Incremental FS
+ro.incremental.enable=1

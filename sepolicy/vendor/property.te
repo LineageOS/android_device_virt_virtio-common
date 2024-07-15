@@ -1,0 +1,3 @@
+# Belows are referenced by external sepolicy
+vendor_internal_prop(vendor_cuttlefish_config_server_port_prop)
+vendor_internal_prop(vendor_hwcomposer_prop)
