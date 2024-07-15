@@ -1,0 +1,5 @@
+# ADB
+service.adb.tcp.port=5555
+
+# FUSE passthrough
+persist.sys.fuse.passthrough.enable=true

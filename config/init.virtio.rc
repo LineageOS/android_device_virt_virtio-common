@@ -1,0 +1,12 @@
+service suspend_blocker /vendor/bin/suspend_blocker
+    class early_hal # Start together with system_suspend HAL
+    group system
+    user root
+
+on fs
+    # Mount everything that does not require fsck
+    mount_all --early
+
+on late-fs
+    # Mount RW partitions which need run fsck
+    mount_all --late
