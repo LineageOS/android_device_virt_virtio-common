@@ -100,7 +100,7 @@ PRODUCT_COPY_FILES += \
 ifeq ($(PRODUCT_IS_AUTOMOTIVE),true)
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/car_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/car_core_hardware.xml
-else
+else ifneq ($(PRODUCT_IS_ATV),true)
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/pc_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/pc_core_hardware.xml
 endif
