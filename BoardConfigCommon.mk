@@ -41,9 +41,15 @@ BOARD_KERNEL_CMDLINE += \
     log_buf_len=4M \
     androidboot.selinux=permissive
 
-# Kernel modules
+ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
+TARGET_KERNEL_CONFIG := \
+    gki_defconfig \
+    lineageos/virtio.config
+else
+TARGET_NO_KERNEL := true
+
 VIRTUAL_DEVICE_KERNEL_MODULES_PATH := \
-    kernel/prebuilts/common-modules/virtual-device/$(TARGET_KERNEL_USE)/$(TARGET_KERNEL_MODULES_ARCH)
+    kernel/prebuilts/common-modules/virtual-device/$(TARGET_PREBUILT_KERNEL_USE)/$(TARGET_PREBUILT_KERNEL_MODULES_ARCH)
 
 BOARD_RECOVERY_KERNEL_MODULES := \
     $(wildcard $(VIRTUAL_DEVICE_KERNEL_MODULES_PATH)/*failover.ko) \
@@ -53,6 +59,7 @@ BOARD_RECOVERY_KERNEL_MODULES := \
 BOARD_GENERIC_RAMDISK_KERNEL_MODULES := \
     $(wildcard $(KERNEL_ARTIFACTS_PATH)/*.ko) \
     $(wildcard $(VIRTUAL_DEVICE_KERNEL_MODULES_PATH)/*.ko)
+endif
 
 # OTA
 TARGET_SKIP_OTA_PACKAGE := true
