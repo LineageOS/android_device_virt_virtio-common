@@ -8,7 +8,6 @@ cc_library_static {
     name: "libinit_virtio",
     srcs: [
         "libinit_dalvik_heap.cpp",
-        "libinit_variant.cpp",
         "libinit_utils.cpp",
     ],
     whole_static_libs: ["libbase"],
