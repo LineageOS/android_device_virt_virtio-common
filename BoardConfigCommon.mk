@@ -38,6 +38,7 @@ BOARD_KERNEL_CMDLINE := \
     printk.devkmsg=on \
     rw \
     androidboot.boot_devices=any \
+    androidboot.console=hvc0 \
     androidboot.hardware=virtio \
     androidboot.verifiedbootstate=orange
 
