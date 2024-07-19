@@ -17,12 +17,8 @@ The device tree is currently WIP, Not suitable for normal use.
 - AAOS: EVS Logspam
 
 # TODOs:
-- Inline kernel building for LineageOS
-- Bringup Audio
 - Disable unsupported things
 - Support for crosvm virtual machine
-- Support for Intel AC'97, ICH6, and ICH9 soundcard
-- Support for PS/2 Keyboard and Mouse
 - Support for USB Bluetooth, Camera, and WiFi
 - Support for VFIO PCI GPU Passthrough
 - Ethernet support in recovery mode
@@ -68,7 +64,7 @@ m
 | Graphics | Enable OpenGL |
 | Video | Model: `virtio`, 3D Acceleration: On |
 | NIC Device model | `virtio` |
-| Sound card model | `usb` |
+| Sound card model | `AC97` (LineageOS) or `usb` (AOSP) |
 | USB Keyboard | Add the Hardware |
 | USB Mouse | Add the Hardware |
 | Virtio drive 1 | `<android out dir>/vendor.img` |
