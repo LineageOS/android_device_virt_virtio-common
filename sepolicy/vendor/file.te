@@ -1,0 +1,2 @@
+# DMI
+type vendor_sysfs_dmi_id, fs_type, sysfs_type;
