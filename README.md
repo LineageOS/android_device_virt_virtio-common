@@ -19,7 +19,6 @@ The device tree is currently WIP, Not suitable for normal use.
 
 # TODOs:
 - Disable unsupported things
-- Support for crosvm virtual machine
 - Support for USB Bluetooth, Camera, and WiFi
 - Support for VFIO PCI GPU Passthrough
 - Ethernet support in recovery mode
@@ -82,3 +81,103 @@ To change display resolution, Add `resolution` element to video configuration, l
   <address type="pci" domain="0x0000" bus="0x00" slot="0x01" function="0x0"/>
 </video>
 ```
+
+# crosvm VM configuration
+
+Configuration file:
+
+```
+{
+    "kernel": "<android out dir>/kernel",
+    "initrd": "<android out dir>/ramdisk.img",
+    "params": [
+        "<Copy from `BOARD_KERNEL_CMDLINE` variable on `BoardConfigCommon.mk` and `BoardConfig.mk`>"
+    ],
+    "cpus": {
+        "num-cores": 2
+    },
+    "mem": {
+        "size": 4096
+    },
+    "block": [
+        {
+            "path": "<android out dir>/vendor.img",
+        },
+        {
+            "path": "<android out dir>/system.img",
+        },
+        {
+            "path": "<path to empty disk image for userdata>"
+        }
+    ],
+    "serial": [
+        {
+            "type": "stdout",
+            "hardware": "serial",
+            "console": true,
+            "stdin": true
+        }
+    ]
+}
+```
+
+Extra parameters:
+
+`--gpu backend=virglrenderer --gpu-display mode=windowed\[1920,1080\] --display-window-keyboard --display-window-mouse --disable-sandbox`
+
+# AVF Custom VM configuration
+
+1. Restart ADB in root mode
+
+`adb root`
+
+2. Write the configuration to `/data/local/tmp/vm_config.json`
+
+```
+{
+    "name": "Android",
+    "kernel": "/data/local/tmp/kernel",
+    "initrd": "/data/local/tmp/ramdisk.img",
+    "params": "<Copy from `BOARD_KERNEL_CMDLINE` variable on `BoardConfigCommon.mk` and `BoardConfig.mk`>",
+    "disks": [
+        {
+            "image": "/data/local/tmp/vendor.img",
+            "writable": true
+        },
+        {
+            "image": "/data/local/tmp/system.img",
+            "writable": true
+        },
+        {
+            "image": "/data/local/tmp/userdata.img",
+            "writable": true
+        }
+    ],
+    "gpu": {
+        "backend": "virglrenderer",
+        "context_types": ["virgl2"]
+    },
+    "protected": false,
+    "cpu_topology": "match_host",
+    "platform_version": "~1.0",
+    "memory_mib" : 4096,
+    "console_input_device": "hvc0"
+}
+```
+
+3. Push the files to `/data/local/tmp`
+
+```
+adb push <android out dir>/kernel /data/local/tmp/kernel
+adb push <android out dir>/ramdisk.img /data/local/tmp/ramdisk.img
+adb push <android out dir>/system.img /data/local/tmp/system.img
+adb push <android out dir>/vendor.img /data/local/tmp/vendor.img
+```
+
+4. Create userdata image (Note that `fallocate` doesn't work!)
+
+`dd if=/dev/zero of=/data/local/tmp/userdata.img bs=1M count=2048`
+
+5. Enable VM Launcher app
+
+Follow https://android.googlesource.com/platform/packages/modules/Virtualization/+/refs/heads/main/docs/custom_vm.md#running-the-vm
