@@ -29,8 +29,8 @@ include device/google/cuttlefish/shared/virgl/BoardConfig.mk
 endif
 
 # Init
-TARGET_INIT_VENDOR_LIB ?= //$(COMMON_PATH):init_xiaomi_kona
-TARGET_RECOVERY_DEVICE_MODULES ?= init_xiaomi_kona
+TARGET_INIT_VENDOR_LIB ?= //$(COMMON_PATH):init_virtio
+TARGET_RECOVERY_DEVICE_MODULES ?= init_virtio
 
 # Kernel
 BOARD_KERNEL_CMDLINE := \
