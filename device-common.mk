@@ -65,7 +65,9 @@ PRODUCT_PACKAGES += \
 
 # Init
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/config/fstab.utm:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.utm \
     $(LOCAL_PATH)/config/fstab.virtio:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.virtio \
+    $(LOCAL_PATH)/config/init.utm.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.utm.rc \
     $(LOCAL_PATH)/config/init.virtio.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.virtio.rc \
     $(LOCAL_PATH)/config/ueventd.rc:$(TARGET_COPY_OUT_VENDOR)/etc/ueventd.rc
 
@@ -125,6 +127,7 @@ endif
 
 # Ramdisk
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/config/fstab.utm:$(TARGET_COPY_OUT_RAMDISK)/fstab.utm \
     $(LOCAL_PATH)/config/fstab.virtio:$(TARGET_COPY_OUT_RAMDISK)/fstab.virtio
 
 # Recovery
