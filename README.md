@@ -180,3 +180,90 @@ adb push <android out dir>/vendor.img /data/local/tmp/vendor.img
 5. Enable VM Launcher app
 
 Follow https://android.googlesource.com/platform/packages/modules/Virtualization/+/refs/heads/main/docs/custom_vm.md#running-the-vm
+
+# UTM VM configuration on iPhone (arm64 images)
+
+1. Copy the following files to the device, through Files app:
+
+- `kernel`
+- `ramdisk.img`
+- `system.img`
+- `vendor.img`
+
+2. Copy the value from `BOARD_KERNEL_CMDLINE` variable on `BoardConfigCommon.mk` and `BoardConfig.mk` to clipboard
+
+3. Open UTM app
+
+4. Click "+"
+
+5. Select "Emulate"
+
+6. Select "Linux"
+
+7. Toggle "Boot from kernel image"
+
+8. Specify "LINUX KERNEL (REQUIRED)" to `kernel` file
+
+9. Specify "LINUX INITIAL RAMDISK (REQUIRED)" to `ramdisk.img` file
+
+10. Write "BOOT ARGUMENTS":
+
+    1. Paste from clipboard to "BOOT ARGUMENTS" textbox
+
+    2. Insert `"` at both the beginning and the end
+
+    3. Change `androidboot.hardware=virtio` to `androidboot.hardware=utm`
+
+    4. (Recommended) Add the parameter `androidboot.low_perf=1`
+
+    5. (Recommended) Add the parameter `virtio_gpu.force_resolution=600x1024`
+
+11. Click "Continue"
+
+12. Specify "ARCHITECTURE" to "ARM64 (aarch64)"
+
+13. Set "MEMORY" to 1228 MB
+
+14. Click "+" on "CPU Cores" option
+
+15. Toggle "Enable hardware OpenGL acceleration"
+
+16. Click "Continue"
+
+17. Set "SIZE" to at least 2 GB
+
+18. Click "Continue" for twice
+
+19. Click "Save"
+
+20. Edit settings of the created VM
+
+21. Navigate to "Input" > "Gesture and Cursor Settings"
+
+22. Locate "CURSOR" category, Change "Touch Input" to "Touch mode (always show cursor)"
+
+23. Go back to UTM app, and return to the previous page
+
+24. Enter "Show all devices..."
+
+25. Import Drive:
+
+    1. Click "+"
+
+    2. Select "Import Drive"
+
+    3. Select `vendor.img`
+
+    4. Enter the newly created "USB Drive"
+
+    5. Specify "Image Type" to "Disk Image"
+
+    6. Specify "Interface" to "USB"
+
+    7. Go back to the previous page
+
+    8. Repeat doing the above steps, for `system.img` image
+
+26. Go back to the previous page
+
+27. Click "Save"
