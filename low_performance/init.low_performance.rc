@@ -1,0 +1,36 @@
+on property:ro.boot.nobootanim=1
+    setprop debug.sf.nobootanimation 1
+
+on property:ro.boot.low_perf=1
+    setprop ro.config.low_ram true
+    setprop ro.hw_timeout_multiplier 10
+    setprop ro.setupwizard.mode DISABLED
+
+    # From build/make/target/board/go_defaults_common.prop
+
+    # Set lowram options
+    setprop ro.lmk.critical_upgrade true
+    setprop ro.lmk.upgrade_pressure 40
+    setprop ro.lmk.downgrade_pressure 60
+    setprop ro.lmk.kill_heaviest_task false
+
+    # set threshold to filter unused apps
+    setprop pm.dexopt.downgrade_after_inactive_days 10
+
+    # set the compiler filter for shared apks to quicken.
+    # Rationale: speed has a lot of dex code expansion, it uses more ram and space
+    # compared to quicken. Using quicken for shared APKs on Go devices may save RAM.
+    # Note that this is a trade-off: here we trade clean pages for dirty pages,
+    # extra cpu and battery. That's because the quicken files will be jit-ed in all
+    # the processes that load of shared apk and the code cache is not shared.
+    # Some notable apps that will be affected by this are gms and chrome.
+    # b/65591595.
+    setprop pm.dexopt.shared quicken
+
+    # From build/make/target/board/go_defaults_512.prop
+
+    # lmkd can kill more now.
+    setprop ro.lmk.medium 700
+
+    # madvise random in ART to reduce page cache thrashing.
+    setprop dalvik.vm.madvise-random true
