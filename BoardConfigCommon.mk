@@ -10,9 +10,6 @@ COMMON_PATH := device/virt/virtio-common
 # Bootloader
 TARGET_NO_BOOTLOADER := true
 
-# Display
-TARGET_SCREEN_DENSITY := 160
-
 # Filesystem
 BOARD_EXT4_SHARE_DUP_BLOCKS :=
 BOARD_EROFS_COMPRESSOR := none
