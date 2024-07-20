@@ -95,6 +95,13 @@ PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 PRODUCT_PACKAGES += \
     android.hardware.security.keymint-service
 
+# Low performance optimizations
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/low_performance/init.low_performance.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.low_performance.rc
+
+PRODUCT_PACKAGES += \
+    LowPerformanceSettingsProviderOverlay
+
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay
