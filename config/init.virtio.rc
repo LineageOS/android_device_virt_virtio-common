@@ -1,3 +1,5 @@
+import /vendor/etc/init/hw/init.low_performance.rc
+
 service suspend_blocker /vendor/bin/suspend_blocker
     class early_hal # Start together with system_suspend HAL
     group system
