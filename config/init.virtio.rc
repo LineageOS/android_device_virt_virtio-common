@@ -5,6 +5,9 @@ service suspend_blocker /vendor/bin/suspend_blocker
     group system
     user root
 
+on early-init
+    setprop ro.sf.lcd_density ${ro.boot.lcd_density:-160}
+
 on fs
     # Mount everything that does not require fsck
     mount_all --early
