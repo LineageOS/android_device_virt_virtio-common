@@ -15,3 +15,19 @@ on fs
 on late-fs
     # Mount RW partitions which need run fsck
     mount_all --late
+
+# Graphics
+on early-init
+    setprop ro.vendor.graphics ${ro.boot.graphics:-mesa}
+
+on property:ro.vendor.graphics=mesa
+    setprop ro.cpuvulkan.version 0
+    setprop ro.hardware.egl mesa
+    setprop ro.opengles.version 196608
+
+on property:ro.vendor.graphics=swiftshader
+    setprop ro.cpuvulkan.version 4202496
+    setprop ro.hardware.egl angle
+    setprop ro.hardware.vulkan pastel
+    setprop ro.opengles.version 196609
+    setprop ro.vulkan.apex com.google.cf.vulkan
