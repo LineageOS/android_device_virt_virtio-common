@@ -24,25 +24,16 @@ $(call inherit-product, frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-he
 PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-service.software
 
-# Graphics
-ifeq ($(TARGET_USES_SWIFTSHADER),true)
-PRODUCT_PACKAGES += com.google.cf.vulkan
-PRODUCT_VENDOR_PROPERTIES += \
-    ro.cpuvulkan.version=4202496 \
-    ro.hardware.egl=angle \
-    ro.hardware.vulkan=pastel \
-    ro.opengles.version=196609 \
-    ro.vulkan.apex=com.google.cf.vulkan
-#TARGET_USES_VULKAN := true
-TARGET_VULKAN_SUPPORT := true
-$(call inherit-product, device/google/cuttlefish/shared/swiftshader/device_vendor.mk)
-else
-PRODUCT_VENDOR_PROPERTIES += \
-    ro.cpuvulkan.version=0 \
-    ro.hardware.egl=mesa \
-    ro.opengles.version=196608
+# Graphics (Mesa)
 $(call inherit-product, device/google/cuttlefish/shared/virgl/device_vendor.mk)
-endif
+
+# Graphics (Swiftshader)
+PRODUCT_PACKAGES += \
+    com.google.cf.vulkan
+
+TARGET_VULKAN_SUPPORT := true
+
+$(call inherit-product, device/google/cuttlefish/shared/swiftshader/device_vendor.mk)
 
 # Graphics (Composer)
 PRODUCT_PACKAGES += \
