@@ -110,15 +110,9 @@ VENDOR_SECURITY_PATCH = $(PLATFORM_SECURITY_PATCH)
 BOARD_VENDOR_SEPOLICY_DIRS := \
     $(COMMON_PATH)/sepolicy/vendor \
     device/google/cuttlefish/shared/graphics/sepolicy \
+    device/google/cuttlefish/shared/swiftshader/sepolicy \
+    device/google/cuttlefish/shared/virgl/sepolicy \
     external/minigbm/cros_gralloc/sepolicy
-
-ifeq ($(TARGET_USES_SWIFTSHADER),true)
-BOARD_VENDOR_SEPOLICY_DIRS += \
-    device/google/cuttlefish/shared/swiftshader/sepolicy
-else
-BOARD_VENDOR_SEPOLICY_DIRS += \
-    device/google/cuttlefish/shared/virgl/sepolicy
-endif
 
 # VINTF
 DEVICE_MANIFEST_FILE := \
