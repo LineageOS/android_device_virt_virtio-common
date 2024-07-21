@@ -17,6 +17,8 @@ The device tree is currently WIP, Not suitable for normal use.
 - Errors in recovery mode
 
 # TODO
+- ARM 32-bit only and 64-bit only targets
+- Disable sleep on VMs that are hard to wakeup (for example, crosvm)
 - Disable unsupported things
 - Support for USB Bluetooth, Camera, and WiFi
 - Support for VFIO PCI GPU Passthrough
@@ -27,7 +29,8 @@ The device tree is currently WIP, Not suitable for normal use.
 - Userdata encryption
 - GRUB2 support
 - 16K pagesize
-- OTA Upgrade (?)
+- OTA Upgrade (??)
+- Bootable ISO (?)
 
 # Required patches for AOSP
 
