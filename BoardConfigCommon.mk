@@ -19,11 +19,8 @@ TARGET_USERIMAGES_USE_F2FS := true
 TARGET_USERIMAGES_USE_EXT4 := true
 
 # Graphics
-ifeq ($(TARGET_USES_SWIFTSHADER),true)
 include device/google/cuttlefish/shared/swiftshader/BoardConfig.mk
-else
 include device/google/cuttlefish/shared/virgl/BoardConfig.mk
-endif
 
 # Init
 TARGET_INIT_VENDOR_LIB ?= //$(COMMON_PATH):init_virtio
@@ -110,15 +107,9 @@ VENDOR_SECURITY_PATCH = $(PLATFORM_SECURITY_PATCH)
 BOARD_VENDOR_SEPOLICY_DIRS := \
     $(COMMON_PATH)/sepolicy/vendor \
     device/google/cuttlefish/shared/graphics/sepolicy \
+    device/google/cuttlefish/shared/swiftshader/sepolicy \
+    device/google/cuttlefish/shared/virgl/sepolicy \
     external/minigbm/cros_gralloc/sepolicy
-
-ifeq ($(TARGET_USES_SWIFTSHADER),true)
-BOARD_VENDOR_SEPOLICY_DIRS += \
-    device/google/cuttlefish/shared/swiftshader/sepolicy
-else
-BOARD_VENDOR_SEPOLICY_DIRS += \
-    device/google/cuttlefish/shared/virgl/sepolicy
-endif
 
 # VINTF
 DEVICE_MANIFEST_FILE := \
