@@ -27,10 +27,8 @@ The device tree is currently WIP, Not suitable for normal use.
 - [VirtioFS](https://android.googlesource.com/device/google/cuttlefish/+/5c490d406e213b241dd8eb56fe59cb5157bdf06b)
 - Enforce SELinux
 - Userdata encryption
-- GRUB2 support
 - 16K pagesize
 - OTA Upgrade (??)
-- Bootable ISO (?)
 
 # List of optional extra boot parameters
 
