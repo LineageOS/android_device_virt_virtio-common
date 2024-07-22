@@ -111,6 +111,8 @@ BOARD_VENDOR_SEPOLICY_DIRS := \
     device/google/cuttlefish/shared/virgl/sepolicy \
     external/minigbm/cros_gralloc/sepolicy
 
+SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/private
+
 # VINTF
 DEVICE_MANIFEST_FILE := \
     $(COMMON_PATH)/config/manifest.xml
