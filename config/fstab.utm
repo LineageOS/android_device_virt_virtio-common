@@ -1,6 +1,6 @@
-/dev/block/vda /data ext4 nodev,noatime,nosuid latemount,wait,check,quota,formattable,checkpoint=block
-/dev/block/vda /data f2fs nodev,noatime,nosuid,reserve_root=32768 latemount,wait,check,quota,formattable,fscompress,checkpoint=fs
+/dev/block/vda /data ext4 nodev,noatime,nosuid latemount,check,quota,formattable,checkpoint=block
+/dev/block/vda /data f2fs nodev,noatime,nosuid,reserve_root=32768 latemount,check,quota,formattable,fscompress,checkpoint=fs
 
-/dev/block/sda /vendor ext4 noatime,ro wait,first_stage_mount
-/dev/block/sdb /system erofs ro wait,first_stage_mount
-/dev/block/sdb /system ext4 noatime,ro wait,first_stage_mount
+/dev/block/sda /vendor ext4 noatime,ro first_stage_mount
+/dev/block/sdb /system erofs ro first_stage_mount
+/dev/block/sdb /system ext4 noatime,ro first_stage_mount
