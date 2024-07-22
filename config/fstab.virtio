@@ -1,8 +1,8 @@
-/dev/block/vda /vendor ext4 noatime,ro wait,first_stage_mount
-/dev/block/vdb /system erofs ro wait,first_stage_mount
-/dev/block/vdb /system ext4 noatime,ro wait,first_stage_mount
+/dev/block/vda /vendor ext4 noatime,ro first_stage_mount
+/dev/block/vdb /system erofs ro first_stage_mount
+/dev/block/vdb /system ext4 noatime,ro first_stage_mount
 
-/dev/block/vdc /data ext4 nodev,noatime,nosuid latemount,wait,check,quota,formattable,checkpoint=block
-/dev/block/vdc /data f2fs nodev,noatime,nosuid,reserve_root=32768 latemount,wait,check,quota,formattable,fscompress,checkpoint=fs
+/dev/block/vdc /data ext4 nodev,noatime,nosuid latemount,check,quota,formattable,checkpoint=block
+/dev/block/vdc /data f2fs nodev,noatime,nosuid,reserve_root=32768 latemount,check,quota,formattable,fscompress,checkpoint=fs
 
 /devices/*/usb* auto auto defaults voldmanaged=usb:auto
