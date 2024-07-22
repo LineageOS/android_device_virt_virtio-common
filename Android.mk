@@ -223,4 +223,12 @@ prebuilt-kernel-repo: $(INSTALLED_PREBUILT_KERNEL_REPO_KERNEL_TARGET)
 endif # $(TARGET_KERNEL_SOURCE)/Makefile
 endif # LINEAGE_BUILD
 
+# Firmware mount point
+FIRMWARE_MOUNT_POINT := $(TARGET_OUT_VENDOR)/firmware_mnt
+ALL_DEFAULT_INSTALLED_MODULES += $(FIRMWARE_MOUNT_POINT)
+
+$(FIRMWARE_MOUNT_POINT):
+	@echo "Creating $(FIRMWARE_MOUNT_POINT)"
+	@mkdir -p $(TARGET_OUT_VENDOR)/firmware_mnt
+
 endif

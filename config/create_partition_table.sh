@@ -23,6 +23,7 @@ case "$DISK_NAME" in
         $SGDISK_EXEC --new=5:0:+50M --change-name=5:cache $TARGET
         $SGDISK_EXEC --new=6:0:+64M --change-name=6:boot $TARGET
         $SGDISK_EXEC --new=7:0:+64M --change-name=7:recovery $TARGET
+        $SGDISK_EXEC --new=8:0:+128M --change-name=8:firmware $TARGET
         ;;
     *)
         exit 1

@@ -10,6 +10,10 @@ recovery_only(`
 # DMI
 r_dir_file(init, vendor_sysfs_dmi_id)
 
+# Firmware
+allow init firmware_file:dir mounton;
+allow init firmware_file:filesystem { getattr mount relabelfrom };
+
 # Kernel
 allow init kernel:system module_request;
 
