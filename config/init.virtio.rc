@@ -13,7 +13,6 @@ service vendor.dlkm_loader /vendor/bin/dlkm_loader
     oneshot
 
 on early-init
-    start vendor.dlkm_loader
     setprop ro.sf.lcd_density ${ro.boot.lcd_density:-160}
 
 on fs
@@ -21,6 +20,10 @@ on fs
 
     # Mount everything that does not require fsck
     mount_all --early
+
+on post-fs
+    write /sys/module/firmware_class/parameters/path /vendor/firmware_mnt/
+    start vendor.dlkm_loader
 
 on late-fs
     # Mount RW partitions which need run fsck

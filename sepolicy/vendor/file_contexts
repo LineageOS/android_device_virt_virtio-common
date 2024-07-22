@@ -17,5 +17,8 @@
 /vendor/bin/wakeupd							u:object_r:wakeupd_exec:s0
 /vendor/bin/hw/android\.hardware\.gatekeeper@1\.0-service.software	u:object_r:hal_gatekeeper_default_exec:s0
 
+# Firmware
+/vendor/firmware_mnt(/.*)?		u:object_r:firmware_file:s0
+
 # Same Process HAL
 /vendor/lib(64)?/hw/gralloc\.minigbm\.so		u:object_r:same_process_hal_file:s0

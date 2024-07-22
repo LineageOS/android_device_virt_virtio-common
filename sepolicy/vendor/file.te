@@ -1,2 +1,5 @@
 # DMI
 type vendor_sysfs_dmi_id, fs_type, sysfs_type;
+
+# Firmware
+type firmware_file, file_type, contextmount_type, vendor_file_type;
