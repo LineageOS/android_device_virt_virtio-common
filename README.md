@@ -62,7 +62,7 @@ m
 | Direct kernel boot | On |
 | Kernel path | `<android out dir>/kernel` |
 | Initrd path | `<android out dir>/ramdisk.img` for system, or `<android out dir>/ramdisk-recovery.img` for recovery |
-| Kernel args | Copy from `BOARD_KERNEL_CMDLINE` variable on `BoardConfigCommon.mk` and `BoardConfig.mk` |
+| Kernel args | `androidboot.hardware=virtio` + " " + Copy from `BOARD_KERNEL_CMDLINE_BASE` variable on `BoardConfigCommon.mk` |
 | Graphics | Enable OpenGL |
 | Video | Model: `virtio`, 3D Acceleration: On |
 | NIC Device model | `virtio` |
@@ -93,7 +93,7 @@ Configuration file:
     "kernel": "<android out dir>/kernel",
     "initrd": "<android out dir>/ramdisk.img",
     "params": [
-        "<Copy from `BOARD_KERNEL_CMDLINE` variable on `BoardConfigCommon.mk` and `BoardConfig.mk`>"
+        "androidboot.hardware=virtio <Copy from `BOARD_KERNEL_CMDLINE_BASE` variable on `BoardConfigCommon.mk`>"
     ],
     "cpus": {
         "num-cores": 2
@@ -140,7 +140,7 @@ Extra parameters:
     "name": "Android",
     "kernel": "/data/local/tmp/kernel",
     "initrd": "/data/local/tmp/ramdisk.img",
-    "params": "<Copy from `BOARD_KERNEL_CMDLINE` variable on `BoardConfigCommon.mk` and `BoardConfig.mk`>",
+    "params": "androidboot.hardware=virtio <Copy from `BOARD_KERNEL_CMDLINE_BASE` variable on `BoardConfigCommon.mk`>",
     "disks": [
         {
             "image": "/data/local/tmp/vendor.img",
@@ -193,7 +193,7 @@ Follow https://android.googlesource.com/platform/packages/modules/Virtualization
 - `system.img`
 - `vendor.img`
 
-2. Copy the value from `BOARD_KERNEL_CMDLINE` variable on `BoardConfigCommon.mk` and `BoardConfig.mk` to clipboard
+2. Copy the value from `BOARD_KERNEL_CMDLINE_BASE` variable on `BoardConfigCommon.mk` to clipboard
 
 3. Open UTM app
 
@@ -215,7 +215,7 @@ Follow https://android.googlesource.com/platform/packages/modules/Virtualization
 
     2. Insert `"` at both the beginning and the end
 
-    3. Change `androidboot.hardware=virtio` to `androidboot.hardware=utm`
+    3. Add the parameter `androidboot.hardware=utm`
 
     4. (Recommended) Add the parameter `androidboot.low_perf=1`
 
