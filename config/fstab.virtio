@@ -5,4 +5,6 @@
 /dev/block/vdc /data ext4 nodev,noatime,nosuid latemount,check,quota,formattable,checkpoint=block
 /dev/block/vdc /data f2fs nodev,noatime,nosuid,reserve_root=32768 latemount,check,quota,formattable,fscompress,checkpoint=fs
 
+/dev/block/by-name/firmware /mnt/vendor/firmware vfat ro,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:firmware_file:s0 nofail
+
 /devices/*/usb* auto auto defaults voldmanaged=usb:auto

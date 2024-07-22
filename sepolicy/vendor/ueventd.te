@@ -1,0 +1,3 @@
+# Firmware
+allow ueventd firmware_file:dir search;
+allow ueventd firmware_file:file r_file_perms;
