@@ -47,7 +47,8 @@ BOARD_KERNEL_CMDLINE += \
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
 TARGET_KERNEL_CONFIG := \
     gki_defconfig \
-    lineageos/virtio.config
+    lineageos/virtio.config \
+    lineageos/feature/fbcon.config
 else
 TARGET_NO_KERNEL := true
 
