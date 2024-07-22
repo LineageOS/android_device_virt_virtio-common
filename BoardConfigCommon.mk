@@ -52,6 +52,10 @@ BOARD_KERNEL_CMDLINE := \
     $(BOARD_KERNEL_CMDLINE_COMMON) \
     $(BOARD_KERNEL_CMDLINE_CONSOLE)
 
+TARGET_GRUB_KERNEL_CMDLINE := \
+    $(BOARD_KERNEL_CMDLINE_BASE) \
+    console=tty0
+
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
 TARGET_KERNEL_CONFIG := \
     gki_defconfig \
