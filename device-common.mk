@@ -132,11 +132,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/pc_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/pc_core_hardware.xml
 endif
 
-# Ramdisk
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/config/fstab.utm:$(TARGET_COPY_OUT_RAMDISK)/fstab.utm \
-    $(LOCAL_PATH)/config/fstab.virtio:$(TARGET_COPY_OUT_RAMDISK)/fstab.virtio
-
 # Recovery
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/config/ueventd.rc:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/etc/ueventd.rc \
@@ -159,3 +154,8 @@ PRODUCT_PACKAGES += \
 
 # UFFD GC
 PRODUCT_ENABLE_UFFD_GC := true
+
+# Vendor ramdisk
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/config/fstab.utm:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.utm \
+    $(LOCAL_PATH)/config/fstab.virtio:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.virtio
