@@ -24,6 +24,11 @@ PRODUCT_USE_DYNAMIC_PARTITIONS := true
 # Dalvik heap
 $(call inherit-product, frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
 
+# Fastbootd
+PRODUCT_PACKAGES += \
+    android.hardware.fastboot-service.virtio_recovery \
+    fastbootd
+
 # Gatekeeper
 PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-service.software
