@@ -16,6 +16,24 @@
       "message": "Since you still have everything open, it\u0027d be nice if this was squashed.",
       "revId": "c993051344cbd7706ec5a21e5a1ae9c93517f00a",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6536209_cb894b9e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32245
+      },
+      "writtenOn": "2024-07-23T08:26:26Z",
+      "side": 1,
+      "message": "yeah, I\u0027ll squash it into the first commit before I finally push",
+      "parentUuid": "7d0fa86f_e48d20a1",
+      "revId": "c993051344cbd7706ec5a21e5a1ae9c93517f00a",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
