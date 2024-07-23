@@ -79,6 +79,7 @@ TARGET_SKIP_OTA_PACKAGE := true
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 4096
+BOARD_USES_METADATA_PARTITION := true
 
 SSI_PARTITIONS := product system system_ext
 TREBLE_PARTITIONS := odm vendor
