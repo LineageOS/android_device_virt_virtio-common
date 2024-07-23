@@ -24,6 +24,30 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd62e21d_00889e7c",
+        "filename": "config/fstab.utm",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 32245
+      },
+      "writtenOn": "2024-07-23T08:55:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4f53997_d73ced31",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 59
+      },
+      "revId": "620dca6d411e6551e6dc8c35bde70f3004e66f6d",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78d8230d_de038c10",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-23T08:32:13Z",
       "side": 1,
       "message": "Same",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 59
+      },
+      "revId": "620dca6d411e6551e6dc8c35bde70f3004e66f6d",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3556dad9_3ef2c9b5",
+        "filename": "config/fstab.virtio",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 32245
+      },
+      "writtenOn": "2024-07-23T08:55:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78d8230d_de038c10",
       "range": {
         "startLine": 12,
         "startChar": 0,
