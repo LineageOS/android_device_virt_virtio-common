@@ -82,7 +82,9 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PACKAGES += \
     fstab.utm \
-    fstab.virtio
+    fstab.utm.gsi \
+    fstab.virtio \
+    fstab.virtio.gsi
 
 # Input
 PRODUCT_COPY_FILES += \
@@ -166,4 +168,6 @@ PRODUCT_ENABLE_UFFD_GC := true
 # Vendor ramdisk
 PRODUCT_PACKAGES += \
     fstab.utm.vendor_ramdisk \
-    fstab.virtio.vendor_ramdisk
+    fstab.utm.gsi.vendor_ramdisk \
+    fstab.virtio.vendor_ramdisk \
+    fstab.virtio.gsi.vendor_ramdisk
