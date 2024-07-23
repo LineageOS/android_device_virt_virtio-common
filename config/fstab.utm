@@ -5,10 +5,14 @@ product /product ext4 noatime,ro logical,first_stage_mount
 product /product erofs noatime,ro logical,first_stage_mount
 system /system ext4 noatime,ro logical,first_stage_mount
 system /system erofs noatime,ro logical,first_stage_mount
+system_dlkm /system_dlkm ext4 noatime,ro,errors=panic logical,first_stage_mount
+system_dlkm /system_dlkm erofs ro logical,first_stage_mount
 system_ext /system_ext ext4 noatime,ro logical,first_stage_mount
 system_ext /system_ext erofs noatime,ro logical,first_stage_mount
 vendor /vendor ext4 noatime,ro logical,first_stage_mount
 vendor /vendor erofs noatime,ro logical,first_stage_mount
+vendor_dlkm /vendor_dlkm ext4 noatime,ro,errors=panic logical,first_stage_mount
+vendor_dlkm /vendor_dlkm erofs ro logical,first_stage_mount
 
 # Misc
 /dev/block/by-name/misc /misc emmc defaults defaults
