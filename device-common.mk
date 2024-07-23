@@ -74,11 +74,13 @@ PRODUCT_PACKAGES += \
 
 # Init
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/config/fstab.utm:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.utm \
-    $(LOCAL_PATH)/config/fstab.virtio:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.virtio \
     $(LOCAL_PATH)/config/init.utm.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.utm.rc \
     $(LOCAL_PATH)/config/init.virtio.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.virtio.rc \
     $(LOCAL_PATH)/config/ueventd.rc:$(TARGET_COPY_OUT_VENDOR)/etc/ueventd.rc
+
+PRODUCT_PACKAGES += \
+    fstab.utm \
+    fstab.virtio
 
 # Input
 PRODUCT_COPY_FILES += \
@@ -162,6 +164,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_ENABLE_UFFD_GC := true
 
 # Vendor ramdisk
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/config/fstab.utm:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.utm \
-    $(LOCAL_PATH)/config/fstab.virtio:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.virtio
+PRODUCT_PACKAGES += \
+    fstab.utm.vendor_ramdisk \
+    fstab.virtio.vendor_ramdisk
