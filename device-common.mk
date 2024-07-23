@@ -29,6 +29,11 @@ PRODUCT_PACKAGES += \
     android.hardware.fastboot-service.virtio_recovery \
     fastbootd
 
+# First stage console
+PRODUCT_PACKAGES += \
+    linker.vendor_ramdisk \
+    shell_and_utilities_vendor_ramdisk
+
 # Gatekeeper
 PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-service.software
