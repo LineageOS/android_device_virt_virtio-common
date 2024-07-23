@@ -19,11 +19,8 @@ TARGET_USERIMAGES_USE_F2FS := true
 TARGET_USERIMAGES_USE_EXT4 := true
 
 # Graphics
-ifeq ($(TARGET_USES_SWIFTSHADER),true)
 include device/google/cuttlefish/shared/swiftshader/BoardConfig.mk
-else
 include device/google/cuttlefish/shared/virgl/BoardConfig.mk
-endif
 
 # Init
 TARGET_INIT_VENDOR_LIB ?= //$(COMMON_PATH):init_virtio
