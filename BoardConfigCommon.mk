@@ -8,6 +8,7 @@ USES_DEVICE_VIRT_VIRTIO_COMMON := true
 COMMON_PATH := device/virt/virtio-common
 
 # Bootloader
+BOARD_BOOT_HEADER_VERSION := 3
 TARGET_NO_BOOTLOADER := true
 
 # Filesystem
