@@ -5,7 +5,15 @@ service suspend_blocker /vendor/bin/suspend_blocker
     group system
     user root
 
+service vendor.dlkm_loader /vendor/bin/dlkm_loader
+    class main
+    user root
+    group root system
+    disabled
+    oneshot
+
 on early-init
+    start vendor.dlkm_loader
     setprop ro.sf.lcd_density ${ro.boot.lcd_density:-160}
 
 on fs
