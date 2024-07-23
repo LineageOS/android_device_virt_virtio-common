@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eb1c71c_dbe1de65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32245
+      },
+      "writtenOn": "2024-07-23T10:04:49Z",
+      "side": 1,
+      "message": "Still wanna keep it possible to replace the whole kernel without touching partitions...",
+      "revId": "4c2e987c79f422361ef44b94cb1a3981815f458e",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
