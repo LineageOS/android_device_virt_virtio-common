@@ -1,0 +1,7 @@
+/\/product/d
+/\/system/d
+/\/system_ext/d
+1i\
+/dev/block/vdc /system ext4 noatime,ro first_stage_mount
+1i\
+/dev/block/vdc /system erofs noatime,ro first_stage_mount
