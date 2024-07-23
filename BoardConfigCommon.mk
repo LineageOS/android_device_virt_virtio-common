@@ -34,6 +34,7 @@ BOARD_KERNEL_CMDLINE_BASE := \
     printk.devkmsg=on \
     rw \
     androidboot.boot_devices=any \
+    androidboot.first_stage_console=0 \
     androidboot.verifiedbootstate=orange
 
 BOARD_KERNEL_CMDLINE_BASE += \
