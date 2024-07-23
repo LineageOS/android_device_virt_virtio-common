@@ -11,3 +11,33 @@ prebuilt_etc {
     vendor: true,
     vendor_ramdisk_available: true,
 }
+
+genrule {
+    name: "gen_fstab_utm_gsi",
+    srcs: ["fstab.utm"],
+    out: ["fstab.utm.gsi"],
+    tool_files: [ "fstab.sed.utm.gsi" ],
+    cmd: "sed -f $(location fstab.sed.utm.gsi) $(in) > $(out)",
+}
+
+genrule {
+    name: "gen_fstab_virtio_gsi",
+    srcs: ["fstab.virtio"],
+    out: ["fstab.virtio.gsi"],
+    tool_files: [ "fstab.sed.virtio.gsi" ],
+    cmd: "sed -f $(location fstab.sed.virtio.gsi) $(in) > $(out)",
+}
+
+prebuilt_etc {
+    name: "fstab.utm.gsi",
+    src: ":gen_fstab_utm_gsi",
+    vendor: true,
+    vendor_ramdisk_available: true,
+}
+
+prebuilt_etc {
+    name: "fstab.virtio.gsi",
+    src: ":gen_fstab_virtio_gsi",
+    vendor: true,
+    vendor_ramdisk_available: true,
+}
