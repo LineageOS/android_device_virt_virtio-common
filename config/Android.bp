@@ -1,0 +1,13 @@
+prebuilt_etc {
+    name: "fstab.utm",
+    src: "fstab.utm",
+    vendor: true,
+    vendor_ramdisk_available: true,
+}
+
+prebuilt_etc {
+    name: "fstab.virtio",
+    src: "fstab.virtio",
+    vendor: true,
+    vendor_ramdisk_available: true,
+}
