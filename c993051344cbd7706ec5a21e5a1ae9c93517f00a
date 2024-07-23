@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d0fa86f_e48d20a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13648
+      },
+      "writtenOn": "2024-07-23T08:13:42Z",
+      "side": 1,
+      "message": "Since you still have everything open, it\u0027d be nice if this was squashed.",
+      "revId": "c993051344cbd7706ec5a21e5a1ae9c93517f00a",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
