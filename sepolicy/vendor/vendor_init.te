@@ -1,3 +1,6 @@
+# DHCP
+set_prop(vendor_init, vendor_recovery_ethernet_dhcp_prop)
+
 # Graphics
 get_prop(vendor_init, vendor_graphics_prop)
 set_prop(vendor_init, vendor_graphics_prop)
