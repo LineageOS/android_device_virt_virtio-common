@@ -138,6 +138,8 @@ endif
 
 # Recovery
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/config/init.recovery.utm.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.utm.rc \
+    $(LOCAL_PATH)/config/init.recovery.virtio.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.virtio.rc \
     $(LOCAL_PATH)/config/ueventd.rc:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/etc/ueventd.rc \
     device/google/cuttlefish/shared/config/cgroups.json:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/etc/cgroups.json
 
