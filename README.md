@@ -22,7 +22,6 @@ The device tree is currently WIP, Not suitable for normal use.
 - Disable unsupported things
 - Support for USB Bluetooth, Camera, and WiFi
 - Support for VFIO PCI GPU Passthrough
-- Ethernet support in recovery mode
 - VirtWifi
 - [VirtioFS](https://android.googlesource.com/device/google/cuttlefish/+/5c490d406e213b241dd8eb56fe59cb5157bdf06b)
 - Enforce SELinux
