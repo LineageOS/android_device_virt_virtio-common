@@ -1,0 +1,10 @@
+service dhcpclient /system/bin/dhcpclient -i ${vendor.recovery.ethernet.dhcp.iface:-eth0}
+    user root
+    group root
+    seclabel u:r:dhcpclient:s0
+    oneshot
+    disabled
+
+on early-boot
+    ifup ${vendor.recovery.ethernet.dhcp.iface:-eth0}
+    start dhcpclient
