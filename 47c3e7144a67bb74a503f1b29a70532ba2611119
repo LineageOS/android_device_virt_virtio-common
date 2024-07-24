@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1341750a_7b1e8ba0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32245
+      },
+      "writtenOn": "2024-07-24T16:13:26Z",
+      "side": 1,
+      "message": "```\nTraceback (most recent call last):\n  File \"\u003cfrozen runpy\u003e\", line 198, in _run_module_as_main\n  File \"\u003cfrozen runpy\u003e\", line 88, in _run_code\n  File \"/android/LineageOS/21/out/host/linux-x86/bin/ota_from_target_files/__main__.py\", line 12, in \u003cmodule\u003e\n  File \"\u003cfrozen runpy\u003e\", line 198, in _run_module_as_main\n  File \"\u003cfrozen runpy\u003e\", line 88, in _run_code\n  File \"ota_from_target_files.py\", line 1534, in \u003cmodule\u003e\n  File \"ota_from_target_files.py\", line 1511, in main\n  File \"non_ab_ota.py\", line 584, in GenerateNonAbOtaPackage\ncommon.ExternalError: --- target build has specified no recovery ---\n16:11:26 ninja failed with: exit status 1\n```",
+      "revId": "47c3e7144a67bb74a503f1b29a70532ba2611119",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
