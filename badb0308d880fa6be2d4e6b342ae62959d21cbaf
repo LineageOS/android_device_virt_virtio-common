@@ -22,6 +22,30 @@
       },
       "revId": "badb0308d880fa6be2d4e6b342ae62959d21cbaf",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31c24c45_01dd6573",
+        "filename": "fastboot/Fastboot.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 32245
+      },
+      "writtenOn": "2024-07-24T07:43:43Z",
+      "side": 1,
+      "message": "why? fastboot can handle casefolding and project id quota too, which I\u0027m using for userdata",
+      "parentUuid": "34aef786_4ecbbcca",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 43
+      },
+      "revId": "badb0308d880fa6be2d4e6b342ae62959d21cbaf",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
