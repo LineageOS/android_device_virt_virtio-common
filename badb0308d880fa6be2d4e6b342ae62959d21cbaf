@@ -46,6 +46,30 @@
       },
       "revId": "badb0308d880fa6be2d4e6b342ae62959d21cbaf",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dfbd5a0_059e29fa",
+        "filename": "fastboot/Fastboot.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2024-07-24T07:57:21Z",
+      "side": 1,
+      "message": "because google recommends to do so, especially given fastboot can be old and not support those features",
+      "parentUuid": "31c24c45_01dd6573",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 43
+      },
+      "revId": "badb0308d880fa6be2d4e6b342ae62959d21cbaf",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
