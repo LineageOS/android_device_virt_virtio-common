@@ -1,2 +1,8 @@
+# DHCP
+recovery_only(`
+    get_prop(init, vendor_recovery_ethernet_dhcp_prop)
+    set_prop(init, vendor_recovery_ethernet_dhcp_prop)
+')
+
 # DMI
 r_dir_file(init, vendor_sysfs_dmi_id)
