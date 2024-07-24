@@ -70,6 +70,30 @@
       },
       "revId": "badb0308d880fa6be2d4e6b342ae62959d21cbaf",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71cf67da_a3e3d8b1",
+        "filename": "fastboot/Fastboot.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 32245
+      },
+      "writtenOn": "2024-07-24T08:01:50Z",
+      "side": 1,
+      "message": "I don\u0027t remember if it\u0027s needed for `fastboot flashall -w` tho, will try when I can",
+      "parentUuid": "5dfbd5a0_059e29fa",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 43
+      },
+      "revId": "badb0308d880fa6be2d4e6b342ae62959d21cbaf",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
