@@ -24,6 +24,12 @@ vendor_dlkm /vendor_dlkm erofs ro logical,first_stage_mount
 /dev/block/by-name/cache /cache ext4 nodev,noatime,nosuid check,formattable
 /dev/block/by-name/cache /cache f2fs nodev,noatime,nosuid check,formattable
 
+# Boot
+/dev/block/by-name/boot /boot emmc defaults defaults
+
+# Recovery
+/dev/block/by-name/recovery /recovery emmc defaults defaults
+
 # Userdata (on separate disk)
 /dev/block/vdb /data ext4 nodev,noatime,nosuid latemount,check,quota,formattable,checkpoint=block
 /dev/block/vdb /data f2fs nodev,noatime,nosuid,reserve_root=32768 latemount,check,quota,formattable,fscompress,checkpoint=fs
