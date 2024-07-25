@@ -8,3 +8,6 @@ service dhcpclient /system/bin/dhcpclient -i ${vendor.recovery.ethernet.dhcp.ifa
 on early-boot
     ifup ${vendor.recovery.ethernet.dhcp.iface:-eth0}
     start dhcpclient
+
+on property:ro.boot.install=1
+    exec u:r:recovery:s0 -- /system/bin/sh /system/bin/create_partition_table.sh /system/bin/sgdisk /dev/block/vda
