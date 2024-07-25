@@ -28,6 +28,12 @@ GRUB_ARTIFACT_FILENAME_PREFIX := Android-$(PLATFORM_VERSION_LAST_STABLE)-$(BUILD
 GRUB_THEME := android
 endif
 
+ifeq ($(PRODUCT_IS_AUTOMOTIVE),true)
+GRUB_ANDROID_DISTRIBUTION_NAME += Car
+else ifeq ($(PRODUCT_IS_ATV),true)
+GRUB_ANDROID_DISTRIBUTION_NAME += TV
+endif
+
 # $(1): filesystem root directory
 # $(2): path to grub.cfg file
 define install-grub-theme
