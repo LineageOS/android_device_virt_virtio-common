@@ -28,20 +28,30 @@ GRUB_ARTIFACT_FILENAME_PREFIX := Android-$(PLATFORM_VERSION_LAST_STABLE)-$(BUILD
 GRUB_THEME := android
 endif
 
+# $(1): filesystem root directory
+# $(2): path to grub.cfg file
+define install-grub-theme
+	sed -i "s|@GRUB_THEME@|$(GRUB_THEME)|g" $(2)
+	mkdir -p $(1)/boot/grub/themes
+	rm -rf $(1)/boot/grub/themes/$(GRUB_THEME)
+	$(if $(GRUB_THEME), cp -r $(COMMON_GRUB_PATH)/themes/$(GRUB_THEME) $(1)/boot/grub/themes/)
+endef
+
+# $(1): path to grub.cfg file
+define process-grub-cfg
+	sed -i "s|@GRUB_ANDROID_DISTRIBUTION_NAME@|$(GRUB_ANDROID_DISTRIBUTION_NAME)|g" $(1)
+	sed -i "s|@STRIPPED_BOARD_KERNEL_CMDLINE_CONSOLE@|$(strip $(BOARD_KERNEL_CMDLINE_CONSOLE))|g" $(1)
+	sed -i "s|@STRIPPED_TARGET_GRUB_KERNEL_CMDLINE@|$(strip $(TARGET_GRUB_KERNEL_CMDLINE))|g" $(1)
+endef
+
 # $(1): output file
 # $(2): dependencies
 define make-isoimage-boot-target
 	$(call pretty,"Target boot ISO image: $(1)")
 	mkdir -p $(GRUB_WORKDIR_BOOT)/boot/grub
 	cp $(COMMON_GRUB_PATH)/grub-boot.cfg $(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg
-	sed -i "s|@GRUB_ANDROID_DISTRIBUTION_NAME@|$(GRUB_ANDROID_DISTRIBUTION_NAME)|g" $(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg
-	sed -i "s|@STRIPPED_BOARD_KERNEL_CMDLINE_CONSOLE@|$(strip $(BOARD_KERNEL_CMDLINE_CONSOLE))|g" $(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg
-	sed -i "s|@STRIPPED_TARGET_GRUB_KERNEL_CMDLINE@|$(strip $(TARGET_GRUB_KERNEL_CMDLINE))|g" $(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg
-
-	sed -i "s|@GRUB_THEME@|$(GRUB_THEME)|g" $(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg
-	rm -rf $(GRUB_WORKDIR_BOOT)/boot/grub/themes/$(GRUB_THEME)
-	$(if $(GRUB_THEME), cp -r $(COMMON_GRUB_PATH)/themes/$(GRUB_THEME) $(GRUB_WORKDIR_BOOT)/boot/grub/themes/)
-
+	$(call process-grub-cfg,$(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg)
+	$(call install-grub-theme,$(GRUB_WORKDIR_BOOT),$(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg)
 	$(GRUB_PATH_OVERRIDE) $(GRUB_PREBUILT_DIR)/bin/grub-mkrescue -d $(GRUB_PREBUILT_DIR)/lib/grub/$(TARGET_GRUB_ARCH) --xorriso=$(GRUB_XORRISO_EXEC) -o $(1) $(2) $(GRUB_WORKDIR_BOOT)
 endef
 
