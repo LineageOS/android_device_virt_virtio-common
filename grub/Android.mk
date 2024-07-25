@@ -35,6 +35,7 @@ define make-isoimage-boot-target
 	mkdir -p $(GRUB_WORKDIR_BOOT)/boot/grub
 	cp $(COMMON_GRUB_PATH)/grub-boot.cfg $(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg
 	sed -i "s|@GRUB_ANDROID_DISTRIBUTION_NAME@|$(GRUB_ANDROID_DISTRIBUTION_NAME)|g" $(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg
+	sed -i "s|@STRIPPED_BOARD_KERNEL_CMDLINE_CONSOLE@|$(strip $(BOARD_KERNEL_CMDLINE_CONSOLE))|g" $(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg
 	sed -i "s|@STRIPPED_TARGET_GRUB_KERNEL_CMDLINE@|$(strip $(TARGET_GRUB_KERNEL_CMDLINE))|g" $(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg
 
 	sed -i "s|@GRUB_THEME@|$(GRUB_THEME)|g" $(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg
