@@ -165,6 +165,10 @@ PRODUCT_PACKAGES += \
 # UFFD GC
 PRODUCT_ENABLE_UFFD_GC := true
 
+# Utilities
+PRODUCT_PACKAGES += \
+    sgdisk.recovery
+
 # Vendor ramdisk
 PRODUCT_PACKAGES += \
     fstab.utm.vendor_ramdisk \
