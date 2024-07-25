@@ -16,6 +16,12 @@ GRUB_XORRISO_EXEC := $(GRUB_TOOLS_LINEAGE_BIN_DIR)/xorriso
 
 GRUB_WORKDIR_BASE := $(TARGET_OUT_INTERMEDIATES)/GRUB_OBJ
 GRUB_WORKDIR_BOOT := $(GRUB_WORKDIR_BASE)/boot
+GRUB_WORKDIR_ESP := $(GRUB_WORKDIR_BASE)/esp
+
+ifeq ($(TARGET_GRUB_ARCH),x86_64-efi)
+GRUB_EFI_BOOT_FILENAME := BOOTX64.EFI
+GRUB_MKSTANDALONE_FORMAT := x86_64-efi
+endif
 
 ifneq ($(LINEAGE_BUILD),)
 GRUB_ANDROID_DISTRIBUTION_NAME := LineageOS $(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR)
@@ -49,6 +55,47 @@ define process-grub-cfg
 	sed -i "s|@STRIPPED_BOARD_KERNEL_CMDLINE_CONSOLE@|$(strip $(BOARD_KERNEL_CMDLINE_CONSOLE))|g" $(1)
 	sed -i "s|@STRIPPED_TARGET_GRUB_KERNEL_CMDLINE@|$(strip $(TARGET_GRUB_KERNEL_CMDLINE))|g" $(1)
 endef
+
+##### espimage #####
+
+# $(1): output file
+# $(2): dependencies
+define make-espimage-target
+	$(call pretty,"Target EFI System Partition image: $(1)")
+	mkdir -p $(GRUB_WORKDIR_ESP)/fsroot/EFI/BOOT $(GRUB_WORKDIR_ESP)/fsroot/boot/grub/fonts
+
+	cp $(COMMON_GRUB_PATH)/grub-standalone.cfg $(GRUB_WORKDIR_ESP)/grub-standalone.cfg
+	$(call process-grub-cfg,$(GRUB_WORKDIR_ESP)/grub-standalone.cfg)
+	$(GRUB_PATH_OVERRIDE) $(GRUB_PREBUILT_DIR)/bin/grub-mkstandalone -d $(GRUB_PREBUILT_DIR)/lib/grub/$(TARGET_GRUB_ARCH) --locales="" --fonts="" --format=$(GRUB_MKSTANDALONE_FORMAT) --output=$(GRUB_WORKDIR_ESP)/fsroot/EFI/BOOT/$(GRUB_EFI_BOOT_FILENAME) --modules="configfile fat part_gpt search" "boot/grub/grub.cfg=$(COMMON_GRUB_PATH)/grub-standalone.cfg"
+
+	cp -r $(GRUB_PREBUILT_DIR)/lib/grub/$(TARGET_GRUB_ARCH) $(GRUB_WORKDIR_ESP)/fsroot/boot/grub/$(TARGET_GRUB_ARCH)
+	cp $(GRUB_PREBUILT_DIR)/share/grub/unicode.pf2 $(GRUB_WORKDIR_ESP)/fsroot/boot/grub/fonts/unicode.pf2
+
+	cp $(COMMON_GRUB_PATH)/grub-boot.cfg $(GRUB_WORKDIR_ESP)/fsroot/boot/grub/grub.cfg
+	$(call process-grub-cfg,$(GRUB_WORKDIR_ESP)/fsroot/boot/grub/grub.cfg)
+	$(call install-grub-theme,$(GRUB_WORKDIR_ESP)/fsroot,$(GRUB_WORKDIR_ESP)/fsroot/boot/grub/grub.cfg)
+
+	/usr/bin/dd if=/dev/zero of=$(1) bs=1M count=128
+	/sbin/mkfs.vfat -F 32 $(1)
+	$(GRUB_TOOLS_LINEAGE_BIN_DIR)/mcopy -i $(1) -s $(GRUB_WORKDIR_ESP)/fsroot/EFI ::
+	$(GRUB_TOOLS_LINEAGE_BIN_DIR)/mcopy -i $(1) -s $(GRUB_WORKDIR_ESP)/fsroot/boot ::
+	$(GRUB_TOOLS_LINEAGE_BIN_DIR)/mcopy -i $(1) $(2) ::
+endef
+
+INSTALLED_ESPIMAGE_TARGET := $(GRUB_WORKDIR_ESP)/ESP.img
+INSTALLED_ESPIMAGE_TARGET_DEPS := $(PRODUCT_OUT)/kernel $(INSTALLED_COMBINED_RAMDISK_TARGET) $(INSTALLED_COMBINED_RAMDISK_RECOVERY_TARGET)
+$(INSTALLED_ESPIMAGE_TARGET): $(INSTALLED_ESPIMAGE_TARGET_DEPS)
+	$(call make-espimage-target,$(INSTALLED_ESPIMAGE_TARGET),$(INSTALLED_ESPIMAGE_TARGET_DEPS))
+
+.PHONY: espimage
+espimage: $(INSTALLED_ESPIMAGE_TARGET)
+
+.PHONY: espimage-nodeps
+espimage-nodeps:
+	@echo "make $(INSTALLED_ESPIMAGE_TARGET): ignoring dependencies"
+	$(call make-espimage-target,$(INSTALLED_ESPIMAGE_TARGET),$(INSTALLED_ESPIMAGE_TARGET_DEPS))
+
+##### isoimage-boot #####
 
 # $(1): output file
 # $(2): dependencies
