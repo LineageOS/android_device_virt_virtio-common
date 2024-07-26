@@ -19,7 +19,10 @@ GRUB_WORKDIR_BOOT := $(GRUB_WORKDIR_BASE)/boot
 GRUB_WORKDIR_ESP := $(GRUB_WORKDIR_BASE)/esp
 GRUB_WORKDIR_INSTALL := $(GRUB_WORKDIR_BASE)/install
 
-ifeq ($(TARGET_GRUB_ARCH),x86_64-efi)
+ifeq ($(TARGET_GRUB_ARCH),aarch64-efi)
+GRUB_EFI_BOOT_FILENAME := BOOTAA64.EFI
+GRUB_MKSTANDALONE_FORMAT := arm64-efi
+else ifeq ($(TARGET_GRUB_ARCH),x86_64-efi)
 GRUB_EFI_BOOT_FILENAME := BOOTX64.EFI
 GRUB_MKSTANDALONE_FORMAT := x86_64-efi
 endif
@@ -110,7 +113,7 @@ define make-isoimage-boot-target
 	cp $(COMMON_GRUB_PATH)/grub-boot.cfg $(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg
 	$(call process-grub-cfg,$(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg)
 	$(call install-grub-theme,$(GRUB_WORKDIR_BOOT),$(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg)
-	$(GRUB_PATH_OVERRIDE) $(GRUB_PREBUILT_DIR)/bin/grub-mkrescue -d $(GRUB_PREBUILT_DIR)/lib/grub/$(TARGET_GRUB_ARCH) --xorriso=$(GRUB_XORRISO_EXEC) -o $(1) $(2) $(GRUB_WORKDIR_BOOT)
+	$(GRUB_PATH_OVERRIDE) $(GRUB_PREBUILT_DIR)/bin/grub-mkrescue -d $(GRUB_PREBUILT_DIR)/lib/grub/$(TARGET_GRUB_ARCH) --target=$(TARGET_GRUB_ARCH) --xorriso=$(GRUB_XORRISO_EXEC) -o $(1) $(2) $(GRUB_WORKDIR_BOOT)
 endef
 
 INSTALLED_ISOIMAGE_BOOT_TARGET := $(PRODUCT_OUT)/$(GRUB_ARTIFACT_FILENAME_PREFIX)-boot.iso
@@ -136,7 +139,7 @@ define make-isoimage-install-target
 	cp $(COMMON_GRUB_PATH)/grub-install.cfg $(GRUB_WORKDIR_INSTALL)/boot/grub/grub.cfg
 	$(call process-grub-cfg,$(GRUB_WORKDIR_INSTALL)/boot/grub/grub.cfg)
 	$(call install-grub-theme,$(GRUB_WORKDIR_INSTALL),$(GRUB_WORKDIR_INSTALL)/boot/grub/grub.cfg)
-	$(GRUB_PATH_OVERRIDE) $(GRUB_PREBUILT_DIR)/bin/grub-mkrescue -d $(GRUB_PREBUILT_DIR)/lib/grub/$(TARGET_GRUB_ARCH) --xorriso=$(GRUB_XORRISO_EXEC) -o $(1) $(2) $(GRUB_WORKDIR_INSTALL)
+	$(GRUB_PATH_OVERRIDE) $(GRUB_PREBUILT_DIR)/bin/grub-mkrescue -d $(GRUB_PREBUILT_DIR)/lib/grub/$(TARGET_GRUB_ARCH) --target=$(TARGET_GRUB_ARCH) --xorriso=$(GRUB_XORRISO_EXEC) -o $(1) $(2) $(GRUB_WORKDIR_INSTALL)
 endef
 
 INSTALLED_ISOIMAGE_INSTALL_TARGET := $(PRODUCT_OUT)/$(GRUB_ARTIFACT_FILENAME_PREFIX).iso
