@@ -167,6 +167,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_ENABLE_UFFD_GC := true
 
 # Utilities
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/config/pci.ids:$(TARGET_COPY_OUT_VENDOR)/pci.ids
+
 PRODUCT_PACKAGES += \
     sgdisk.recovery
 
