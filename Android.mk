@@ -26,10 +26,16 @@ combined-ramdisk: $(INSTALLED_COMBINED_RAMDISK_TARGET)
 .PHONY: combined-ramdisk-recovery
 combined-ramdisk-recovery: $(INSTALLED_COMBINED_RAMDISK_RECOVERY_TARGET)
 
-# Common variables for boot managers
+# Common definitions for boot managers
 BOOTMGR_TOOLS_LINEAGE_BIN_DIR := prebuilts/tools-lineage/$(HOST_PREBUILT_TAG)/bin
 BOOTMGR_PATH_OVERRIDE := PATH=$(BOOTMGR_TOOLS_LINEAGE_BIN_DIR):$$PATH
 BOOTMGR_XORRISO_EXEC := $(BOOTMGR_TOOLS_LINEAGE_BIN_DIR)/xorriso
+
+ifeq ($(TARGET_ARCH),arm64)
+BOOTMGR_EFI_BOOT_FILENAME := BOOTAA64.EFI
+else ifeq ($(TARGET_ARCH),x86_64)
+BOOTMGR_EFI_BOOT_FILENAME := BOOTX64.EFI
+endif
 
 ifneq ($(LINEAGE_BUILD),)
 BOOTMGR_ANDROID_DISTRIBUTION_NAME := LineageOS $(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR)
@@ -50,7 +56,74 @@ else ifeq ($(PRODUCT_IS_ATV),true)
 BOOTMGR_ANDROID_DISTRIBUTION_NAME += TV
 endif
 
+# $(1): output file
+# $(2): list of contents to include
+define create-espimage
+	/usr/bin/dd if=/dev/zero of=$(1) bs=1M count=128
+	/sbin/mkfs.vfat -F 32 $(1)
+	$(foreach content,$(2),$(BOOTMGR_TOOLS_LINEAGE_BIN_DIR)/mcopy -i $(1) -s $(content) ::)
+endef
+
+# $(1): path to boot manager config file
+define process-bootmgr-cfg-common
+	sed -i "s|@BOOTMGR_ANDROID_DISTRIBUTION_NAME@|$(BOOTMGR_ANDROID_DISTRIBUTION_NAME)|g" $(1)
+	sed -i "s|@BOOTMGR_EFI_BOOT_FILENAME@|$(BOOTMGR_EFI_BOOT_FILENAME)|g" $(1)
+	sed -i "s|@STRIPPED_BOARD_KERNEL_CMDLINE_CONSOLE@|$(strip $(BOARD_KERNEL_CMDLINE_CONSOLE))|g" $(1)
+	sed -i "s|@STRIPPED_TARGET_BOOTMGR_KERNEL_CMDLINE@|$(strip $(TARGET_BOOTMGR_KERNEL_CMDLINE))|g" $(1)
+endef
+
 include $(call all-makefiles-under,$(LOCAL_PATH))
+
+# Build boot manager images
+
+ifneq ($(TARGET_BOOT_MANAGER),)
+
+##### espimage #####
+
+INSTALLED_ESPIMAGE_TARGET := $(GRUB_WORKDIR_ESP)/EFI.img
+INSTALLED_ESPIMAGE_TARGET_DEPS := $(PRODUCT_OUT)/kernel $(INSTALLED_COMBINED_RAMDISK_TARGET) $(INSTALLED_COMBINED_RAMDISK_RECOVERY_TARGET)
+$(INSTALLED_ESPIMAGE_TARGET): $(INSTALLED_ESPIMAGE_TARGET_DEPS)
+	$(call make-espimage-target,$(INSTALLED_ESPIMAGE_TARGET),$(INSTALLED_ESPIMAGE_TARGET_DEPS))
+
+.PHONY: espimage
+espimage: $(INSTALLED_ESPIMAGE_TARGET)
+
+.PHONY: espimage-nodeps
+espimage-nodeps:
+	@echo "make $(INSTALLED_ESPIMAGE_TARGET): ignoring dependencies"
+	$(call make-espimage-target,$(INSTALLED_ESPIMAGE_TARGET),$(INSTALLED_ESPIMAGE_TARGET_DEPS))
+
+##### isoimage-boot #####
+
+INSTALLED_ISOIMAGE_BOOT_TARGET := $(PRODUCT_OUT)/$(BOOTMGR_ARTIFACT_FILENAME_PREFIX)-boot.iso
+INSTALLED_ISOIMAGE_BOOT_TARGET_DEPS := $(PRODUCT_OUT)/kernel $(INSTALLED_COMBINED_RAMDISK_TARGET) $(INSTALLED_COMBINED_RAMDISK_RECOVERY_TARGET)
+$(INSTALLED_ISOIMAGE_BOOT_TARGET): $(INSTALLED_ISOIMAGE_BOOT_TARGET_DEPS)
+	$(call make-isoimage-boot-target,$(INSTALLED_ISOIMAGE_BOOT_TARGET),$(INSTALLED_ISOIMAGE_BOOT_TARGET_DEPS))
+
+.PHONY: isoimage-boot
+isoimage-boot: $(INSTALLED_ISOIMAGE_BOOT_TARGET)
+
+.PHONY: isoimage-boot-nodeps
+isoimage-boot-nodeps:
+	@echo "make $(INSTALLED_ISOIMAGE_BOOT_TARGET): ignoring dependencies"
+	$(call make-isoimage-boot-target,$(INSTALLED_ISOIMAGE_BOOT_TARGET),$(INSTALLED_ISOIMAGE_BOOT_TARGET_DEPS))
+
+##### isoimage-install #####
+
+INSTALLED_ISOIMAGE_INSTALL_TARGET := $(PRODUCT_OUT)/$(BOOTMGR_ARTIFACT_FILENAME_PREFIX).iso
+INSTALLED_ISOIMAGE_INSTALL_TARGET_DEPS := $(PRODUCT_OUT)/kernel $(INSTALLED_COMBINED_RAMDISK_RECOVERY_TARGET) $(PRODUCT_OUT)/$(BOOTMGR_ANDROID_OTA_PACKAGE_NAME)
+$(INSTALLED_ISOIMAGE_INSTALL_TARGET): $(INSTALLED_ISOIMAGE_INSTALL_TARGET_DEPS)
+	$(call make-isoimage-install-target,$(INSTALLED_ISOIMAGE_INSTALL_TARGET),$(INSTALLED_ISOIMAGE_INSTALL_TARGET_DEPS))
+
+.PHONY: isoimage-install
+isoimage-install: $(INSTALLED_ISOIMAGE_INSTALL_TARGET)
+
+.PHONY: isoimage-install-nodeps
+isoimage-install-nodeps:
+	@echo "make $(INSTALLED_ISOIMAGE_INSTALL_TARGET): ignoring dependencies"
+	$(call make-isoimage-install-target,$(INSTALLED_ISOIMAGE_INSTALL_TARGET),$(INSTALLED_ISOIMAGE_INSTALL_TARGET_DEPS))
+
+endif # TARGET_BOOT_MANAGER
 
 # Create vda disk image
 
