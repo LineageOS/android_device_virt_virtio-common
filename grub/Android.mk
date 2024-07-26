@@ -6,6 +6,7 @@
 
 COMMON_GRUB_PATH := $(call my-dir)
 
+ifeq ($(TARGET_BOOT_MANAGER),grub)
 ifeq ($(TARGET_GRUB_ARCH),)
 $(warning TARGET_GRUB_ARCH is not defined, could not build GRUB)
 else
@@ -152,4 +153,5 @@ isoimage-install-nodeps:
 	@echo "make $(INSTALLED_ISOIMAGE_INSTALL_TARGET): ignoring dependencies"
 	$(call make-isoimage-install-target,$(INSTALLED_ISOIMAGE_INSTALL_TARGET),$(INSTALLED_ISOIMAGE_INSTALL_TARGET_DEPS))
 
-endif
+endif # TARGET_GRUB_ARCH
+endif # TARGET_BOOT_MANAGER
