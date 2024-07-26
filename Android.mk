@@ -160,7 +160,7 @@ DISK_VDA_WRITE_PARTITIONS := \
 define make-diskimage-target
 	$(call pretty,"Target $(2) disk image: $(1)")
 	/bin/dd if=/dev/zero of=$(1) bs=$(DISK_$(call to-upper,$(2))_SECTOR_SIZE) count=$(DISK_$(call to-upper,$(2))_SECTORS)
-	/bin/sh $(COMMON_PATH)/config/create_partition_table.sh $(SGDISK_EXEC) $(1) $(2)
+	/bin/sh -e $(COMMON_PATH)/config/create_partition_table.sh $(SGDISK_EXEC) $(1) $(2)
 	$(foreach p,$(DISK_$(call to-upper,$(2))_WRITE_PARTITIONS),\
 		/bin/dd if=$(PRODUCT_OUT)/$(p).img of=$(1) bs=$(DISK_$(call to-upper,$(2))_SECTOR_SIZE) seek=$(DISK_$(call to-upper,$(2))_PARTITION_$(call to-upper,$(p))_START_SECTOR) count=$(DISK_$(call to-upper,$(2))_PARTITION_$(call to-upper,$(p))_SECTORS) conv=notrunc &&\
 	)true
