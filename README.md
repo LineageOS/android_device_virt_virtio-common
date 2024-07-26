@@ -14,19 +14,16 @@ The device tree is currently WIP, Not suitable for normal use.
 - Display color is wrong with Mesa graphics on crosvm
 - Display color is wrong with Swiftshader graphics on QEMU
 - Video playback is not working properly with Mesa graphics
-- Errors in recovery mode
 
 # TODO
 - ARM 32-bit only and 64-bit only targets
 - Disable sleep on VMs that are hard to wakeup (for example, crosvm)
-- Disable unsupported things
 - Support for USB Bluetooth, Camera, and WiFi
 - Support for VFIO PCI GPU Passthrough
 - VirtWifi
 - [VirtioFS](https://android.googlesource.com/device/google/cuttlefish/+/5c490d406e213b241dd8eb56fe59cb5157bdf06b)
-- Enforce SELinux
+- Enforce SELinux on all targets (Currently did for libvirt-qemu)
 - 16K pagesize
-- OTA Upgrade (??)
 
 # List of optional extra boot parameters
 
@@ -42,7 +39,13 @@ The device tree is currently WIP, Not suitable for normal use.
 
 | Repository | Commit message | Link |
 | ---------- | -------------- | ---- |
+| prebuilts/tools-lineage | tools-lineage: linux-x86: Import mtools from mtools_4.0.44_amd64.deb | [LineageOS Gerrit](https://review.lineageos.org/c/LineageOS/android_prebuilts_tools-lineage/+/398285) |
 | system/core | init: devices: Add option to accept any device as boot device | [LineageOS Gerrit](https://review.lineageos.org/c/LineageOS/android_system_core/+/378562) |
+
+| Topic | Link |
+| ----- | ---- |
+| 14-embed-super_empty_img | [LineageOS Gerrit](https://review.lineageos.org/q/topic:%2214-embed-super_empty_img%22) |
+| 14-recovery-ethernet | [LineageOS Gerrit](https://review.lineageos.org/q/topic:%2214-recovery-ethernet%22) |
 
 # Build
 
