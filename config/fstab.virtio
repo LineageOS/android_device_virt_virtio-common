@@ -18,7 +18,7 @@ vendor_dlkm /vendor_dlkm erofs ro logical,first_stage_mount
 /dev/block/by-name/misc /misc emmc defaults defaults
 
 # Metadata
-/dev/block/by-name/metadata /metadata ext4 nodev,noatime,nosuid check,first_stage_mount
+/dev/block/by-name/metadata /metadata ext4 nodev,noatime,nosuid check,formattable,first_stage_mount
 
 # Cache
 /dev/block/by-name/cache /cache ext4 nodev,noatime,nosuid check,formattable
