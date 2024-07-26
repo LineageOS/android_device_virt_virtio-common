@@ -56,6 +56,7 @@ endef
 # $(1): path to grub.cfg file
 define process-grub-cfg
 	sed -i "s|@GRUB_ANDROID_DISTRIBUTION_NAME@|$(GRUB_ANDROID_DISTRIBUTION_NAME)|g" $(1)
+	sed -i "s|@GRUB_EFI_BOOT_FILENAME@|$(GRUB_EFI_BOOT_FILENAME)|g" $(1)
 	sed -i "s|@STRIPPED_BOARD_KERNEL_CMDLINE_CONSOLE@|$(strip $(BOARD_KERNEL_CMDLINE_CONSOLE))|g" $(1)
 	sed -i "s|@STRIPPED_TARGET_GRUB_KERNEL_CMDLINE@|$(strip $(TARGET_GRUB_KERNEL_CMDLINE))|g" $(1)
 endef
