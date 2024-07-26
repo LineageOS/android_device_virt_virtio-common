@@ -93,6 +93,8 @@ espimage-nodeps:
 	@echo "make $(INSTALLED_ESPIMAGE_TARGET): ignoring dependencies"
 	$(call make-espimage-target,$(INSTALLED_ESPIMAGE_TARGET),$(INSTALLED_ESPIMAGE_TARGET_DEPS))
 
+ALL_DEFAULT_INSTALLED_MODULES += $(PRODUCT_OUT)/EFI.img
+
 ##### isoimage-boot #####
 
 INSTALLED_ISOIMAGE_BOOT_TARGET := $(PRODUCT_OUT)/$(BOOTMGR_ARTIFACT_FILENAME_PREFIX)-boot.iso
