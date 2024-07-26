@@ -123,8 +123,12 @@ $(foreach p, $(call to-upper, $(ALL_PARTITIONS)), \
     $(eval BOARD_$(p)IMAGE_FILE_SYSTEM_TYPE := $(TARGET_LOGICAL_PARTITIONS_FILE_SYSTEM_TYPE)) \
     $(eval TARGET_COPY_OUT_$(p) := $(call to-lower, $(p))))
 
-BOARD_CUSTOMIMAGES_PARTITION_LIST := EFI
+ifeq ($(TARGET_USES_GRUB),true)
 BOARD_EFI_IMAGE_LIST := $(PRODUCT_OUT)/obj/GRUB_OBJ/esp/EFI.img
+endif
+ifneq ($(BOARD_EFI_IMAGE_LIST),)
+BOARD_CUSTOMIMAGES_PARTITION_LIST := EFI
+endif
 
 # Platform
 TARGET_BOARD_PLATFORM := virtio
