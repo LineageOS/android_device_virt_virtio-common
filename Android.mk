@@ -64,6 +64,12 @@ define create-espimage
 	$(foreach content,$(2),$(BOOTMGR_TOOLS_LINEAGE_BIN_DIR)/mcopy -i $(1) -s $(content) :: &&)true
 endef
 
+# $(1): output file
+# $(2): input directory
+define create-isoimage
+	$(BOOTMGR_XORRISO_EXEC) -as mkisofs -no-emul-boot -volid "$(TARGET_DEVICE) with $(TARGET_BOOT_MANAGER)" -o $(1) $(2)
+endef
+
 # $(1): path to boot manager config file
 define process-bootmgr-cfg-common
 	sed -i "s|@BOOTMGR_ANDROID_DISTRIBUTION_NAME@|$(BOOTMGR_ANDROID_DISTRIBUTION_NAME)|g" $(1)
