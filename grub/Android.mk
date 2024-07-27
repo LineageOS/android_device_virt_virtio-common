@@ -50,7 +50,7 @@ define make-espimage
 	$(call process-bootmgr-cfg-common,$(3)/fsroot/boot/grub/grub.cfg)
 	$(call install-grub-theme,$(3)/fsroot,$(3)/fsroot/boot/grub/grub.cfg)
 
-	$(call create-espimage,$(1),$(3)/fsroot/EFI $(3)/fsroot/boot $(2))
+	$(call create-espimage,$(1),$(3)/fsroot/EFI $(3)/fsroot/boot $(2),$(4))
 endef
 
 ##### espimage #####
