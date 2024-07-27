@@ -13,7 +13,6 @@ else
 GRUB_PREBUILT_DIR := prebuilts/grub/$(HOST_PREBUILT_TAG)/$(TARGET_GRUB_ARCH)
 
 GRUB_WORKDIR_BASE := $(TARGET_OUT_INTERMEDIATES)/GRUB_OBJ
-GRUB_WORKDIR_BOOT := $(GRUB_WORKDIR_BASE)/boot
 GRUB_WORKDIR_ESP := $(GRUB_WORKDIR_BASE)/esp
 GRUB_WORKDIR_INSTALL := $(GRUB_WORKDIR_BASE)/install
 
@@ -30,54 +29,46 @@ define install-grub-theme
 	$(if $(BOOTMGR_THEME), cp -r $(COMMON_GRUB_PATH)/themes/$(BOOTMGR_THEME) $(1)/boot/grub/themes/)
 endef
 
+# $(1): output file
+# $(2): dependencies
+# $(3): workdir
+# $(4): purpose (boot or install)
+define make-espimage
+	mkdir -p $(3)/fsroot/EFI/BOOT $(3)/fsroot/boot/grub/fonts
+
+	cp $(COMMON_GRUB_PATH)/grub-standalone.cfg $(3)/grub-standalone.cfg
+	$(call process-bootmgr-cfg-common,$(3)/grub-standalone.cfg)
+	sed -i "s|@PURPOSE@|$(4)|g" $(3)/grub-standalone.cfg
+	$(BOOTMGR_PATH_OVERRIDE) $(GRUB_PREBUILT_DIR)/bin/grub-mkstandalone -d $(GRUB_PREBUILT_DIR)/lib/grub/$(TARGET_GRUB_ARCH) --locales="" --fonts="" --format=$(GRUB_MKSTANDALONE_FORMAT) --output=$(3)/fsroot/EFI/BOOT/$(BOOTMGR_EFI_BOOT_FILENAME) --modules="configfile disk fat part_gpt search" "boot/grub/grub.cfg=$(3)/grub-standalone.cfg"
+
+	cp -r $(GRUB_PREBUILT_DIR)/lib/grub/$(TARGET_GRUB_ARCH) $(3)/fsroot/boot/grub/$(TARGET_GRUB_ARCH)
+	cp $(GRUB_PREBUILT_DIR)/share/grub/unicode.pf2 $(3)/fsroot/boot/grub/fonts/unicode.pf2
+
+	touch $(3)/fsroot/boot/grub/.is_esp_part_on_android_$(4)_device
+
+	cp $(COMMON_GRUB_PATH)/grub-$(4).cfg $(3)/fsroot/boot/grub/grub.cfg
+	$(call process-bootmgr-cfg-common,$(3)/fsroot/boot/grub/grub.cfg)
+	$(call install-grub-theme,$(3)/fsroot,$(3)/fsroot/boot/grub/grub.cfg)
+
+	$(call create-espimage,$(1),$(3)/fsroot/EFI $(3)/fsroot/boot $(2))
+endef
+
 ##### espimage #####
 
 # $(1): output file
 # $(2): dependencies
 define make-espimage-target
 	$(call pretty,"Target EFI System Partition image: $(1)")
-	mkdir -p $(GRUB_WORKDIR_ESP)/fsroot/EFI/BOOT $(GRUB_WORKDIR_ESP)/fsroot/boot/grub/fonts
-
-	cp $(COMMON_GRUB_PATH)/grub-standalone.cfg $(GRUB_WORKDIR_ESP)/grub-standalone.cfg
-	$(call process-bootmgr-cfg-common,$(GRUB_WORKDIR_ESP)/grub-standalone.cfg)
-	$(BOOTMGR_PATH_OVERRIDE) $(GRUB_PREBUILT_DIR)/bin/grub-mkstandalone -d $(GRUB_PREBUILT_DIR)/lib/grub/$(TARGET_GRUB_ARCH) --locales="" --fonts="" --format=$(GRUB_MKSTANDALONE_FORMAT) --output=$(GRUB_WORKDIR_ESP)/fsroot/EFI/BOOT/$(BOOTMGR_EFI_BOOT_FILENAME) --modules="configfile disk fat part_gpt search" "boot/grub/grub.cfg=$(COMMON_GRUB_PATH)/grub-standalone.cfg"
-
-	cp -r $(GRUB_PREBUILT_DIR)/lib/grub/$(TARGET_GRUB_ARCH) $(GRUB_WORKDIR_ESP)/fsroot/boot/grub/$(TARGET_GRUB_ARCH)
-	cp $(GRUB_PREBUILT_DIR)/share/grub/unicode.pf2 $(GRUB_WORKDIR_ESP)/fsroot/boot/grub/fonts/unicode.pf2
-
-	touch $(GRUB_WORKDIR_ESP)/fsroot/boot/grub/.is_esp_part_on_android_boot_device
-
-	cp $(COMMON_GRUB_PATH)/grub-boot.cfg $(GRUB_WORKDIR_ESP)/fsroot/boot/grub/grub.cfg
-	$(call process-bootmgr-cfg-common,$(GRUB_WORKDIR_ESP)/fsroot/boot/grub/grub.cfg)
-	$(call install-grub-theme,$(GRUB_WORKDIR_ESP)/fsroot,$(GRUB_WORKDIR_ESP)/fsroot/boot/grub/grub.cfg)
-
-	$(call create-espimage,$(1),$(GRUB_WORKDIR_ESP)/fsroot/EFI $(GRUB_WORKDIR_ESP)/fsroot/boot $(2))
+	$(call make-espimage,$(1),$(2),$(GRUB_WORKDIR_ESP),boot)
 endef
 
-##### isoimage-boot #####
+##### espimage-install #####
 
 # $(1): output file
 # $(2): dependencies
-define make-isoimage-boot-target
-	$(call pretty,"Target boot ISO image: $(1)")
-	mkdir -p $(GRUB_WORKDIR_BOOT)/boot/grub
-	cp $(COMMON_GRUB_PATH)/grub-boot.cfg $(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg
-	$(call process-bootmgr-cfg-common,$(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg)
-	$(call install-grub-theme,$(GRUB_WORKDIR_BOOT),$(GRUB_WORKDIR_BOOT)/boot/grub/grub.cfg)
-	$(BOOTMGR_PATH_OVERRIDE) $(GRUB_PREBUILT_DIR)/bin/grub-mkrescue -d $(GRUB_PREBUILT_DIR)/lib/grub/$(TARGET_GRUB_ARCH) --xorriso=$(BOOTMGR_XORRISO_EXEC) -o $(1) $(2) $(GRUB_WORKDIR_BOOT)
-endef
-
-##### isoimage-install #####
-
-# $(1): output file
-# $(2): dependencies
-define make-isoimage-install-target
-	$(call pretty,"Target installer ISO image: $(1)")
-	mkdir -p $(GRUB_WORKDIR_INSTALL)/boot/grub
-	cp $(COMMON_GRUB_PATH)/grub-install.cfg $(GRUB_WORKDIR_INSTALL)/boot/grub/grub.cfg
-	$(call process-bootmgr-cfg-common,$(GRUB_WORKDIR_INSTALL)/boot/grub/grub.cfg)
-	$(call install-grub-theme,$(GRUB_WORKDIR_INSTALL),$(GRUB_WORKDIR_INSTALL)/boot/grub/grub.cfg)
-	$(BOOTMGR_PATH_OVERRIDE) $(GRUB_PREBUILT_DIR)/bin/grub-mkrescue -d $(GRUB_PREBUILT_DIR)/lib/grub/$(TARGET_GRUB_ARCH) --xorriso=$(BOOTMGR_XORRISO_EXEC) -o $(1) $(2) $(GRUB_WORKDIR_INSTALL)
+define make-espimage-install-target
+	$(call pretty,"Target installer ESP image: $(1)")
+	$(call make-espimage,$(1),$(2),$(GRUB_WORKDIR_INSTALL),install)
 endef
 
 endif # TARGET_GRUB_ARCH
