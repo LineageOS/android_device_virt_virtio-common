@@ -41,35 +41,43 @@ define make-espimage-target
 
 	cp $(COMMON_REFIND_PATH)/refind-boot.conf $(REFIND_WORKDIR_ESP)/fsroot/EFI/BOOT/refind.conf
 	$(call process-bootmgr-cfg-common,$(REFIND_WORKDIR_ESP)/fsroot/EFI/BOOT/refind.conf)
+	sed -i "s|@REFIND_VOLUME@|EFI|g" $(REFIND_WORKDIR_ESP)/fsroot/EFI/BOOT/refind.conf
 
 	$(call create-espimage,$(1),$(REFIND_WORKDIR_ESP)/fsroot/EFI $(2))
 endef
 
 ##### isoimage-boot #####
 
-INSTALLED_ISOIMAGE_BOOT_TARGET_EXTRA_DEPS := $(INSTALLED_ESPIMAGE_TARGET)
-
 # $(1): output file
-# $(2): dependencies (unused for now)
+# $(2): dependencies
 define make-isoimage-boot-target
 	$(call pretty,"Target boot ISO image: $(1)")
-	$(call create-isoimage,$(1),$(INSTALLED_ESPIMAGE_TARGET),/EFI.img)
+	$(call copy-refind-files-to-efi-boot,$(REFIND_WORKDIR_BOOT)/EFI_fsroot/EFI/BOOT)
+
+	cp $(COMMON_REFIND_PATH)/refind-boot.conf $(REFIND_WORKDIR_BOOT)/EFI_fsroot/EFI/BOOT/refind.conf
+	$(call process-bootmgr-cfg-common,$(REFIND_WORKDIR_BOOT)/EFI_fsroot/EFI/BOOT/refind.conf)
+	sed -i "s|@REFIND_VOLUME@|$(TARGET_DEVICE) with $(TARGET_BOOT_MANAGER)|g" $(REFIND_WORKDIR_BOOT)/EFI_fsroot/EFI/BOOT/refind.conf
+
+	$(call create-espimage,$(REFIND_WORKDIR_BOOT)/EFI.img,$(REFIND_WORKDIR_BOOT)/EFI_fsroot/EFI)
+
+	$(call create-isoimage,$(1),$(2) $(REFIND_WORKDIR_BOOT)/EFI.img,/EFI.img)
 endef
 
 ##### isoimage-install #####
 
 # $(1): output file
-# $(2): dependencies (unused for now)
+# $(2): dependencies
 define make-isoimage-install-target
 	$(call pretty,"Target installer ISO image: $(1)")
 	$(call copy-refind-files-to-efi-boot,$(REFIND_WORKDIR_INSTALL)/EFI_fsroot/EFI/BOOT)
 
 	cp $(COMMON_REFIND_PATH)/refind-install.conf $(REFIND_WORKDIR_INSTALL)/EFI_fsroot/EFI/BOOT/refind.conf
 	$(call process-bootmgr-cfg-common,$(REFIND_WORKDIR_INSTALL)/EFI_fsroot/EFI/BOOT/refind.conf)
+	sed -i "s|@REFIND_VOLUME@|$(TARGET_DEVICE) with $(TARGET_BOOT_MANAGER)|g" $(REFIND_WORKDIR_INSTALL)/EFI_fsroot/EFI/BOOT/refind.conf
 
-	$(call create-espimage,$(REFIND_WORKDIR_INSTALL)/EFI.img,$(REFIND_WORKDIR_ESP)/EFI_fsroot/EFI $(PRODUCT_OUT)/kernel $(INSTALLED_COMBINED_RAMDISK_RECOVERY_TARGET))
+	$(call create-espimage,$(REFIND_WORKDIR_INSTALL)/EFI.img,$(REFIND_WORKDIR_INSTALL)/EFI_fsroot/EFI)
 
-	$(call create-isoimage,$(1),$(PRODUCT_OUT)/$(BOOTMGR_ANDROID_OTA_PACKAGE_NAME) $(REFIND_WORKDIR_INSTALL)/EFI.img,/EFI.img)
+	$(call create-isoimage,$(1),$(2) $(REFIND_WORKDIR_INSTALL)/EFI.img,/EFI.img)
 endef
 
 endif # TARGET_BOOT_MANAGER
