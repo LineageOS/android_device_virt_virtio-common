@@ -40,7 +40,7 @@ define make-espimage
 	cp $(COMMON_REFIND_PATH)/refind-$(4).conf $(3)/fsroot/EFI/BOOT/refind.conf
 	$(call process-bootmgr-cfg-common,$(3)/fsroot/EFI/BOOT/refind.conf)
 
-	$(call create-espimage,$(1),$(3)/fsroot/EFI $(2))
+	$(call create-espimage,$(1),$(3)/fsroot/EFI $(2),$(4))
 endef
 
 ##### espimage #####
