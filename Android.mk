@@ -80,7 +80,7 @@ INSTALLED_ISOIMAGE_INSTALL_TARGET_EXTRA_DEPS :=
 # $(1): output file
 # $(2): list of contents to include
 define create-espimage
-	/bin/dd if=/dev/zero of=$(1) bs=1M count=128
+	/bin/dd if=/dev/zero of=$(1) bs=1M count=$$($(COMMON_PATH)/.calc_fat32_img_size.sh $(2))
 	$(BOOTMGR_TOOLS_LINEAGE_BIN_DIR)/mformat -F -i $(1) ::
 	$(foreach content,$(2),$(BOOTMGR_TOOLS_LINEAGE_BIN_DIR)/mcopy -i $(1) -s $(content) :: &&)true
 endef
