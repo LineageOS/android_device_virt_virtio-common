@@ -1,0 +1,11 @@
+recovery_only(`
+    type create_partition_table, domain;
+    domain_trans(init, rootfs, create_partition_table)
+
+    allow create_partition_table block_device:dir search;
+    allow create_partition_table rootfs:dir read;
+    allow create_partition_table rootfs:file execute_no_trans;
+    allow create_partition_table vd_device:blk_file rw_file_perms;
+
+    allowxperm create_partition_table vd_device:blk_file ioctl { BLKGETSIZE BLKPBSZGET BLKRRPART HDIO_GETGEO };
+')
