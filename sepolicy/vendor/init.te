@@ -6,3 +6,6 @@ recovery_only(`
 
 # DMI
 r_dir_file(init, vendor_sysfs_dmi_id)
+
+# Kernel
+allow init kernel:system module_request;

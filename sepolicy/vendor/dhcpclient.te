@@ -19,4 +19,7 @@ set_prop(dhcpclient, vendor_net_prop);
 
 recovery_only(`
     domain_trans(init, rootfs, dhcpclient)
+
+    dontaudit dhcpclient rootfs:dir read;
+    dontaudit dhcpclient vendor_default_prop:property_service set;
 ')
