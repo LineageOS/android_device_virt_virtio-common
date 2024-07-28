@@ -1,5 +1,8 @@
 # ADB
 service.adb.tcp.port=5555
 
+# Display
+persist.demo.rotationlock=1
+
 # FUSE passthrough
 persist.sys.fuse.passthrough.enable=true
