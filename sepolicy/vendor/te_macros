@@ -5,5 +5,6 @@ define(`gpu_access', `
 allow $1 gpu_device:dir r_dir_perms;
 allow $1 gpu_device:chr_file { getattr ioctl map open read write };
 allow $1 graphics_device:chr_file { getattr };
+get_prop($1, vendor_minigbm_debug_prop)
 r_dir_file($1, sysfs_gpu)
 ')

@@ -12,7 +12,6 @@ The device tree is currently WIP, Not suitable for normal use.
 
 # Known issues
 - Display color is wrong with Mesa graphics on crosvm
-- Display color is wrong with Swiftshader graphics on QEMU
 - Video playback is not working properly with Mesa graphics
 
 # TODO

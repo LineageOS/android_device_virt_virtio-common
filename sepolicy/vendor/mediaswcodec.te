@@ -1,1 +1,1 @@
-dontaudit mediaswcodec vendor_default_prop:file *;
+get_prop(mediaswcodec, vendor_minigbm_debug_prop)
