@@ -65,7 +65,11 @@ PRODUCT_VENDOR_PROPERTIES += \
 PRODUCT_PACKAGES += \
     android.hardware.graphics.allocator-service.minigbm \
     android.hardware.graphics.mapper@4.0-impl.minigbm \
+    gralloc.minigbm \
     mapper.minigbm
+
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.hardware.gralloc=minigbm
 
 # Health
 ifneq ($(LINEAGE_BUILD),)
