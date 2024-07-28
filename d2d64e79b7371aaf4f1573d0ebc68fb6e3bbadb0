@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db51201b_b36bf1f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32245
+      },
+      "writtenOn": "2024-07-28T22:39:16Z",
+      "side": 1,
+      "message": "Color is now correct, but black screen right after bootanimation finishes...",
+      "revId": "d2d64e79b7371aaf4f1573d0ebc68fb6e3bbadb0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
