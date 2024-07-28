@@ -1,0 +1,9 @@
+recovery_only(`
+    get_prop(fastbootd, storage_config_prop)
+    r_dir_file(fastbootd, sysfs_fs_ext4_features)
+
+    allow fastbootd kernel:process setsched;
+    allow fastbootd vd_device:blk_file rw_file_perms;
+
+    allowxperm fastbootd metadata_block_device:blk_file ioctl { BLKDISCARDZEROES BLKROGET };
+')
