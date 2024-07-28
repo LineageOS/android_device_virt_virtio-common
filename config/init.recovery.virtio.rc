@@ -10,4 +10,4 @@ on early-boot
     start dhcpclient
 
 on property:ro.boot.install=1
-    exec u:r:recovery:s0 -- /system/bin/sh -e /system/bin/create_partition_table.sh /system/bin/sgdisk /dev/block/vda vda
+    exec u:r:create_partition_table:s0 -- /system/bin/sh -e /system/bin/create_partition_table.sh /system/bin/sgdisk /dev/block/vda vda
