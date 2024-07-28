@@ -1,2 +1,3 @@
 get_prop(system_server, bootloader_prop)
 gpu_access(system_server)
+dontaudit system_server vendor_default_prop:file *;
