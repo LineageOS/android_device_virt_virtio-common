@@ -127,6 +127,11 @@ PRODUCT_PACKAGES += \
 DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay
 
+ifneq ($(LINEAGE_BUILD),)
+DEVICE_PACKAGE_OVERLAYS += \
+    $(LOCAL_PATH)/overlay-lineage
+endif
+
 PRODUCT_ENFORCE_RRO_TARGETS := *
 
 # Permissions
