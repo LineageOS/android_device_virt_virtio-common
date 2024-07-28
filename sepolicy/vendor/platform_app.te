@@ -1,1 +1,2 @@
 gpu_access(platform_app)
+dontaudit platform_app vendor_default_prop:file *;
