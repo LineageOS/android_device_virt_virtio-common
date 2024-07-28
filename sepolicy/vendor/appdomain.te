@@ -1,1 +1,2 @@
+dontaudit { appdomain -isolated_app_all } vendor_default_prop:file *;
 gpu_access({ appdomain -isolated_app_all })
