@@ -55,7 +55,7 @@ $(call inherit-product, device/google/cuttlefish/shared/swiftshader/device_vendo
 
 # Graphics (Composer)
 PRODUCT_PACKAGES += \
-    android.hardware.graphics.composer@2.4-service \
+    android.hardware.graphics.composer@2.3-service \
     hwcomposer.drm
 
 PRODUCT_VENDOR_PROPERTIES += \
@@ -63,7 +63,7 @@ PRODUCT_VENDOR_PROPERTIES += \
 
 # Graphics (Gralloc)
 PRODUCT_PACKAGES += \
-    android.hardware.graphics.allocator-service.minigbm \
+    android.hardware.graphics.allocator@4.0-service.minigbm \
     android.hardware.graphics.mapper@4.0-impl.minigbm \
     gralloc.minigbm \
     mapper.minigbm
