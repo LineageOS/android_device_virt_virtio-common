@@ -1,2 +1,14 @@
 # DMI
 genfscon sysfs /devices/virtual/dmi/id				u:object_r:vendor_sysfs_dmi_id:s0
+
+# Graphics
+## crosvm arm64
+### TODO
+## crosvm x86_64
+genfscon sysfs /devices/pci0000:00/0000:00:03.0			u:object_r:sysfs_gpu:s0
+## libvirt-qemu arm64
+genfscon sysfs /devices/pci0000:00/0000:00:01.6/0000:07:00.0	u:object_r:sysfs_gpu:s0
+## libvirt-qemu x86_64
+genfscon sysfs /devices/pci0000:00/0000:00:01.0			u:object_r:sysfs_gpu:s0
+## UTM arm64
+### TODO
