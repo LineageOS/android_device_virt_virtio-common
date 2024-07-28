@@ -1,9 +1,6 @@
 # DHCP
 vendor.recovery.dhcpclient.iface?=eth0
 
-# Display
-persist.demo.rotationlock=1
-
 # Input
 qemu.hw.mainkeys=0
 
