@@ -1,1 +1,2 @@
 gpu_access(bootanim)
+dontaudit bootanim vendor_default_prop:file *;

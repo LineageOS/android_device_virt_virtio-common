@@ -1,1 +1,2 @@
 gpu_access(priv_app)
+dontaudit priv_app vendor_default_prop:file *;
