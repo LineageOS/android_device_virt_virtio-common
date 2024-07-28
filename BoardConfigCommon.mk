@@ -41,9 +41,6 @@ BOARD_KERNEL_CMDLINE_BASE := \
     androidboot.first_stage_console=0 \
     androidboot.verifiedbootstate=orange
 
-BOARD_KERNEL_CMDLINE_BASE += \
-    androidboot.selinux=permissive
-
 BOARD_KERNEL_CMDLINE_COMMON := \
     androidboot.hardware=virtio
 
