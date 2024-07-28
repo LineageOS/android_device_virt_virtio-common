@@ -33,6 +33,7 @@ TARGET_RECOVERY_DEVICE_MODULES ?= init_virtio
 
 # Kernel
 BOARD_KERNEL_CMDLINE_BASE := \
+    log_buf_len=4M \
     loop.max_part=7 \
     printk.devkmsg=on \
     rw \
@@ -41,8 +42,6 @@ BOARD_KERNEL_CMDLINE_BASE := \
     androidboot.verifiedbootstate=orange
 
 BOARD_KERNEL_CMDLINE_BASE += \
-    audit=0 \
-    log_buf_len=4M \
     androidboot.selinux=permissive
 
 BOARD_KERNEL_CMDLINE_COMMON := \
