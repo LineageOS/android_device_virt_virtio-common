@@ -33,6 +33,7 @@ TARGET_RECOVERY_DEVICE_MODULES ?= init_virtio
 
 # Kernel
 BOARD_KERNEL_CMDLINE_BASE := \
+    console=tty0 \
     log_buf_len=4M \
     loop.max_part=7 \
     printk.devkmsg=on \
@@ -53,8 +54,7 @@ BOARD_KERNEL_CMDLINE := \
     $(BOARD_KERNEL_CMDLINE_CONSOLE)
 
 TARGET_BOOTMGR_KERNEL_CMDLINE := \
-    $(BOARD_KERNEL_CMDLINE_BASE) \
-    console=tty0
+    $(BOARD_KERNEL_CMDLINE_BASE)
 
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
 TARGET_KERNEL_CONFIG := \
