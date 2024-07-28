@@ -24,6 +24,7 @@ on early-init
 
 on property:ro.vendor.graphics=mesa && property:ro.vendor.graphics.mesa.is_upstream=true
     setprop ro.hardware.egl mesa
+    setprop ro.hardware.gralloc minigbm
     setprop ro.hardware.vulkan virtio
     setprop ro.opengles.version 196610
 
