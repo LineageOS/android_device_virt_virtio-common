@@ -1,3 +1,6 @@
+# Block device
+allow init super_block_device:blk_file relabelto;
+
 # DHCP
 recovery_only(`
     get_prop(init, vendor_recovery_ethernet_dhcp_prop)
