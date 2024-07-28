@@ -3,6 +3,7 @@
 SGDISK_EXEC=$1
 TARGET=$2
 DISK_NAME=$3
+SUPER_SIZE=$4
 
 if [ ! -x "$SGDISK_EXEC" ] || [ ! -w "$TARGET" ] || [ -z "$DISK_NAME" ]; then
     exit 1
@@ -12,7 +13,11 @@ case "$DISK_NAME" in
     "vda")
         $SGDISK_EXEC --zap-all $TARGET
         $SGDISK_EXEC --new=1:0:+128M --typecode=1:ef00 --change-name=1:EFI $TARGET
-        $SGDISK_EXEC --new=2:0:+4G --change-name=2:super $TARGET
+        if [ "$SUPER_SIZE" = "3221225472" ]; then
+            $SGDISK_EXEC --new=2:0:+3G --change-name=2:super $TARGET
+        else
+            $SGDISK_EXEC --new=2:0:+4G --change-name=2:super $TARGET
+        fi
         $SGDISK_EXEC --new=3:0:+1M --change-name=3:misc $TARGET
         $SGDISK_EXEC --new=4:0:+32M --change-name=4:metadata $TARGET
         $SGDISK_EXEC --new=5:0:+50M --change-name=5:cache $TARGET
