@@ -5,5 +5,8 @@ set_prop(vendor_init, vendor_recovery_ethernet_dhcp_prop)
 get_prop(vendor_init, vendor_graphics_prop)
 set_prop(vendor_init, vendor_graphics_prop)
 
+# Graphics (Gralloc)
+set_prop(vendor_init, vendor_minigbm_debug_prop)
+
 # Ignore
 allow vendor_init rootfs:dir read;
