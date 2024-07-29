@@ -56,10 +56,10 @@ $(call inherit-product, device/google/cuttlefish/shared/swiftshader/device_vendo
 # Graphics (Composer)
 PRODUCT_PACKAGES += \
     android.hardware.graphics.composer@2.1-service \
-    hwcomposer.drm
+    hwcomposer.drm_minigbm
 
 PRODUCT_VENDOR_PROPERTIES += \
-    ro.hardware.hwcomposer=drm
+    ro.hardware.hwcomposer=drm_minigbm
 
 # Graphics (Gralloc)
 PRODUCT_PACKAGES += \
