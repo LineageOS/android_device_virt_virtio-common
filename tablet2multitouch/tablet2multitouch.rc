@@ -1,0 +1,5 @@
+service vendor.tablet2multitouch /vendor/bin/tablet2multitouch
+    class main
+    user uhid
+    group uhid input
+    oneshot
