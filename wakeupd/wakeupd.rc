@@ -1,0 +1,4 @@
+service vendor.wakeupd /vendor/bin/wakeupd
+    class main
+    user uhid
+    group uhid

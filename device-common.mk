@@ -190,3 +190,7 @@ PRODUCT_PACKAGES += \
     fstab.utm.gsi.vendor_ramdisk \
     fstab.virtio.vendor_ramdisk \
     fstab.virtio.gsi.vendor_ramdisk
+
+# Wakeupd
+PRODUCT_PACKAGES += \
+    wakeupd
