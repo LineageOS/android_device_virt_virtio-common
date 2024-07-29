@@ -55,7 +55,7 @@ $(call inherit-product, device/google/cuttlefish/shared/swiftshader/device_vendo
 
 # Graphics (Composer)
 PRODUCT_PACKAGES += \
-    android.hardware.graphics.composer@2.4-service \
+    android.hardware.graphics.composer@2.1-service \
     hwcomposer.drm
 
 PRODUCT_VENDOR_PROPERTIES += \
