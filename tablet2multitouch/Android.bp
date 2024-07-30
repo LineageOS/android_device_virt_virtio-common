@@ -1,11 +1,24 @@
-cc_binary {
-    name: "tablet2multitouch",
+cc_defaults {
+    name: "tablet2multitouch_defaults",
     srcs: [
         "tablet2multitouch.c",
     ],
     shared_libs: [
         "libcutils",
-    ],
+    ]
+}
+
+cc_binary {
+    name: "tablet2multitouch",
+    defaults: ["tablet2multitouch_defaults"],
     init_rc: ["tablet2multitouch.rc"],
     vendor: true
+}
+
+cc_binary {
+    name: "tablet2multitouch_recovery",
+    stem: "tablet2multitouch",
+    defaults: ["tablet2multitouch_defaults"],
+    init_rc: ["tablet2multitouch.recovery.rc"],
+    recovery: true
 }

@@ -179,7 +179,8 @@ PRODUCT_PACKAGES += \
 
 # Tablet to multitouch
 PRODUCT_PACKAGES += \
-    tablet2multitouch
+    tablet2multitouch \
+    tablet2multitouch_recovery
 
 # UFFD GC
 PRODUCT_ENABLE_UFFD_GC := true

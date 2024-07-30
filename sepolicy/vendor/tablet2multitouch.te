@@ -3,6 +3,10 @@ type tablet2multitouch_exec, exec_type, vendor_file_type, file_type;
 
 init_daemon_domain(tablet2multitouch);
 
+recovery_only(`
+    domain_trans(init, rootfs, tablet2multitouch)
+')
+
 allow tablet2multitouch input_device:dir r_dir_perms;
 allow tablet2multitouch input_device:chr_file rw_file_perms;
 allow tablet2multitouch kmsg_device:chr_file rw_file_perms;
