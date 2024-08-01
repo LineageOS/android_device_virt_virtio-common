@@ -1,4 +1,4 @@
-service dhcpclient /system/bin/dhcpclient -i ${vendor.recovery.ethernet.dhcp.iface:-eth0}
+service dhcpclient /system/bin/virtio_dhcpclient -i ${vendor.recovery.ethernet.dhcp.iface:-eth0}
     user root
     group root
     seclabel u:r:dhcpclient:s0
