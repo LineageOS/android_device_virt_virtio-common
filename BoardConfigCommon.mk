@@ -158,4 +158,5 @@ SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/private
 
 # VINTF
 DEVICE_MANIFEST_FILE := \
-    $(COMMON_PATH)/config/manifest.xml
+    $(COMMON_PATH)/config/manifest.xml \
+    device/google/cuttlefish/guest/hals/audio/effects/manifest.xml
