@@ -80,15 +80,13 @@ endif
 
 # Init
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/config/init.utm.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.utm.rc \
     $(LOCAL_PATH)/config/init.virtio.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.virtio.rc \
     $(LOCAL_PATH)/config/ueventd.rc:$(TARGET_COPY_OUT_VENDOR)/etc/ueventd.rc
 
 PRODUCT_PACKAGES += \
-    fstab.utm \
-    fstab.utm.gsi \
     fstab.virtio \
-    fstab.virtio.gsi
+    fstab.virtio.gsi.sda \
+    fstab.virtio.gsi.vdc
 
 # Input
 PRODUCT_COPY_FILES += \
@@ -157,7 +155,6 @@ endif
 # Recovery
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/config/create_partition_table.sh:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/create_partition_table.sh \
-    $(LOCAL_PATH)/config/init.recovery.utm.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.utm.rc \
     $(LOCAL_PATH)/config/init.recovery.virtio.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.virtio.rc \
     $(LOCAL_PATH)/config/ueventd.rc:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/etc/ueventd.rc \
     device/google/cuttlefish/shared/config/cgroups.json:$(TARGET_COPY_OUT_RECOVERY)/root/vendor/etc/cgroups.json
@@ -193,10 +190,9 @@ PRODUCT_PACKAGES += \
 
 # Vendor ramdisk
 PRODUCT_PACKAGES += \
-    fstab.utm.vendor_ramdisk \
-    fstab.utm.gsi.vendor_ramdisk \
     fstab.virtio.vendor_ramdisk \
-    fstab.virtio.gsi.vendor_ramdisk
+    fstab.virtio.gsi.sda.vendor_ramdisk \
+    fstab.virtio.gsi.vdc.vendor_ramdisk
 
 # Wakeupd
 PRODUCT_PACKAGES += \

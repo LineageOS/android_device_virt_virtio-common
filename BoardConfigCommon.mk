@@ -40,25 +40,17 @@ BOARD_KERNEL_CMDLINE_BASE := \
     rw \
     androidboot.boot_devices=any \
     androidboot.first_stage_console=0 \
+    androidboot.hardware=virtio \
     androidboot.verifiedbootstate=orange
-
-BOARD_KERNEL_CMDLINE_COMMON := \
-    androidboot.hardware=virtio
 
 BOARD_KERNEL_CMDLINE_CONSOLE += \
     androidboot.console=hvc0
 
 BOARD_KERNEL_CMDLINE := \
     $(BOARD_KERNEL_CMDLINE_BASE) \
-    $(BOARD_KERNEL_CMDLINE_COMMON) \
     $(BOARD_KERNEL_CMDLINE_CONSOLE)
 
-TARGET_BOOTMGR_KERNEL_CMDLINE_UTM := \
-    $(BOARD_KERNEL_CMDLINE_BASE) \
-    androidboot.hardware=utm \
-    androidboot.selinux=permissive
-
-TARGET_BOOTMGR_KERNEL_CMDLINE_VIRTIO := \
+TARGET_BOOTMGR_KERNEL_CMDLINE := \
     $(BOARD_KERNEL_CMDLINE)
 
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
