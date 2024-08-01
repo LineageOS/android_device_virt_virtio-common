@@ -59,8 +59,6 @@ TARGET_KERNEL_CONFIG := \
     lineageos/virtio.config \
     lineageos/feature/fbcon.config
 else
-TARGET_NO_KERNEL := true
-
 VIRTUAL_DEVICE_KERNEL_MODULES_PATH := \
     kernel/prebuilts/common-modules/virtual-device/$(TARGET_PREBUILT_KERNEL_USE)/$(TARGET_PREBUILT_KERNEL_MODULES_ARCH)
 
