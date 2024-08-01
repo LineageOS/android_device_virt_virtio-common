@@ -102,14 +102,18 @@ PRODUCT_BUILD_RECOVERY_IMAGE := true
 PRODUCT_USE_DYNAMIC_PARTITION_SIZE := true
 
 # Kernel
+TARGET_PREBUILT_KERNEL_DIR := device/virt/kernel-virtio/$(TARGET_PREBUILT_KERNEL_USE)/$(TARGET_PREBUILT_KERNEL_ARCH)
 TARGET_KERNEL_SOURCE := kernel/virt/virtio
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
-$(warning Using source built kernel)
+    $(warning Using source built kernel)
+else ifneq ($(wildcard $(TARGET_PREBUILT_KERNEL_DIR)/kernel),)
+    PRODUCT_COPY_FILES += $(TARGET_PREBUILT_KERNEL_DIR)/kernel:kernel
+    $(warning Using prebuilt kernel from $(TARGET_PREBUILT_KERNEL_DIR)/kernel)
 else
-$(warning Using prebuilt kernel)
-KERNEL_ARTIFACTS_PATH := kernel/prebuilts/$(TARGET_PREBUILT_KERNEL_USE)/$(TARGET_PREBUILT_KERNEL_ARCH)
-EMULATOR_KERNEL_FILE := $(KERNEL_ARTIFACTS_PATH)/kernel-$(TARGET_PREBUILT_KERNEL_USE)
-PRODUCT_COPY_FILES += $(EMULATOR_KERNEL_FILE):kernel
+    KERNEL_ARTIFACTS_PATH := kernel/prebuilts/$(TARGET_PREBUILT_KERNEL_USE)/$(TARGET_PREBUILT_KERNEL_ARCH)
+    EMULATOR_KERNEL_FILE := $(KERNEL_ARTIFACTS_PATH)/kernel-$(TARGET_PREBUILT_KERNEL_USE)
+    PRODUCT_COPY_FILES += $(EMULATOR_KERNEL_FILE):kernel
+    $(warning Using prebuilt kernel from $(EMULATOR_KERNEL_FILE))
 endif
 PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 
