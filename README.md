@@ -121,7 +121,7 @@ Follow https://crosvm.dev/book/building_crosvm/index.html
     "kernel": "$(PRODUCT_OUT)/kernel",
     "initrd": "$(PRODUCT_OUT)/combined-ramdisk.img",
     "params": [
-        "<Copy from `BOARD_KERNEL_CMDLINE_BASE` variable on `BoardConfigCommon.mk` in this repository>"
+        "<Copy from `BOARD_KERNEL_CMDLINE` variable on `BoardConfigCommon.mk` in this repository>"
     ],
     "cpus": {
         "num-cores": 2
@@ -181,7 +181,7 @@ adb push $ANDROID_PRODUCT_OUT/disk-vda.img /data/local/tmp/disk-vda.img
     "name": "Android",
     "kernel": "/data/local/tmp/kernel",
     "initrd": "/data/local/tmp/ramdisk.img",
-    "params": "<Copy from `BOARD_KERNEL_CMDLINE_BASE` variable on `BoardConfigCommon.mk` in this repository>",
+    "params": "<Copy from `BOARD_KERNEL_CMDLINE` variable on `BoardConfigCommon.mk` in this repository>",
     "disks": [
         {
             "image": "/data/local/tmp/disk-vda.img",
