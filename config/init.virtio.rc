@@ -30,4 +30,3 @@ on property:ro.vendor.graphics=swiftshader
     setprop ro.hardware.egl angle
     setprop ro.hardware.vulkan pastel
     setprop ro.opengles.version 196609
-    setprop ro.vulkan.apex com.google.cf.vulkan
