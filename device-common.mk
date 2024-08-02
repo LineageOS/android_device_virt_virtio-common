@@ -48,15 +48,17 @@ PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-service.software
 
 # Graphics (Mesa)
-$(call inherit-product, device/google/cuttlefish/shared/virgl/device_vendor.mk)
+PRODUCT_PACKAGES += \
+    libGLES_mesa
 
 # Graphics (Swiftshader)
 PRODUCT_PACKAGES += \
-    com.google.cf.vulkan
+    libEGL_angle \
+    libGLESv1_CM_angle \
+    libGLESv2_angle \
+    vulkan.pastel
 
-TARGET_VULKAN_SUPPORT := true
-
-$(call inherit-product, device/google/cuttlefish/shared/swiftshader/device_vendor.mk)
+PRODUCT_REQUIRES_INSECURE_EXECMEM_FOR_SWIFTSHADER := true
 
 # Graphics (Composer)
 PRODUCT_PACKAGES += \
@@ -68,9 +70,8 @@ PRODUCT_VENDOR_PROPERTIES += \
 
 # Graphics (Gralloc)
 PRODUCT_PACKAGES += \
-    android.hardware.graphics.allocator-service.minigbm \
-    android.hardware.graphics.mapper@4.0-impl.minigbm \
-    mapper.minigbm
+    android.hardware.graphics.allocator-V1-service.minigbm \
+    android.hardware.graphics.mapper@4.0-impl.minigbm
 
 # Health
 ifneq ($(LINEAGE_BUILD),)
@@ -155,6 +156,12 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.ipsec_tunnels.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.ipsec_tunnels.xml \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
 
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.vulkan.level-0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vulkan.level.xml \
+    frameworks/native/data/etc/android.hardware.vulkan.version-1_0_3.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vulkan.version.xml \
+    frameworks/native/data/etc/android.software.vulkan.deqp.level-2022-03-01.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.vulkan.deqp.level.xml \
+    frameworks/native/data/etc/android.software.opengles.deqp.level-2022-03-01.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.opengles.deqp.level.xml
+
 ifeq ($(PRODUCT_IS_AUTOMOTIVE),true)
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/car_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/car_core_hardware.xml
@@ -179,7 +186,8 @@ PRODUCT_SHIPPING_API_LEVEL := 33
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH) \
-    device/generic/goldfish
+    device/generic/goldfish \
+    external/mesa3d
 
 # Suspend blocker
 PRODUCT_PACKAGES += \
