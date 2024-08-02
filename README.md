@@ -38,6 +38,8 @@ The device tree is currently WIP, Not suitable for normal use.
 
 | Repository | Commit message | Link |
 | ---------- | -------------- | ---- |
+| external/gptfdisk | gptfdisk: Build lib for recovery | https://review.lineageos.org/c/LineageOS/android_external_gptfdisk/+/368276 |
+| external/gptfdisk | sgdisk: Make sgdisk recovery_available | https://review.lineageos.org/c/LineageOS/android_external_gptfdisk/+/368280 |
 | prebuilts/tools-lineage | tools-lineage: linux-x86: Import mtools from mtools_4.0.44_amd64.deb | [LineageOS Gerrit](https://review.lineageos.org/c/LineageOS/android_prebuilts_tools-lineage/+/398285) |
 | system/core | init: devices: Add option to accept any device as boot device | [LineageOS Gerrit](https://review.lineageos.org/c/LineageOS/android_system_core/+/378562) |
 
