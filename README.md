@@ -24,6 +24,18 @@ The device tree is currently WIP, Not suitable for normal use.
 - Enforce SELinux on all targets (Currently did for libvirt-qemu)
 - 16K pagesize
 
+# Mandatory virtual machine configuration
+
+| Item | Value | Description |
+| ---- | ----- | ----------- |
+| Firmware (If available) | UEFI (Without secure boot) | Would not add support for BIOS. |
+| Kernel (If using direct kernel boot) | `$(PRODUCT_OUT)/kernel` | |
+| Kernel cmdline (If using direct kernel boot) | Copy from `BOARD_KERNEL_CMDLINE_BASE` variable on `BoardConfigCommon.mk` in this repository. | |
+| RAM | At least 1024 MB | At least 2048 MB is preferred. Strongly recommended to add `androidboot.low_perf=1` to kernel cmdline if it's below than 2048 MB. |
+| Ramdisk (If using direct kernel boot) | `$(PRODUCT_OUT)/combined-ramdisk.img` for normal boot, or `$(PRODUCT_OUT)/combined-ramdisk-recovery.img` for recovery mode. | |
+| VirtIO disk 1 | Sized at least `BOARD_SUPER_PARTITION_SIZE` + 1 GB | You can use `$(PRODUCT_OUT)/disk-vda.img` as the disk image. |
+| VirtIO disk 2 | Sized at least 2 GB | There is no need of formatting it manually, It would get formatted when Android boots up. |
+
 # Supported virtual hardware
 
 | Type | Models | Description |
