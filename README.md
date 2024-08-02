@@ -50,11 +50,29 @@ The device tree is currently WIP, Not suitable for normal use.
 
 # Build
 
-The device tree was initially made for Android 14 QPR3.
+The device tree targets Android 14 QPR3.
+
+1. Initialize build environment
 
 ```
 source build/envsetup.sh
-lunch aosp_virtio_x86_64-ap2a-userdebug # AOSP
-breakfast virtio_x86_64 # LineageOS
-m
 ```
+
+2. Select the build target (Using `virtio_x86_64` as example)
+
+For AOSP:
+`lunch aosp_virtio_x86_64-ap2a-userdebug`
+
+For LineageOS:
+`breakfast virtio_x86_64`
+
+3. Build
+
+To build vda disk image:
+`make diskimage-vda`
+
+To build EFI System Partition (Boot) image:
+`make espimage-boot`
+
+To build EFI System Partition (Install) image:
+`make espimage-install`
