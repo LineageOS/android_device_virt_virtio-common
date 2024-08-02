@@ -8,6 +8,4 @@ qemu.hw.mainkeys=0
 ro.incremental.enable=1
 
 # Media
-media.c2.hal.selection=aidl
 debug.c2.use_dmabufheaps=1
-debug.stagefright.c2inputsurface=-1
