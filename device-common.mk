@@ -189,9 +189,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     tablet2multitouch
 
-# UFFD GC
-PRODUCT_ENABLE_UFFD_GC := true
-
 # Utilities
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/config/pci.ids:$(TARGET_COPY_OUT_VENDOR)/pci.ids
