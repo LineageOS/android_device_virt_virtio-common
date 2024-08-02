@@ -1,1 +1,1 @@
-gpu_access({ appdomain -isolated_app_all })
+gpu_access({ appdomain -isolated_app })
