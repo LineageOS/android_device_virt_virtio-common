@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2022 The Android Open Source Project
+// Copyright (C) 2020 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,22 +13,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-cc_binary {
-    name: "android.hardware.fastboot-service.virtio_recovery",
-    init_rc: ["android.hardware.fastboot-service.virtio_recovery.rc"],
-    vintf_fragments: ["android.hardware.fastboot-service.virtio.xml"],
+cc_library {
+    name: "android.hardware.fastboot@1.1-impl-virtio",
     recovery: true,
     srcs: [
         "Fastboot.cpp",
-        "main.cpp",
     ],
     relative_install_path: "hw",
     shared_libs: [
         "libbase",
-        "libbinder_ndk",
-        "liblog",
+        "libhidlbase",
         "libutils",
         "libcutils",
-        "android.hardware.fastboot-V1-ndk",
+        "android.hardware.fastboot@1.0",
+        "android.hardware.fastboot@1.1",
     ],
 }

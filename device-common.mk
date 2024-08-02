@@ -35,7 +35,7 @@ PRODUCT_PACKAGES += \
 
 # Fastbootd
 PRODUCT_PACKAGES += \
-    android.hardware.fastboot-service.virtio_recovery \
+    android.hardware.fastboot@1.1-impl-virtio \
     fastbootd
 
 # First stage console

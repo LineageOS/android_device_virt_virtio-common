@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2020 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,8 @@
 
 #include "Fastboot.h"
 
-using aidl::android::hardware::fastboot::FileSystemType;
 using android::base::ReadFileToString;
-using ndk::ScopedAStatus;
+using android::hardware::fastboot::V1_0::FileSystemType;
 
 const std::unordered_map<std::string, FileSystemType> kPartitionTypeMap = {
         // Logical partitions
@@ -39,65 +38,69 @@ const std::unordered_map<std::string, FileSystemType> kPartitionTypeMap = {
 
 const std::string kDmiIdPath = "/sys/devices/virtual/dmi/id/";
 
-namespace aidl {
 namespace android {
 namespace hardware {
 namespace fastboot {
+namespace V1_1 {
+namespace implementation {
 
-ScopedAStatus Fastboot::getPartitionType(const std::string& in_partitionName,
-                                         FileSystemType* _aidl_return) {
-    if (in_partitionName.empty()) {
-        return ScopedAStatus::fromExceptionCodeWithMessage(EX_ILLEGAL_ARGUMENT,
-                                                           "Invalid partition name");
+// Methods from ::android::hardware::fastboot::V1_1::IFastboot follow.
+Return<void> Fastboot::getPartitionType(const hidl_string& partitionName,
+                                        getPartitionType_cb _hidl_cb) {
+    if (partitionName.empty()) {
+        _hidl_cb(FileSystemType::RAW, { Status::INVALID_ARGUMENT, "" });
+        goto out;
     }
     for (const auto& [part_name, part_fstype] : kPartitionTypeMap) {
-        if (part_name == in_partitionName) {
-            *_aidl_return = part_fstype;
+        if (part_name == partitionName) {
+            _hidl_cb(part_fstype, {Status::SUCCESS, ""});
             goto out;
         }
     }
-    *_aidl_return = FileSystemType::RAW;
+    _hidl_cb(FileSystemType::RAW, {Status::SUCCESS, ""});
 out:
-    return ScopedAStatus::ok();
+    return Void();
 }
 
-ScopedAStatus Fastboot::doOemCommand(const std::string& in_oemCmd, std::string* _aidl_return) {
-    *_aidl_return = "";
-    if (in_oemCmd.empty()) {
-        return ScopedAStatus::fromExceptionCodeWithMessage(EX_ILLEGAL_ARGUMENT, "Invalid command");
-    }
-    return ScopedAStatus::fromExceptionCodeWithMessage(EX_UNSUPPORTED_OPERATION,
-                                                       "Command not supported");
+Return<void> Fastboot::doOemCommand(const hidl_string& /* oemCmd */, doOemCommand_cb _hidl_cb) {
+    _hidl_cb({Status::FAILURE_UNKNOWN, "Command not supported"});
+    return Void();
 }
 
-ScopedAStatus Fastboot::getVariant(std::string* _aidl_return) {
+Return<void> Fastboot::getVariant(getVariant_cb _hidl_cb) {
     std::string variant;
     ReadFileToString(kDmiIdPath + "product_name", &variant);
     if (variant.empty()) {
-        *_aidl_return = "Unknown";
+        _hidl_cb("NA", {Status::SUCCESS, ""});
     } else {
         variant.pop_back();
-        *_aidl_return = variant;
+        _hidl_cb(variant, {Status::SUCCESS, ""});
     }
-    return ScopedAStatus::ok();
+    return Void();
 }
 
-ScopedAStatus Fastboot::getOffModeChargeState(bool* _aidl_return) {
-    *_aidl_return = false;
-    return ScopedAStatus::ok();
+Return<void> Fastboot::getOffModeChargeState(getOffModeChargeState_cb _hidl_cb) {
+    _hidl_cb(false, {Status::SUCCESS, ""});
+    return Void();
 }
 
-ScopedAStatus Fastboot::getBatteryVoltageFlashingThreshold(int32_t* _aidl_return) {
-    *_aidl_return = 0;
-    return ScopedAStatus::ok();
+Return<void> Fastboot::getBatteryVoltageFlashingThreshold(
+        getBatteryVoltageFlashingThreshold_cb _hidl_cb) {
+    _hidl_cb(0, {Status::SUCCESS, ""});
+    return Void();
 }
 
-ScopedAStatus Fastboot::doOemSpecificErase() {
-    return ScopedAStatus::fromExceptionCodeWithMessage(EX_UNSUPPORTED_OPERATION,
-                                                       "Command not supported");
+Return<void> Fastboot::doOemSpecificErase(doOemSpecificErase_cb _hidl_cb) {
+    _hidl_cb({Status::NOT_SUPPORTED, "Command not supported"});
+    return Void();
 }
 
+extern "C" IFastboot* HIDL_FETCH_IFastboot(const char* /* name */) {
+    return new Fastboot();
+}
+
+}  // namespace implementation
+}  // namespace V1_1
 }  // namespace fastboot
 }  // namespace hardware
 }  // namespace android
-}  // namespace aidl
