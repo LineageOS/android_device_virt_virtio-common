@@ -196,4 +196,21 @@ diskimage-vda-nodeps:
 	@echo "make $(INSTALLED_DISKIMAGE_VDA_TARGET): ignoring dependencies"
 	$(call make-diskimage-target,$(INSTALLED_DISKIMAGE_VDA_TARGET),vda)
 
+# Create prebuilt kernel repo
+
+ifneq ($(LINEAGE_BUILD),)
+ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
+INSTALLED_PREBUILT_KERNEL_REPO_KERNEL_TARGET := $(TARGET_PREBUILT_KERNEL_DIR)/kernel
+$(INSTALLED_PREBUILT_KERNEL_REPO_KERNEL_TARGET): $(PRODUCT_OUT)/kernel
+	$(call pretty,"Create prebuilt kernel repo: $@")
+	mkdir -p $(TARGET_PREBUILT_KERNEL_DIR)
+	rm -f $(TARGET_PREBUILT_KERNEL_DIR)/*.ko
+	cp `find $(PRODUCT_OUT)/obj/KERNEL_OBJ/ -type f -name "*.ko"` $(TARGET_PREBUILT_KERNEL_DIR)/
+	cp $(PRODUCT_OUT)/kernel $@
+
+.PHONY: prebuilt-kernel-repo
+prebuilt-kernel-repo: $(INSTALLED_PREBUILT_KERNEL_REPO_KERNEL_TARGET)
+endif
+endif
+
 endif
