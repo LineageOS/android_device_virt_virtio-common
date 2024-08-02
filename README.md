@@ -103,3 +103,111 @@ To build EFI System Partition (Boot) image:
 
 To build EFI System Partition (Install) image:
 `make espimage-install`
+
+# Guide to boot inside crosvm VM
+
+1. Build crosvm
+
+Follow https://crosvm.dev/book/building_crosvm/index.html
+
+2. Create empty image for userdata disk
+
+`dd if=/dev/zero of=disk-vdb.img bs=1M count=2048`
+
+3. Write VM configuration file
+
+```
+{
+    "kernel": "$(PRODUCT_OUT)/kernel",
+    "initrd": "$(PRODUCT_OUT)/combined-ramdisk.img",
+    "params": [
+        "<Copy from `BOARD_KERNEL_CMDLINE` variable on `BoardConfigCommon.mk` in this repository>"
+    ],
+    "cpus": {
+        "num-cores": 2
+    },
+    "mem": {
+        "size": 2048
+    },
+    "block": [
+        {
+            "path": "$(PRODUCT_OUT)/disk-vda.img",
+        },
+        {
+            "path": "<Path to the newly created userdata disk image>",
+        }
+    ],
+    "serial": [
+        {
+            "type": "stdout",
+            "hardware": "serial",
+            "console": true,
+            "stdin": true
+        }
+    ]
+}
+```
+
+4. Run the VM
+
+`./target/debug/crosvm run --cfg <Path to the VM configuration file> --gpu backend=virglrenderer --gpu-display mode=windowed\[1920,1080\] --display-window-keyboard --display-window-mouse --disable-sandbox`
+
+# Guide to boot inside AVF Custom VM
+
+1. Boot the device into latest AOSP main GSI
+
+AOSP main GSI can be obtained from [Android CI Website](https://ci.android.com).
+
+2. Connect the device to PC
+
+3. Restart ADB in root mode
+
+`adb root`
+
+4. Push required files to `/data/local/tmp`
+
+```
+adb push $ANDROID_PRODUCT_OUT/kernel /data/local/tmp/kernel
+adb push $ANDROID_PRODUCT_OUT/combined-ramdisk.img /data/local/tmp/ramdisk.img
+adb push $ANDROID_PRODUCT_OUT/disk-vda.img /data/local/tmp/disk-vda.img
+```
+
+5. Create empty image for userdata disk (Note that `fallocate` command would not work for this!)
+
+`dd if=/dev/zero of=/data/local/tmp/disk-vdb.img bs=1M count=2048`
+
+6. Write VM configuration to `/data/local/tmp/vm_config.json`
+
+```
+{
+    "name": "Android",
+    "kernel": "/data/local/tmp/kernel",
+    "initrd": "/data/local/tmp/ramdisk.img",
+    "params": "<Copy from `BOARD_KERNEL_CMDLINE` variable on `BoardConfigCommon.mk` in this repository>",
+    "disks": [
+        {
+            "image": "/data/local/tmp/disk-vda.img",
+            "writable": true
+        },
+        {
+            "image": "/data/local/tmp/disk-vdb.img",
+            "writable": true
+        }
+    ],
+    "gpu": {
+        "backend": "virglrenderer",
+        "context_types": ["virgl2"]
+    },
+    "protected": false,
+    "cpu_topology": "match_host",
+    "platform_version": "~1.0",
+    "memory_mib" : 2048,
+    "console_input_device": "hvc0"
+}
+```
+
+7. Enable VmLauncherApp
+
+Follow https://android.googlesource.com/platform/packages/modules/Virtualization/+/refs/heads/main/docs/custom_vm.md#running-the-vm
+
+8. Launch VmLauncherApp
