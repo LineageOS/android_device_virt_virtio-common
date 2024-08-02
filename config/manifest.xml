@@ -1,8 +1,3 @@
-<!--
-  target-level stays on 7 because of:
-  - android.hardware.gatekeeper@1.0-service.software
-  - android.hardware.graphics.composer@2.4-service
--->
 <manifest version="7.0" type="device" target-level="7">
     <hal format="hidl">
         <name>android.hardware.graphics.composer</name>

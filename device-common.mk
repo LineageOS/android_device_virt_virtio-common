@@ -107,7 +107,7 @@ PRODUCT_BUILD_RECOVERY_IMAGE := true
 PRODUCT_USE_DYNAMIC_PARTITION_SIZE := true
 
 # Kernel
-TARGET_PREBUILT_KERNEL_USE ?= 6.1
+TARGET_PREBUILT_KERNEL_USE ?= 5.15
 TARGET_PREBUILT_KERNEL_DIR := device/virt/kernel-virtio/$(TARGET_PREBUILT_KERNEL_USE)/$(TARGET_PREBUILT_KERNEL_ARCH)
 TARGET_KERNEL_SOURCE := kernel/virt/virtio
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
@@ -174,7 +174,6 @@ PRODUCT_COPY_FILES += \
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
 # Shipping API level
-# (Stays on 33 due to target-level)
 PRODUCT_SHIPPING_API_LEVEL := 33
 
 # Soong namespaces
