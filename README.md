@@ -24,6 +24,20 @@ The device tree is currently WIP, Not suitable for normal use.
 - Enforce SELinux on all targets (Currently did for libvirt-qemu)
 - 16K pagesize
 
+# Supported virtual hardware
+
+| Type | Models | Description |
+| Chipset (QEMU x86_64) | Q35 | |
+| Console | Serial console, VirtIO | By default, Serial console is used for printing kernel messages, VirtIO is used for Android shell console. |
+| Disk | USB, VirtIO | Must use VirtIO for boot devices. |
+| Graphics | VirtIO (with or without 3D Acceleration) | Enable 3D Acceleration for Mesa graphics, Disable 3D Acceleration for Swiftshader graphics. |
+| Keyboard | PS/2, USB, VirtIO | PS/2 isn't supported when using emulator prebuilt kernel. |
+| Machine type (QEMU arm64) | virt | |
+| Mouse | PS/2, USB, VirtIO | PS/2 isn't supported when using emulator prebuilt kernel. |
+| Network Interface Card | VirtIO | |
+| Sound card | Intel AC97, Intel ICH6, Intel ICH9, USB | VirtIO | Prefer VirtIO sound card, then Intel AC97. Intel sound cards aren't supported when using emulator prebuilt kernel. |
+| Tablet input | USB, VirtIO | Does not show mouse cursor, Should be used only if the VM viewer has touchscreen. |
+
 # List of optional extra boot parameters
 
 | Parameter | Possible values | Description |
