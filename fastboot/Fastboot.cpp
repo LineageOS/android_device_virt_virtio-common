@@ -79,7 +79,6 @@ ScopedAStatus Fastboot::getVariant(std::string* _aidl_return) {
         variant.pop_back();
         *_aidl_return = variant;
     }
-out:
     return ScopedAStatus::ok();
 }
 
