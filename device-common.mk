@@ -76,8 +76,8 @@ PRODUCT_PACKAGES += \
     android.hardware.health-service.batteryless_recovery
 else
 PRODUCT_PACKAGES += \
-    android.hardware.health-service.cuttlefish_recovery \
-    com.google.cf.health
+    android.hardware.health-service.cuttlefish \
+    android.hardware.health-service.cuttlefish_recovery
 endif
 
 # Init
