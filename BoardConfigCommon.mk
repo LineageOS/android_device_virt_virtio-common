@@ -27,8 +27,8 @@ TARGET_USERIMAGES_USE_EXT4 := true
 ifneq ($(wildcard external/mesa/android/Android.mk),)
 BOARD_MESA3D_BUILD_LIBGBM := true
 BOARD_MESA3D_USES_MESON_BUILD := true
-BOARD_MESA3D_GALLIUM_DRIVERS := virgl
-BOARD_MESA3D_VULKAN_DRIVERS := virtio
+BOARD_MESA3D_GALLIUM_DRIVERS := virgl radeonsi
+BOARD_MESA3D_VULKAN_DRIVERS := virtio amd
 else
 BOARD_GPU_DRIVERS := virgl
 endif
