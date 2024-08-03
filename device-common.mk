@@ -43,11 +43,27 @@ PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-service.software
 
 # Graphics (Mesa)
+ifneq ($(wildcard external/mesa/android/Android.mk),)
+PRODUCT_PACKAGES += \
+    libEGL_mesa \
+    libGLESv1_CM_mesa \
+    libGLESv2_mesa \
+    libglapi
+
+#    libgallium_dri
+
+$(foreach vk_drv, virtio, \
+    $(eval PRODUCT_PACKAGES += vulkan.$(vk_drv)))
+
+PRODUCT_PACKAGES += \
+    libgbm
+else
 PRODUCT_PACKAGES += \
     libGLES_mesa
 
 PRODUCT_SOONG_NAMESPACES += \
     external/mesa3d
+endif
 
 # Graphics (Swiftshader)
 PRODUCT_PACKAGES += \
