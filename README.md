@@ -20,7 +20,6 @@ The device tree is currently WIP, Not suitable for normal use.
 - Support for USB Bluetooth, Camera, and WiFi
 - Support for VFIO PCI GPU Passthrough
 - VirtWifi
-- [VirtioFS](https://android.googlesource.com/device/google/cuttlefish/+/5c490d406e213b241dd8eb56fe59cb5157bdf06b)
 - Enforce SELinux on all targets (Currently did for libvirt-qemu)
 - 16K pagesize
 
@@ -43,6 +42,7 @@ The device tree is currently WIP, Not suitable for normal use.
 | Chipset (QEMU x86_64) | Q35 | |
 | Console | Serial console, VirtIO | By default, Serial console is used for printing kernel messages, VirtIO is used for Android shell console. |
 | Disk | USB, VirtIO | Must use VirtIO for boot devices. |
+| Filesystem | virtiofs | virtiofs filesystem with tag "shared" will be automatically mounted at `/mnt/vendor/shared`. |
 | Graphics | VirtIO (with or without 3D Acceleration) | Enable 3D Acceleration for Mesa graphics, Disable 3D Acceleration for Swiftshader graphics. |
 | Keyboard | PS/2, USB, VirtIO | PS/2 isn't supported when using emulator prebuilt kernel. |
 | Machine type (QEMU arm64) | virt | |
