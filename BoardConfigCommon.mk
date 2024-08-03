@@ -23,9 +23,11 @@ TARGET_USERIMAGES_SPARSE_EXT_DISABLED := true
 TARGET_USERIMAGES_USE_F2FS := true
 TARGET_USERIMAGES_USE_EXT4 := true
 
-# Graphics
+# Graphics (Mesa)
+BOARD_GPU_DRIVERS := virgl
+
+# Graphics (Swiftshader)
 include device/google/cuttlefish/shared/swiftshader/BoardConfig.mk
-include device/google/cuttlefish/shared/virgl/BoardConfig.mk
 
 # Init
 TARGET_INIT_VENDOR_LIB ?= //$(COMMON_PATH):init_virtio
