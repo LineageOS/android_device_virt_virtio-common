@@ -5,6 +5,9 @@ service dhcpclient /system/bin/dhcpclient -i ${vendor.recovery.ethernet.dhcp.ifa
     oneshot
     disabled
 
+on early-init
+    mkdir /mnt/vendor/shared 0770 root root
+
 on early-boot
     ifup ${vendor.recovery.ethernet.dhcp.iface:-eth0}
     start dhcpclient
