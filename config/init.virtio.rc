@@ -22,7 +22,12 @@ on late-fs
 on early-init
     setprop ro.vendor.graphics ${ro.boot.graphics:-mesa}
 
-on property:ro.vendor.graphics=mesa
+on property:ro.vendor.graphics=mesa && property:ro.vendor.graphics.mesa.is_upstream=true
+    setprop ro.hardware.egl mesa
+    setprop ro.hardware.vulkan virtio
+    setprop ro.opengles.version 196610
+
+on property:ro.vendor.graphics=mesa && property:ro.vendor.graphics.mesa.is_upstream=false
     setprop ro.cpuvulkan.version 0
     setprop ro.hardware.egl mesa
     setprop ro.opengles.version 196608
