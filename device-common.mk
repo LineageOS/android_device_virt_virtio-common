@@ -43,7 +43,11 @@ PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-service.software
 
 # Graphics (Mesa)
-$(call inherit-product, device/google/cuttlefish/shared/virgl/device_vendor.mk)
+PRODUCT_PACKAGES += \
+    libGLES_mesa
+
+PRODUCT_SOONG_NAMESPACES += \
+    external/mesa3d
 
 # Graphics (Swiftshader)
 PRODUCT_PACKAGES += \
