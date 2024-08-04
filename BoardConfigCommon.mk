@@ -27,10 +27,10 @@ TARGET_USERIMAGES_USE_EXT4 := true
 ifneq ($(wildcard external/mesa/android/Android.mk),)
 BUILD_BROKEN_INCORRECT_PARTITION_IMAGES := true
 BOARD_MESA3D_USES_MESON_BUILD := true
-BOARD_MESA3D_GALLIUM_DRIVERS := virgl
+BOARD_MESA3D_GALLIUM_DRIVERS := swrast virgl
 BOARD_MESA3D_VULKAN_DRIVERS := virtio
 else
-BOARD_GPU_DRIVERS := virgl
+BOARD_GPU_DRIVERS := swrast virgl
 endif
 
 # Graphics (Swiftshader)

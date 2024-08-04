@@ -56,6 +56,7 @@ The device tree is currently WIP, Not suitable for normal use.
 | Parameter | Possible values | Description |
 | --------- | --------------- | ----------- |
 | `androidboot.graphics` | `mesa` or `swiftshader` | Graphics stack to use. Default is `mesa`. |
+| `androidboot.mesa.gallium_driver` | `llvmpipe`, `softpipe`, or `default` | Mesa gallium driver to use. Default is `default`. |
 | `androidboot.lcd_density` | `<DPI>` | Screen density. Default is `160`. |
 | `androidboot.low_perf` | `1` | Add this to enable low performance optimizations. |
 | `androidboot.nobootanim` | `1` | Add this to disable boot animation. |
