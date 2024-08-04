@@ -9,6 +9,8 @@ on early-init
     setprop ro.sf.lcd_density ${ro.boot.lcd_density:-160}
 
 on fs
+    mkdir /mnt/vendor/shared 0770 system system
+
     # Mount everything that does not require fsck
     mount_all --early
 
@@ -20,7 +22,13 @@ on late-fs
 on early-init
     setprop ro.vendor.graphics ${ro.boot.graphics:-mesa}
 
-on property:ro.vendor.graphics=mesa
+on property:ro.vendor.graphics=mesa && property:ro.vendor.graphics.mesa.is_upstream=true
+    setprop ro.hardware.egl mesa
+    setprop ro.hardware.gralloc minigbm
+    setprop ro.hardware.vulkan virtio
+    setprop ro.opengles.version 196610
+
+on property:ro.vendor.graphics=mesa && property:ro.vendor.graphics.mesa.is_upstream=false
     setprop ro.cpuvulkan.version 0
     setprop ro.hardware.egl mesa
     setprop ro.opengles.version 196608

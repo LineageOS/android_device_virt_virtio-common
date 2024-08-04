@@ -1,0 +1,2 @@
+# vold will access /mnt/vendor/shared for unknown reasons
+allow vold mnt_vendor_file:dir r_dir_perms;

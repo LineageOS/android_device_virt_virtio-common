@@ -23,8 +23,15 @@ TARGET_USERIMAGES_SPARSE_EXT_DISABLED := true
 TARGET_USERIMAGES_USE_F2FS := true
 TARGET_USERIMAGES_USE_EXT4 := true
 
-# Graphics
+# Graphics (Mesa)
+ifneq ($(wildcard external/mesa/android/Android.mk),)
+BUILD_BROKEN_INCORRECT_PARTITION_IMAGES := true
+BOARD_MESA3D_USES_MESON_BUILD := true
+BOARD_MESA3D_GALLIUM_DRIVERS := virgl
+BOARD_MESA3D_VULKAN_DRIVERS := virtio
+else
 BOARD_GPU_DRIVERS := virgl
+endif
 
 # Init
 TARGET_INIT_VENDOR_LIB ?= //$(COMMON_PATH):init_virtio
@@ -154,6 +161,7 @@ BOARD_VENDOR_SEPOLICY_DIRS := \
     $(COMMON_PATH)/sepolicy/vendor/virgl
 
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/private
+SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/public
 
 # VINTF
 DEVICE_MANIFEST_FILE := \
