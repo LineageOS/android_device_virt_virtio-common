@@ -1,6 +1,10 @@
 # DHCP
 vendor.recovery.ethernet.dhcp.iface		u:object_r:vendor_recovery_ethernet_dhcp_prop:s0 exact string
 
+# Graphics
+ro.vendor.graphics		u:object_r:vendor_graphics_prop:s0
+ro.vendor.graphics.		u:object_r:vendor_graphics_prop:s0
+
 # Graphics (Gralloc)
 vendor.minigbm.debug		u:object_r:vendor_minigbm_debug_prop:s0
 
