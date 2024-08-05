@@ -17,7 +17,7 @@ The device tree is currently WIP, Not suitable for normal use.
 
 # TODO
 - ARM 32-bit only and 64-bit only targets
-- Support for USB Bluetooth, Camera, and WiFi
+- Support for USB Bluetooth, and Camera
 - Support for VFIO PCI GPU Passthrough
 - VirtWifi
 - Enforce SELinux on all targets (Currently did for libvirt-qemu)
