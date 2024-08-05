@@ -63,9 +63,12 @@ TARGET_BOOTMGR_KERNEL_CMDLINE := \
     $(BOARD_KERNEL_CMDLINE)
 
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
+BOARD_VENDOR_KERNEL_MODULES_LOAD := \
+    $(strip $(shell cat $(COMMON_PATH)/config/modules.load.vendor.peripheral_wifi))
 TARGET_KERNEL_CONFIG := \
     gki_defconfig \
     lineageos/virtio.config \
+    lineageos/peripheral/wifi.config \
     lineageos/feature/fbcon.config
 else ifneq ($(wildcard $(TARGET_PREBUILT_KERNEL_DIR)/kernel),)
 BOARD_VENDOR_KERNEL_MODULES := \
@@ -169,3 +172,9 @@ SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/public
 # VINTF
 DEVICE_MANIFEST_FILE := \
     $(COMMON_PATH)/config/manifest.xml
+
+# Wi-Fi
+BOARD_HOSTAPD_DRIVER := NL80211
+BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
+WPA_SUPPLICANT_VERSION := VER_0_8_X

@@ -29,6 +29,12 @@ on late-fs
     # Mount RW partitions which need run fsck
     mount_all --late
 
+on early-boot
+    # Wi-Fi
+    mkdir /data/vendor/wifi 0770 wifi wifi
+    mkdir /data/vendor/wifi/wpa 0770 wifi wifi
+    mkdir /data/vendor/wifi/wpa/sockets 0770 wifi wifi
+
 # Graphics
 on early-init
     setprop ro.vendor.graphics ${ro.boot.graphics:-mesa}
