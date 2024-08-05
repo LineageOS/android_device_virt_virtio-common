@@ -6,3 +6,6 @@ set_prop(vendor_init, vendor_graphics_prop)
 
 # Ignore
 allow vendor_init rootfs:dir read;
+
+# VirtWifi
+set_prop(vendor_init, vendor_wifi_mac_prefix)

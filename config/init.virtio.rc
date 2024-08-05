@@ -13,6 +13,7 @@ service vendor.dlkm_loader /vendor/bin/dlkm_loader
     oneshot
 
 on early-init
+    setprop ro.boot.wifi_mac_prefix 5554
     setprop ro.sf.lcd_density ${ro.boot.lcd_density:-160}
 
 on fs
@@ -56,3 +57,14 @@ on property:ro.vendor.graphics=swiftshader
     setprop ro.hardware.vulkan pastel
     setprop ro.opengles.version 196609
     setprop ro.vulkan.apex com.google.cf.vulkan
+
+# VirtWifi
+service setup_wifi /vendor/bin/setup_wifi --interface=${ro.vendor.virtwifi.port}
+    override
+    disabled
+    oneshot
+    user root
+    group root
+
+on post-fs-data && property:ro.boot.wifi_impl=virt_wifi
+    start setup_wifi

@@ -12,6 +12,7 @@
 
 # Executables
 /vendor/bin/dlkm_loader							u:object_r:dlkm_loader_exec:s0
+/vendor/bin/setup_wifi							u:object_r:setup_wifi_exec:s0
 /vendor/bin/suspend_blocker						u:object_r:suspend_blocker_exec:s0
 /vendor/bin/tablet2multitouch						u:object_r:tablet2multitouch_exec:s0
 /vendor/bin/wakeupd							u:object_r:wakeupd_exec:s0
