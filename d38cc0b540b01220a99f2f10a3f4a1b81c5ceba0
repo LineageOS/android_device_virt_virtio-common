@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6ba1259_9f0607af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32245
+      },
+      "writtenOn": "2024-08-05T20:19:26Z",
+      "side": 1,
+      "message": "Android expects the wifi interface to have wiphy, but my old cheap usb wifi dongle doesn\u0027t support it... wait for me to grab a nice wifi card to test this",
+      "revId": "d38cc0b540b01220a99f2f10a3f4a1b81c5ceba0",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
