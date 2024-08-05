@@ -231,4 +231,7 @@ $(FIRMWARE_MOUNT_POINT):
 	@echo "Creating $(FIRMWARE_MOUNT_POINT)"
 	@mkdir -p $(TARGET_OUT_VENDOR)/firmware_mnt
 
+# Wi-Fi
+include external/wpa_supplicant_8/wpa_supplicant/wpa_supplicant_conf.mk
+
 endif
