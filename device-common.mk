@@ -228,6 +228,10 @@ PRODUCT_PACKAGES += \
     fstab.virtio.gsi.sda.vendor_ramdisk \
     fstab.virtio.gsi.vdc.vendor_ramdisk
 
+# VirtWifi
+PRODUCT_PACKAGES += \
+    setup_wifi
+
 # Wakeupd
 PRODUCT_PACKAGES += \
     wakeupd
