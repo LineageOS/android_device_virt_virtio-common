@@ -22,7 +22,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/config/external_camera_config.xml:$(TARGET_COPY_OUT_VENDOR)/etc/external_camera_config.xml
 
 PRODUCT_PACKAGES += \
-    android.hardware.camera.provider-V1-external-service-lazy
+    android.hardware.camera.provider@2.7-external-service-lazy
 
 # Dynamic partitions
 PRODUCT_BUILD_SUPER_PARTITION := true
