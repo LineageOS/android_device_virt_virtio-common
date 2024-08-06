@@ -41,26 +41,17 @@ TARGET_INIT_VENDOR_LIB ?= //$(COMMON_PATH):init_virtio
 TARGET_RECOVERY_DEVICE_MODULES ?= init_virtio
 
 # Kernel
-BOARD_KERNEL_CMDLINE_BASE := \
+BOARD_KERNEL_CMDLINE := \
     console=tty0 \
     log_buf_len=4M \
     loop.max_part=7 \
     printk.devkmsg=on \
     rw \
     androidboot.boot_devices=any \
+    androidboot.console=hvc0 \
     androidboot.first_stage_console=0 \
     androidboot.hardware=virtio \
     androidboot.verifiedbootstate=orange
-
-BOARD_KERNEL_CMDLINE_CONSOLE += \
-    androidboot.console=hvc0
-
-BOARD_KERNEL_CMDLINE := \
-    $(BOARD_KERNEL_CMDLINE_BASE) \
-    $(BOARD_KERNEL_CMDLINE_CONSOLE)
-
-TARGET_BOOTMGR_KERNEL_CMDLINE := \
-    $(BOARD_KERNEL_CMDLINE)
 
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
 BOARD_VENDOR_KERNEL_MODULES_LOAD := \
