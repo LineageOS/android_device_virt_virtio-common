@@ -8,6 +8,11 @@ service dhcpclient /system/bin/dhcpclient -i ${vendor.recovery.ethernet.dhcp.ifa
 on early-init
     mkdir /mnt/vendor/shared 0770 root root
 
+on fs
+    mkdir /mnt/vendor/EFI 0770 root root
+    mount vfat /dev/block/by-name/EFI /mnt/vendor/EFI rw shortname=lower uid=0 gid=0 dmask=007 fmask=117 context=u:object_r:efi_file:s0
+    umount /mnt/vendor/EFI
+
 on early-boot
     ifup ${vendor.recovery.ethernet.dhcp.iface:-eth0}
     start dhcpclient

@@ -1,0 +1,1 @@
+allow efi_file self:filesystem associate;

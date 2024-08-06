@@ -16,6 +16,7 @@ on early-init
     setprop ro.sf.lcd_density ${ro.boot.lcd_density:-160}
 
 on fs
+    mkdir /mnt/vendor/EFI 0770 root root
     mkdir /mnt/vendor/shared 0770 system system
 
     # Mount everything that does not require fsck

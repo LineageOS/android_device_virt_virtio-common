@@ -1,3 +1,6 @@
+# EFI
+/dev/block/by-name/EFI /mnt/vendor/EFI vfat rw,shortname=lower,uid=0,gid=0,dmask=007,fmask=117,context=u:object_r:efi_file:s0 nofail
+
 # Super
 odm /odm ext4 noatime,ro logical,first_stage_mount
 odm /odm erofs noatime,ro logical,first_stage_mount
