@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0e033ae_f6961d55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32245
+      },
+      "writtenOn": "2024-08-06T15:53:24Z",
+      "side": 1,
+      "message": "Not buildable for 64-bit only by default, and\n```\n08-06 01:58:57.303  2162  2163 E ExtCamDev@3.4: trimSupportedFormats: input format list is empty!\n08-06 01:58:57.304  2162  2163 E ExtCamDev@3.4: trimSupportedFormats: input format list is empty!\n08-06 01:58:57.304  2162  2163 E ExtCamDev@3.4: initSupportedFormatsLocked: cannot find suitable cropping type!\n08-06 01:58:57.304  2162  2163 E ExtCamDev@3.4: initOutputCharsKeys: Init supported format list failed\n08-06 01:58:57.304  2162  2163 E ExtCamDev@3.4: initCameraCharacteristics: init output characteristics key failed: errorno -2147483648\n08-06 01:58:57.304  2162  2163 E ExtCamDev@3.4: isInitFailedLocked: init camera characteristics failed: errorno -2147483648\n08-06 01:58:57.304  2162  2163 W CamPrvdr@2.7-external: deviceAdded: Attempt to init camera device /dev/video0 failed!\n08-06 01:58:57.304  2162  2163 W CamPrvdr@2.7-external: deviceAdded device /dev/video1 does not support VIDEO_CAPTURE\n```",
+      "revId": "f997b90d6ddaf7b0b2a9b1ac5667476a7494a9fb",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
