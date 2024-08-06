@@ -11,6 +11,7 @@ on early-init
 on fs
     mkdir /mnt/vendor/EFI 0770 root root
     mount vfat /dev/block/by-name/EFI /mnt/vendor/EFI rw shortname=lower uid=0 gid=0 dmask=007 fmask=117 context=u:object_r:efi_file:s0
+    exec u:r:vendor_efi_update_default_sh:s0 -- /system/bin/sh -e /system/bin/refind-update-default_selection.sh
     umount /mnt/vendor/EFI
 
 on early-boot

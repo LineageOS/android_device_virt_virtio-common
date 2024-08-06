@@ -1,0 +1,19 @@
+type vendor_efi_update_default_sh, domain;
+type vendor_efi_update_default_sh_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(vendor_efi_update_default_sh)
+
+allow vendor_efi_update_default_sh vendor_shell_exec:file rx_file_perms;
+allow vendor_efi_update_default_sh vendor_toolbox_exec:file rx_file_perms;
+
+allow vendor_efi_update_default_sh kmsg_device:chr_file w_file_perms;
+
+allow vendor_efi_update_default_sh mnt_vendor_file:dir search;
+allow vendor_efi_update_default_sh efi_file:dir rw_dir_perms;
+allow vendor_efi_update_default_sh efi_file:file create_file_perms;
+
+recovery_only(`
+    domain_trans(init, rootfs, vendor_efi_update_default_sh)
+    r_dir_file(vendor_efi_update_default_sh, rootfs)
+    allow vendor_efi_update_default_sh rootfs:file execute_no_trans;
+')

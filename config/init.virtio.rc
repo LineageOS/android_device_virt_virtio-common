@@ -58,6 +58,16 @@ on property:ro.vendor.graphics=swiftshader
     setprop ro.opengles.version 196609
     setprop ro.vulkan.apex com.google.cf.vulkan
 
+# Shutdown
+service vendor.refind-update-default_selection /vendor/bin/refind-update-default_selection.sh ${sys.shutdown.requested}
+    user root
+    group root
+    disabled
+    oneshot
+
+on property:sys.shutdown.requested=*
+    start vendor.refind-update-default_selection
+
 # VirtWifi
 service setup_wifi /vendor/bin/setup_wifi --interface=${ro.vendor.virtwifi.port}
     override
