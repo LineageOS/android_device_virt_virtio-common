@@ -1,12 +1,14 @@
 <!--
   target-level stays on 7 because of:
+  - android.hardware.camera.provider@2.4-external-service
   - android.hardware.gatekeeper@1.0-service.software
   - android.hardware.graphics.composer@2.4-service
 -->
 <manifest version="8.0" type="device" target-level="7">
-    <hal format="aidl">
+    <hal format="hidl">
         <name>android.hardware.camera.provider</name>
-        <fqname>ICameraProvider/external/0</fqname>
+        <transport>hwbinder</transport>
+        <fqname>@2.7::ICameraProvider/external/0</fqname>
     </hal>
     <hal format="hidl">
         <name>android.hardware.graphics.composer</name>
