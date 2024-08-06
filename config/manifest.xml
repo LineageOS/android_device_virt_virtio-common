@@ -4,6 +4,10 @@
   - android.hardware.graphics.composer@2.4-service
 -->
 <manifest version="8.0" type="device" target-level="7">
+    <hal format="aidl">
+        <name>android.hardware.camera.provider</name>
+        <fqname>ICameraProvider/external/0</fqname>
+    </hal>
     <hal format="hidl">
         <name>android.hardware.graphics.composer</name>
         <transport>hwbinder</transport>

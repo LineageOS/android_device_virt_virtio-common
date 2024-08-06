@@ -12,3 +12,7 @@ firmware_directories /vendor/firmware_mnt
 /dev/hvc*	0666	system	system
 /dev/ttyAMA*	0666	system	system
 /dev/ttyS*	0666	system	system
+
+# Video
+/dev/video0	0660	system	camera
+/dev/video1	0660	system	camera
