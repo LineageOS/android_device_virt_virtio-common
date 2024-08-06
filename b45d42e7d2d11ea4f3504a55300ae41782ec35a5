@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "546dcfb4_8e6e29e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32245
+      },
+      "writtenOn": "2024-08-06T15:52:52Z",
+      "side": 1,
+      "message": "```\n08-06 00:32:46.193  2244  2244 I ExtCamUtils: loadFromCfg: load external camera config succeeded!\n08-06 00:32:46.193  2244  2244 I ExtCamUtils: loadFromCfg: no external camera provider config specified\n08-06 00:32:46.193  2244  2245 E ExtCamPrvdr: deviceAdded open v4l2 device /dev/video1 failed:Permission denied\n08-06 00:32:46.193  2244  2245 E ExtCamPrvdr: deviceAdded open v4l2 device /dev/video0 failed:Permission denied\n08-06 00:33:02.308  2249  2249 I ExtCamUtils: loadFromCfg: load external camera config succeeded!\n08-06 00:33:02.308  2249  2249 I ExtCamUtils: loadFromCfg: no external camera provider config specified\n08-06 00:33:02.309  2249  2250 W ExtCamPrvdr: deviceAdded device /dev/video1 does not support VIDEO_CAPTURE\n08-06 00:33:02.423  2249  2250 E ExtCamDev: trimSupportedFormats: input format list is empty!\n08-06 00:33:02.423  2249  2250 E ExtCamDev: trimSupportedFormats: input format list is empty!\n08-06 00:33:02.423  2249  2250 E ExtCamDev: initSupportedFormatsLocked: cannot find suitable cropping type!\n08-06 00:33:02.423  2249  2250 E ExtCamDev: initOutputCharsKeys: Init supported format list failed\n08-06 00:33:02.423  2249  2250 E ExtCamDev: initCameraCharacteristics: init output characteristics key failed: errorno -2147483648\n08-06 00:33:02.424  2249  2250 E ExtCamDev: isInitFailedLocked: init camera characteristics failed: errorno -2147483648\n08-06 00:33:02.424  2249  2250 W ExtCamPrvdr: deviceAdded: Attempt to init camera device /dev/video0 failed!\n```",
+      "revId": "b45d42e7d2d11ea4f3504a55300ae41782ec35a5",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
