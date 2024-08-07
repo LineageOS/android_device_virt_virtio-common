@@ -1,3 +1,5 @@
+firmware_directories /vendor/firmware_mnt
+
 # Graphics
 /dev/dri/card0		0660	system	graphics
 /dev/dri/controlD64	0660	system	graphics

@@ -1,3 +1,6 @@
+# Bluetooth
+persist.bluetooth.a2dp_aac.vbr_supported=true
+
 # DHCP
 vendor.recovery.dhcpclient.iface?=eth0
 
@@ -9,3 +12,7 @@ ro.incremental.enable=1
 
 # Media
 debug.c2.use_dmabufheaps=1
+
+# VirtWifi
+ro.boot.wifi_mac_prefix=5554
+ro.vendor.virtwifi.port=eth0

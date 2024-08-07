@@ -38,31 +38,26 @@ TARGET_INIT_VENDOR_LIB ?= //$(COMMON_PATH):init_virtio
 TARGET_RECOVERY_DEVICE_MODULES ?= init_virtio
 
 # Kernel
-BOARD_KERNEL_CMDLINE_BASE := \
+BOARD_KERNEL_CMDLINE := \
     console=tty0 \
     log_buf_len=4M \
     loop.max_part=7 \
     printk.devkmsg=on \
     rw \
     androidboot.boot_devices=any \
+    androidboot.console=hvc0 \
     androidboot.first_stage_console=0 \
     androidboot.hardware=virtio \
     androidboot.verifiedbootstate=orange
 
-BOARD_KERNEL_CMDLINE_CONSOLE += \
-    androidboot.console=hvc0
-
-BOARD_KERNEL_CMDLINE := \
-    $(BOARD_KERNEL_CMDLINE_BASE) \
-    $(BOARD_KERNEL_CMDLINE_CONSOLE)
-
-TARGET_BOOTMGR_KERNEL_CMDLINE := \
-    $(BOARD_KERNEL_CMDLINE)
-
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
+BOARD_VENDOR_KERNEL_MODULES_LOAD := \
+    $(strip $(shell cat $(wildcard $(COMMON_PATH)/config/modules.load.vendor.*)))
 TARGET_KERNEL_CONFIG := \
     gki_defconfig \
     lineageos/virtio.config \
+    lineageos/peripheral/bluetooth.config \
+    lineageos/peripheral/wifi.config \
     lineageos/feature/fbcon.config
 else ifneq ($(wildcard $(TARGET_PREBUILT_KERNEL_DIR)/kernel),)
 BOARD_VENDOR_KERNEL_MODULES := \
@@ -136,6 +131,13 @@ TARGET_BOARD_PLATFORM := virtio
 TARGET_PRODUCT_PROP := $(COMMON_PATH)/properties/product.prop
 TARGET_VENDOR_PROP := $(COMMON_PATH)/properties/vendor.prop
 
+ifneq ($(PRODUCT_IS_ATV),true)
+ifneq ($(PRODUCT_IS_AUTOMOTIVE),true)
+TARGET_VENDOR_PROP += \
+    $(COMMON_PATH)/properties/vendor_bluetooth_profiles.prop
+endif
+endif
+
 # Ramdisk
 BOARD_RAMDISK_USE_LZ4 := true
 
@@ -167,3 +169,9 @@ SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/public
 DEVICE_MANIFEST_FILE := \
     $(COMMON_PATH)/config/manifest.xml \
     device/google/cuttlefish/guest/hals/audio/effects/manifest.xml
+
+# Wi-Fi
+BOARD_HOSTAPD_DRIVER := NL80211
+BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
+WPA_SUPPLICANT_VERSION := VER_0_8_X

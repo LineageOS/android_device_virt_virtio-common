@@ -71,5 +71,15 @@ define make-espimage-install-target
 	$(call make-espimage,$(1),$(2),$(GRUB_WORKDIR_INSTALL),install)
 endef
 
+##### isoimage-boot #####
+
+INSTALLED_ISOIMAGE_BOOT_TARGET := $(PRODUCT_OUT)/$(BOOTMGR_ARTIFACT_FILENAME_PREFIX)-boot.iso
+$(INSTALLED_ISOIMAGE_BOOT_TARGET): $(INSTALLED_ESPIMAGE_TARGET)
+	$(call pretty,"Target boot ISO image: $@")
+	$(BOOTMGR_PATH_OVERRIDE) $(GRUB_PREBUILT_DIR)/bin/grub-mkrescue -d $(GRUB_PREBUILT_DIR)/lib/grub/$(TARGET_GRUB_ARCH) --xorriso=/usr/bin/xorriso -o $@ $(INSTALLED_ESPIMAGE_TARGET_DEPS) $(GRUB_WORKDIR_ESP)/fsroot
+
+.PHONY: isoimage-boot
+isoimage-boot: $(INSTALLED_ISOIMAGE_BOOT_TARGET)
+
 endif # TARGET_GRUB_ARCH
 endif # TARGET_BOOT_MANAGER

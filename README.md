@@ -17,9 +17,8 @@ The device tree is currently WIP, Not suitable for normal use.
 
 # TODO
 - ARM 32-bit only and 64-bit only targets
-- Support for USB Bluetooth, Camera, and WiFi
+- Support for USB Camera, and WiFi
 - Support for VFIO PCI GPU Passthrough
-- VirtWifi
 - Enforce SELinux on all targets (Currently did for libvirt-qemu)
 - 16K pagesize
 
@@ -59,6 +58,7 @@ The device tree is currently WIP, Not suitable for normal use.
 | `androidboot.lcd_density` | `<DPI>` | Screen density. Default is `160`. |
 | `androidboot.low_perf` | `1` | Add this to enable low performance optimizations. |
 | `androidboot.nobootanim` | `1` | Add this to disable boot animation. |
+| `androidboot.wifi_impl` | `virt_wifi` | Set this to `virt_wifi` to enable VirtWifi on ethernet interface `eth0`. |
 | `virtio_gpu.force_resolution` | `<Width>x<Height>` | Force display resolution for virtio-gpu display. Exists only in source built kernel. |
 
 # Required patches for AOSP

@@ -55,6 +55,16 @@ else ifeq ($(PRODUCT_IS_ATV),true)
 BOOTMGR_ANDROID_DISTRIBUTION_NAME += TV
 endif
 
+ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
+	ifneq ($(TARGET_KERNEL_VERSION),)
+		BOOTMGR_ANDROID_DISTRIBUTION_NAME += \(Kernel version $(TARGET_KERNEL_VERSION)\)
+	endif
+else ifneq ($(wildcard $(TARGET_PREBUILT_KERNEL_DIR)/kernel),)
+	BOOTMGR_ANDROID_DISTRIBUTION_NAME += \(Kernel version $(TARGET_PREBUILT_KERNEL_USE)\)
+else
+	BOOTMGR_ANDROID_DISTRIBUTION_NAME += \(Emulator kernel version $(TARGET_PREBUILT_EMULATOR_KERNEL_USE)\)
+endif
+
 INSTALLED_ESPIMAGE_TARGET := $(TARGET_OUT_INTERMEDIATES)/CUSTOM_IMAGES/EFI.img
 INSTALLED_ESPIMAGE_INSTALL_TARGET := $(PRODUCT_OUT)/$(BOOTMGR_ARTIFACT_FILENAME_PREFIX).img
 
@@ -81,7 +91,7 @@ endef
 define process-bootmgr-cfg-common
 	sed -i "s|@BOOTMGR_ANDROID_DISTRIBUTION_NAME@|$(BOOTMGR_ANDROID_DISTRIBUTION_NAME)|g" $(1)
 	sed -i "s|@BOOTMGR_EFI_BOOT_FILENAME@|$(BOOTMGR_EFI_BOOT_FILENAME)|g" $(1)
-	sed -i "s|@STRIPPED_TARGET_BOOTMGR_KERNEL_CMDLINE@|$(strip $(TARGET_BOOTMGR_KERNEL_CMDLINE))|g" $(1)
+	sed -i "s|@STRIPPED_BOARD_KERNEL_CMDLINE@|$(strip $(BOARD_KERNEL_CMDLINE))|g" $(1)
 endef
 
 include $(call all-makefiles-under,$(LOCAL_PATH))
@@ -218,5 +228,16 @@ prebuilt-kernel-repo: $(INSTALLED_PREBUILT_KERNEL_REPO_KERNEL_TARGET)
 
 endif # $(TARGET_KERNEL_SOURCE)/Makefile
 endif # LINEAGE_BUILD
+
+# Firmware mount point
+FIRMWARE_MOUNT_POINT := $(TARGET_OUT_VENDOR)/firmware_mnt
+ALL_DEFAULT_INSTALLED_MODULES += $(FIRMWARE_MOUNT_POINT)
+
+$(FIRMWARE_MOUNT_POINT):
+	@echo "Creating $(FIRMWARE_MOUNT_POINT)"
+	@mkdir -p $(TARGET_OUT_VENDOR)/firmware_mnt
+
+# Wi-Fi
+include external/wpa_supplicant_8/wpa_supplicant/wpa_supplicant_conf.mk
 
 endif

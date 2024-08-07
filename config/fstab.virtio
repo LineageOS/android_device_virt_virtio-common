@@ -1,3 +1,6 @@
+# EFI
+/dev/block/by-name/EFI /mnt/vendor/EFI vfat rw,shortname=lower,uid=0,gid=0,dmask=007,fmask=117,context=u:object_r:efi_file:s0 nofail
+
 # Super
 odm /odm ext4 noatime,ro logical,first_stage_mount
 odm /odm erofs noatime,ro logical,first_stage_mount
@@ -29,6 +32,9 @@ vendor_dlkm /vendor_dlkm erofs ro logical,first_stage_mount
 
 # Recovery
 /dev/block/by-name/recovery /recovery emmc defaults defaults
+
+# Firmware
+/dev/block/by-name/firmware /vendor/firmware_mnt vfat rw,shortname=lower,uid=0,gid=1000,dmask=007,fmask=117,context=u:object_r:firmware_file:s0 nofail
 
 # Userdata (on separate disk)
 /dev/block/vdb /data ext4 nodev,noatime,nosuid latemount,check,quota,formattable,fileencryption=aes-256-xts,keydirectory=/metadata/vold/metadata_encryption,checkpoint=block

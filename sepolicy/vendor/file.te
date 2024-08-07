@@ -1,2 +1,8 @@
 # DMI
 type vendor_sysfs_dmi_id, fs_type, sysfs_type;
+
+# EFI
+type efi_file, file_type, efi_file_type;
+
+# Firmware
+type firmware_file, file_type, contextmount_type, vendor_file_type;
