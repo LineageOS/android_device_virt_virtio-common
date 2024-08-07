@@ -185,7 +185,7 @@ PRODUCT_PACKAGES += \
 
 # Memtrack
 PRODUCT_PACKAGES += \
-    com.android.hardware.memtrack
+    android.hardware.memtrack-service.example
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
