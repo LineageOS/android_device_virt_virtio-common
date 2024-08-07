@@ -55,10 +55,11 @@ BOARD_KERNEL_CMDLINE := \
 
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
 BOARD_VENDOR_KERNEL_MODULES_LOAD := \
-    $(strip $(shell cat $(COMMON_PATH)/config/modules.load.vendor.peripheral_wifi))
+    $(strip $(shell cat $(wildcard $(COMMON_PATH)/config/modules.load.vendor.*)))
 TARGET_KERNEL_CONFIG := \
     gki_defconfig \
     lineageos/virtio.config \
+    lineageos/peripheral/bluetooth.config \
     lineageos/peripheral/wifi.config \
     lineageos/feature/fbcon.config
 else ifneq ($(wildcard $(TARGET_PREBUILT_KERNEL_DIR)/kernel),)
@@ -131,6 +132,13 @@ TARGET_BOARD_PLATFORM := virtio
 # Properties
 TARGET_PRODUCT_PROP := $(COMMON_PATH)/properties/product.prop
 TARGET_VENDOR_PROP := $(COMMON_PATH)/properties/vendor.prop
+
+ifneq ($(PRODUCT_IS_ATV),true)
+ifneq ($(PRODUCT_IS_AUTOMOTIVE),true)
+TARGET_VENDOR_PROP += \
+    $(COMMON_PATH)/properties/vendor_bluetooth_profiles.prop
+endif
+endif
 
 # Ramdisk
 BOARD_RAMDISK_USE_LZ4 := true
