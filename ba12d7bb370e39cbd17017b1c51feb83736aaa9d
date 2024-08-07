@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "663b4cb6_c529bfed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32245
+      },
+      "writtenOn": "2024-08-07T07:56:01Z",
+      "side": 1,
+      "message": "Seems to be not supported yet, Hold until V",
+      "revId": "ba12d7bb370e39cbd17017b1c51feb83736aaa9d",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
