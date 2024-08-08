@@ -1,19 +1,4 @@
-import /vendor/etc/init/hw/init.low_performance.rc
-
-service suspend_blocker /vendor/bin/suspend_blocker
-    class early_hal # Start together with system_suspend HAL
-    group system
-    user root
-
-service vendor.dlkm_loader /vendor/bin/dlkm_loader
-    class main
-    user root
-    group root system
-    disabled
-    oneshot
-
-on early-init
-    setprop ro.sf.lcd_density ${ro.boot.lcd_density:-160}
+import /vendor/etc/init/hw/init.virt.rc
 
 on fs
     mkdir /mnt/vendor/EFI 0770 root root
@@ -22,24 +7,11 @@ on fs
     # Mount everything that does not require fsck
     mount_all --early
 
-on post-fs
-    write /sys/module/firmware_class/parameters/path /vendor/firmware_mnt/
-    start vendor.dlkm_loader
-
 on late-fs
     # Mount RW partitions which need run fsck
     mount_all --late
 
-on early-boot
-    # Wi-Fi
-    mkdir /data/vendor/wifi 0770 wifi wifi
-    mkdir /data/vendor/wifi/wpa 0770 wifi wifi
-    mkdir /data/vendor/wifi/wpa/sockets 0770 wifi wifi
-
-# Graphics
-on early-init
-    setprop ro.vendor.graphics ${ro.boot.graphics:-mesa}
-
+# Graphics (Mesa)
 on property:ro.vendor.graphics=mesa && property:ro.vendor.graphics.mesa.is_upstream=true
     setprop ro.hardware.egl mesa
     setprop ro.hardware.gralloc minigbm
@@ -50,31 +22,3 @@ on property:ro.vendor.graphics=mesa && property:ro.vendor.graphics.mesa.is_upstr
     setprop ro.cpuvulkan.version 0
     setprop ro.hardware.egl mesa
     setprop ro.opengles.version 196608
-
-on property:ro.vendor.graphics=swiftshader
-    setprop ro.cpuvulkan.version 4202496
-    setprop ro.hardware.egl angle
-    setprop ro.hardware.vulkan pastel
-    setprop ro.opengles.version 196609
-    setprop ro.vulkan.apex com.google.cf.vulkan
-
-# Shutdown
-service vendor.refind-update-default_selection /vendor/bin/refind-update-default_selection.sh ${sys.shutdown.requested}
-    user root
-    group root
-    disabled
-    oneshot
-
-on property:sys.shutdown.requested=*
-    start vendor.refind-update-default_selection
-
-# VirtWifi
-service setup_wifi /vendor/bin/setup_wifi --interface=${ro.vendor.virtwifi.port}
-    override
-    disabled
-    oneshot
-    user root
-    group root
-
-on post-fs-data && property:ro.boot.wifi_impl=virt_wifi
-    start setup_wifi

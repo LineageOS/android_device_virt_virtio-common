@@ -1,6 +1,3 @@
-# DMI
-genfscon sysfs /devices/virtual/dmi/id				u:object_r:vendor_sysfs_dmi_id:s0
-
 # Graphics
 ## crosvm arm64
 genfscon sysfs /devices/platform/10000.pci/pci0000:00/0000:00:01.0	u:object_r:sysfs_gpu:s0

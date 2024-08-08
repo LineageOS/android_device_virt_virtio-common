@@ -1,1 +1,0 @@
-allow e2fs vold:fifo_file write;

@@ -1,3 +1,0 @@
-dontaudit crash_dump gpu_device:dir *;
-dontaudit crash_dump resourcecache_data_file:file *;
-dontaudit crash_dump vendor_overlay_file:file *;
