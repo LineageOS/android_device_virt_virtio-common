@@ -9,3 +9,6 @@
 
 # Console
 /dev/hvc[0-9]+		u:object_r:console_device:s0
+
+# Same Process HAL
+/vendor/lib(64)?/hw/gralloc\.minigbm\.so		u:object_r:same_process_hal_file:s0

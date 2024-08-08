@@ -1,0 +1,2 @@
+# Graphics (Gralloc)
+vendor.minigbm.debug		u:object_r:vendor_minigbm_debug_prop:s0

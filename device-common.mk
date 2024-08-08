@@ -32,6 +32,13 @@ PRODUCT_SOONG_NAMESPACES += \
     external/mesa3d
 endif
 
+# Graphics (Gralloc)
+PRODUCT_PACKAGES += \
+    android.hardware.graphics.allocator-service.minigbm \
+    android.hardware.graphics.mapper@4.0-impl.minigbm \
+    gralloc.minigbm \
+    mapper.minigbm
+
 # Init
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/config/init.virtio.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.virtio.rc
