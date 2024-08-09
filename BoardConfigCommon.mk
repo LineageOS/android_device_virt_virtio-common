@@ -28,6 +28,7 @@ endif
 
 # Kernel
 BOARD_KERNEL_CMDLINE += \
+    console=tty0 \
     androidboot.console=hvc0 \
     androidboot.hardware=virtio
 
