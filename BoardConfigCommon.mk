@@ -11,10 +11,10 @@ USES_DEVICE_VIRT_VIRTIO_COMMON := true
 COMMON_PATH := device/virt/virtio-common
 
 # Boot manager
-TARGET_GRUB_BOOT_CONFIG := $(COMMON_PATH)/grub/grub-boot.cfg
-TARGET_GRUB_INSTALL_CONFIG := $(COMMON_PATH)/grub/grub-install.cfg
-TARGET_REFIND_BOOT_CONFIG := $(COMMON_PATH)/rEFInd/refind-boot.conf
-TARGET_REFIND_INSTALL_CONFIG := $(COMMON_PATH)/rEFInd/refind-install.conf
+TARGET_GRUB_BOOT_CONFIG := $(COMMON_PATH)/bootmgr/grub/grub-boot.cfg
+TARGET_GRUB_INSTALL_CONFIG := $(COMMON_PATH)/bootmgr/grub/grub-install.cfg
+TARGET_REFIND_BOOT_CONFIG := $(COMMON_PATH)/bootmgr/rEFInd/refind-boot.conf
+TARGET_REFIND_INSTALL_CONFIG := $(COMMON_PATH)/bootmgr/rEFInd/refind-install.conf
 
 # Graphics (Mesa)
 ifneq ($(wildcard external/mesa/android/Android.mk),)
