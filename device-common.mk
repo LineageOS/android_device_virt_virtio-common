@@ -22,6 +22,9 @@ $(foreach vk_drv, virtio, \
 PRODUCT_VENDOR_PROPERTIES += \
     ro.vendor.graphics.mesa.is_upstream=true
 else
+# There's no easy way to build external/mesa3d since V
+$(error external/mesa3d is currently unsupported, Please clone upstream Mesa to external/mesa)
+
 PRODUCT_PACKAGES += \
     libGLES_mesa
 
