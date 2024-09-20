@@ -1,4 +1,0 @@
-allow ueventd self:capability sys_nice;
-
-# Firmware
-r_dir_file(ueventd, firmware_file)

@@ -1,1 +1,1 @@
-gpu_access(surfaceflinger)
+get_prop(surfaceflinger, vendor_minigbm_debug_prop)

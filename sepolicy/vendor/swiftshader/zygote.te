@@ -1,2 +1,0 @@
-# TODO(b/65201432): Swiftshader needs to create executable memory.
-allow zygote self:process execmem;
