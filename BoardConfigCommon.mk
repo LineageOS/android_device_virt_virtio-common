@@ -37,28 +37,6 @@ BOARD_MESA3D_VULKAN_DRIVERS += virtio
 BOARD_KERNEL_CMDLINE += \
     console=tty0
 
-ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
-TARGET_KERNEL_CONFIG += \
-    lineageos/virtio.config
-else ifneq ($(wildcard $(TARGET_PREBUILT_KERNEL_DIR)/kernel),)
-BOARD_VENDOR_KERNEL_MODULES := \
-    $(wildcard $(TARGET_PREBUILT_KERNEL_DIR)/*.ko)
-else
-VIRTUAL_DEVICE_KERNEL_MODULES_PATH := \
-    kernel/prebuilts/common-modules/virtual-device/$(TARGET_PREBUILT_EMULATOR_KERNEL_USE)/$(TARGET_PREBUILT_KERNEL_MODULES_ARCH)
-
-BOARD_SYSTEM_KERNEL_MODULES := $(wildcard $(KERNEL_ARTIFACTS_PATH)/*.ko)
-
-BOARD_VENDOR_RAMDISK_KERNEL_MODULES := \
-    $(wildcard $(VIRTUAL_DEVICE_KERNEL_MODULES_PATH)/*failover.ko) \
-    $(wildcard $(VIRTUAL_DEVICE_KERNEL_MODULES_PATH)/nd_virtio.ko) \
-    $(wildcard $(VIRTUAL_DEVICE_KERNEL_MODULES_PATH)/virtio*.ko)
-
-BOARD_VENDOR_KERNEL_MODULES := \
-    $(filter-out $(BOARD_VENDOR_RAMDISK_KERNEL_MODULES),\
-                 $(wildcard $(VIRTUAL_DEVICE_KERNEL_MODULES_PATH)/*.ko))
-endif
-
 # Pre-install checks
 $(call soong_config_set,VIRT_PREINSTALL_CHECK,BOOT_DISK_NAME,vda)
 $(call soong_config_set,VIRT_PREINSTALL_CHECK,USERDATA_DISK_NAME,vdb)

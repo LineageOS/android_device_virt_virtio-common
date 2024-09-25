@@ -11,23 +11,4 @@ ifeq ($(USES_DEVICE_VIRT_VIRTIO_COMMON),true)
 ifneq ($(LINEAGE_BUILD),)
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
 
-INSTALLED_PREBUILT_KERNEL_REPO_DIR := $(PRODUCT_OUT)/kernel-virtio/$(TARGET_KERNEL_VERSION)/$(TARGET_PREBUILT_KERNEL_ARCH)/$(TARGET_PREBUILT_KERNEL_PAGE_SIZE)
-
-INSTALLED_PREBUILT_KERNEL_REPO_KERNEL_TARGET := $(INSTALLED_PREBUILT_KERNEL_REPO_DIR)/kernel
-$(INSTALLED_PREBUILT_KERNEL_REPO_KERNEL_TARGET): $(PRODUCT_OUT)/.kernel_version.txt $(PRODUCT_OUT)/kernel
-	$(call pretty,"Target prebuilt kernel repo: $@")
-	mkdir -p $(INSTALLED_PREBUILT_KERNEL_REPO_DIR)
-	rm -f $(INSTALLED_PREBUILT_KERNEL_REPO_DIR)/*.ko
-	if grep -q '=m' $(PRODUCT_OUT)/obj/KERNEL_OBJ/.config; then\
-		cp `find $(PRODUCT_OUT)/obj/KERNEL_OBJ/ -type f -name "*.ko"` $(INSTALLED_PREBUILT_KERNEL_REPO_DIR)/;\
-	fi
-	cp $(PRODUCT_OUT)/.kernel_version.txt $(INSTALLED_PREBUILT_KERNEL_REPO_DIR)/
-	cp $(PRODUCT_OUT)/kernel $@
-
-.PHONY: prebuilt-kernel-repo
-prebuilt-kernel-repo: $(INSTALLED_PREBUILT_KERNEL_REPO_KERNEL_TARGET)
-
-endif # $(TARGET_KERNEL_SOURCE)/Makefile
-endif # LINEAGE_BUILD
-
 endif
