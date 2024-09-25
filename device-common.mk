@@ -62,20 +62,16 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/config/.emptyfile:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/QEMU_Virtio_Tablet.kl
 
 # Kernel
-TARGET_PREBUILT_KERNEL_USE ?= 6.1
-TARGET_PREBUILT_KERNEL_DIR := device/virt/kernel-virtio/$(TARGET_PREBUILT_KERNEL_USE)/$(TARGET_PREBUILT_KERNEL_ARCH)
 TARGET_KERNEL_SOURCE := kernel/virt/virtio
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
     $(warning Using source built kernel)
-else ifneq ($(wildcard $(TARGET_PREBUILT_KERNEL_DIR)/kernel),)
-    PRODUCT_COPY_FILES += $(TARGET_PREBUILT_KERNEL_DIR)/kernel:kernel
-    $(warning Using prebuilt kernel from $(TARGET_PREBUILT_KERNEL_DIR)/kernel)
-else
-    KERNEL_ARTIFACTS_PATH := kernel/prebuilts/$(TARGET_PREBUILT_EMULATOR_KERNEL_USE)/$(TARGET_PREBUILT_KERNEL_ARCH)
-    EMULATOR_KERNEL_FILE := $(KERNEL_ARTIFACTS_PATH)/kernel-$(TARGET_PREBUILT_EMULATOR_KERNEL_USE)
-    PRODUCT_COPY_FILES += $(EMULATOR_KERNEL_FILE):kernel
-    $(warning Using prebuilt kernel from $(EMULATOR_KERNEL_FILE))
 endif
+
+# Ramdisk
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/config/fstab.virtio:$(TARGET_COPY_OUT_RAMDISK)/fstab.virtio \
+    $(TARGET_COPY_OUT_VENDOR)/etc/fstab.virtio.gsi.sda:$(TARGET_COPY_OUT_RAMDISK)/fstab.virtio.gsi.sda \
+    $(TARGET_COPY_OUT_VENDOR)/etc/fstab.virtio.gsi.vdc:$(TARGET_COPY_OUT_RAMDISK)/fstab.virtio.gsi.vdc
 
 # Recovery
 PRODUCT_COPY_FILES += \
@@ -84,9 +80,3 @@ PRODUCT_COPY_FILES += \
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH)
-
-# Vendor ramdisk
-PRODUCT_PACKAGES += \
-    fstab.virtio.vendor_ramdisk \
-    fstab.virtio.gsi.sda.vendor_ramdisk \
-    fstab.virtio.gsi.vdc.vendor_ramdisk
