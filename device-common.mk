@@ -37,19 +37,9 @@ PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/input/excluded-input-devices.xml:$(TARGET_COPY_OUT_VENDOR)/etc/excluded-input-devices.xml
 
 # Kernel
-TARGET_PREBUILT_KERNEL_USE ?= 6.12
-TARGET_PREBUILT_KERNEL_DIR := device/virt/kernel-virtio/$(TARGET_PREBUILT_KERNEL_USE)/$(TARGET_PREBUILT_KERNEL_ARCH)/$(TARGET_PREBUILT_KERNEL_PAGE_SIZE)
 TARGET_KERNEL_SOURCE := kernel/virt/virtio
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
     $(warning Using source built kernel)
-else ifneq ($(wildcard $(TARGET_PREBUILT_KERNEL_DIR)/kernel),)
-    PRODUCT_COPY_FILES += $(TARGET_PREBUILT_KERNEL_DIR)/kernel:kernel
-    $(warning Using prebuilt kernel from $(TARGET_PREBUILT_KERNEL_DIR)/kernel)
-else
-    KERNEL_ARTIFACTS_PATH := kernel/prebuilts/$(TARGET_PREBUILT_EMULATOR_KERNEL_USE)/$(TARGET_PREBUILT_KERNEL_ARCH)/$(TARGET_PREBUILT_KERNEL_PAGE_SIZE)
-    EMULATOR_KERNEL_FILE := $(KERNEL_ARTIFACTS_PATH)/kernel-$(TARGET_PREBUILT_EMULATOR_KERNEL_USE)
-    PRODUCT_COPY_FILES += $(EMULATOR_KERNEL_FILE):kernel
-    $(warning Using prebuilt kernel from $(EMULATOR_KERNEL_FILE))
 endif
 
 # Recovery
@@ -57,12 +47,8 @@ PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/init/init.recovery.virtio.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.virtio.rc
 
 # Shipping API level
-ifeq ($(TARGET_AUDIO_HAL_USE),ranchu-hidl)
-PRODUCT_SHIPPING_API_LEVEL := 34
-else
-PRODUCT_SHIPPING_API_LEVEL := 35
-PRODUCT_SHIPPING_VENDOR_API_LEVEL := 202504
-endif
+# (Stays on 30 due to target-level)
+PRODUCT_SHIPPING_API_LEVEL := 30
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \

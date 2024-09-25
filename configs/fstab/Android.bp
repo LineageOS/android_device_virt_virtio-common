@@ -41,7 +41,7 @@ prebuilt_etc {
     name: "fstab.virtio",
     src: ":gen_fstab_virtio",
     vendor: true,
-    vendor_ramdisk_available: true,
+    ramdisk_available: true,
 }
 
 genrule {
@@ -64,12 +64,12 @@ prebuilt_etc {
     name: "fstab.virtio.gsi.sda",
     src: ":gen_fstab_virtio_gsi_sda",
     vendor: true,
-    vendor_ramdisk_available: true,
+    ramdisk_available: true,
 }
 
 prebuilt_etc {
     name: "fstab.virtio.gsi.vdc",
     src: ":gen_fstab_virtio_gsi_vdc",
     vendor: true,
-    vendor_ramdisk_available: true,
+    ramdisk_available: true,
 }
