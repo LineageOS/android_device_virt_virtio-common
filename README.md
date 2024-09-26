@@ -53,6 +53,7 @@ The device tree is currently WIP, Not suitable for normal use.
 | Parameter | Possible values | Description |
 | --------- | --------------- | ----------- |
 | `virtio_gpu.force_resolution` | `<Width>x<Height>` | Force display resolution for virtio-gpu display. Exists only in source built kernel. |
+| `vkms.default_resolution` | `<Width>x<Height>` | Set default display resolution for vkms display. Exists only in source built kernel. |
 
 # Guide to boot inside crosvm VM
 
