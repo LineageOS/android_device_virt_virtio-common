@@ -37,8 +37,8 @@ vendor_dlkm /vendor_dlkm erofs ro logical,first_stage_mount
 /dev/block/by-name/firmware /vendor/firmware_mnt vfat rw,shortname=lower,uid=0,gid=1000,dmask=007,fmask=117,context=u:object_r:firmware_file:s0 nofail
 
 # Userdata (on separate disk)
-/dev/block/vdb /data ext4 nodev,noatime,nosuid,discard latemount,check,quota,formattable,fileencryption,keydirectory=/metadata/vold/metadata_encryption,checkpoint=block
-/dev/block/vdb /data f2fs nodev,noatime,nosuid,discard,reserve_root=32768 latemount,check,quota,formattable,fileencryption,keydirectory=/metadata/vold/metadata_encryption,fscompress,checkpoint=fs
+/dev/block/vdb /data ext4 nodev,noatime,nosuid,discard latemount,check,quota,formattable
+/dev/block/vdb /data f2fs nodev,noatime,nosuid,discard,reserve_root=32768 latemount,check,quota,formattable
 
 # CD-ROM
 /devices/*/block/sr* auto auto defaults voldmanaged=cdrom:auto
