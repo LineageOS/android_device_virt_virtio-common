@@ -1,5 +1,5 @@
 # EFI
-/dev/block/by-name/EFI /mnt/vendor/EFI vfat rw,shortname=lower,uid=0,gid=0,dmask=007,fmask=117,context=u:object_r:efi_file:s0 nofail
+/dev/block/by-name/EFI /mnt/vendor/EFI vfat rw,discard,shortname=lower,uid=0,gid=0,dmask=007,fmask=117,context=u:object_r:efi_file:s0 nofail
 
 # Super
 odm /odm ext4 noatime,ro logical,first_stage_mount
@@ -21,11 +21,11 @@ vendor_dlkm /vendor_dlkm erofs ro logical,first_stage_mount
 /dev/block/by-name/misc /misc emmc defaults defaults
 
 # Metadata
-/dev/block/by-name/metadata /metadata ext4 nodev,noatime,nosuid check,formattable,first_stage_mount
+/dev/block/by-name/metadata /metadata ext4 nodev,noatime,nosuid,discard check,formattable,first_stage_mount
 
 # Cache
-/dev/block/by-name/cache /cache ext4 nodev,noatime,nosuid check,formattable
-/dev/block/by-name/cache /cache f2fs nodev,noatime,nosuid check,formattable
+/dev/block/by-name/cache /cache ext4 nodev,noatime,nosuid,discard check,formattable
+/dev/block/by-name/cache /cache f2fs nodev,noatime,nosuid,discard check,formattable
 
 # Boot
 /dev/block/by-name/boot /boot emmc defaults defaults
@@ -37,8 +37,8 @@ vendor_dlkm /vendor_dlkm erofs ro logical,first_stage_mount
 /dev/block/by-name/firmware /vendor/firmware_mnt vfat rw,shortname=lower,uid=0,gid=1000,dmask=007,fmask=117,context=u:object_r:firmware_file:s0 nofail
 
 # Userdata (on separate disk)
-/dev/block/vdb /data ext4 nodev,noatime,nosuid latemount,check,quota,formattable,fileencryption,keydirectory=/metadata/vold/metadata_encryption,checkpoint=block
-/dev/block/vdb /data f2fs nodev,noatime,nosuid,reserve_root=32768 latemount,check,quota,formattable,fileencryption,keydirectory=/metadata/vold/metadata_encryption,fscompress,checkpoint=fs
+/dev/block/vdb /data ext4 nodev,noatime,nosuid,discard latemount,check,quota,formattable,fileencryption,keydirectory=/metadata/vold/metadata_encryption,checkpoint=block
+/dev/block/vdb /data f2fs nodev,noatime,nosuid,discard,reserve_root=32768 latemount,check,quota,formattable,fileencryption,keydirectory=/metadata/vold/metadata_encryption,fscompress,checkpoint=fs
 
 # CD-ROM
 /devices/*/block/sr* auto auto defaults voldmanaged=cdrom:auto
