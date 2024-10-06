@@ -24,13 +24,8 @@ $(call soong_config_set,VIRTIO_FSTAB,PARTITION_SCHEME,a)
 endif
 
 # Graphics (Mesa)
-ifneq ($(wildcard external/mesa/android/Android.mk),)
-BOARD_MESA3D_USES_MESON_BUILD := true
-BOARD_MESA3D_GALLIUM_DRIVERS := virgl
-BOARD_MESA3D_VULKAN_DRIVERS := virtio
-else
-BOARD_GPU_DRIVERS := virgl
-endif
+BOARD_MESA3D_GALLIUM_DRIVERS += virgl
+BOARD_MESA3D_VULKAN_DRIVERS += virtio
 
 # Kernel
 BOARD_KERNEL_CMDLINE += \
