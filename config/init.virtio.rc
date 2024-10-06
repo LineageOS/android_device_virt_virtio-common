@@ -14,3 +14,6 @@ on late-fs
 # Graphics (Mesa)
 on property:ro.vendor.graphics=mesa
     setprop ro.hardware.gralloc minigbm
+
+on property:ro.vendor.graphics=mesa_lavapipe
+    setprop ro.hardware.gralloc minigbm
