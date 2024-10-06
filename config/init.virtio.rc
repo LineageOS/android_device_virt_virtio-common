@@ -12,13 +12,5 @@ on late-fs
     mount_all --late
 
 # Graphics (Mesa)
-on property:ro.vendor.graphics=mesa && property:ro.vendor.graphics.mesa.is_upstream=true
-    setprop ro.hardware.egl mesa
+on property:ro.vendor.graphics=mesa
     setprop ro.hardware.gralloc minigbm
-    setprop ro.hardware.vulkan virtio
-    setprop ro.opengles.version 196610
-
-on property:ro.vendor.graphics=mesa && property:ro.vendor.graphics.mesa.is_upstream=false
-    setprop ro.cpuvulkan.version 0
-    setprop ro.hardware.egl mesa
-    setprop ro.opengles.version 196608
