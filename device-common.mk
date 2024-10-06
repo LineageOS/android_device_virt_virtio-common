@@ -23,29 +23,8 @@ PRODUCT_PACKAGES += \
     mapper.minigbm
 
 # Graphics (Mesa)
-ifneq ($(wildcard external/mesa/android/Android.mk),)
-PRODUCT_PACKAGES += \
-    libEGL_mesa \
-    libGLESv1_CM_mesa \
-    libGLESv2_mesa \
-    libgallium_dri \
-    libglapi
-
 $(foreach vk_drv, virtio, \
     $(eval PRODUCT_PACKAGES += vulkan.$(vk_drv)))
-
-PRODUCT_VENDOR_PROPERTIES += \
-    ro.vendor.graphics.mesa.is_upstream=true
-else
-PRODUCT_PACKAGES += \
-    libGLES_mesa
-
-PRODUCT_VENDOR_PROPERTIES += \
-    ro.vendor.graphics.mesa.is_upstream=false
-
-PRODUCT_SOONG_NAMESPACES += \
-    external/mesa3d
-endif
 
 # Init
 PRODUCT_COPY_FILES += \
