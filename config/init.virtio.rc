@@ -15,3 +15,6 @@ on late-fs
 on property:ro.vendor.graphics=mesa
     setprop ro.hardware.gralloc minigbm
     setprop ro.hardware.vulkan virtio
+
+on property:ro.vendor.graphics=mesa_lavapipe
+    setprop ro.hardware.gralloc minigbm
