@@ -18,7 +18,6 @@ TARGET_REFIND_INSTALL_CONFIG := $(COMMON_PATH)/bootmgr/rEFInd/refind-install.con
 
 # Graphics (Mesa)
 ifneq ($(wildcard external/mesa/android/Android.mk),)
-BUILD_BROKEN_INCORRECT_PARTITION_IMAGES := true
 BOARD_MESA3D_USES_MESON_BUILD := true
 BOARD_MESA3D_GALLIUM_DRIVERS := virgl
 BOARD_MESA3D_VULKAN_DRIVERS := virtio
