@@ -36,7 +36,6 @@ The device tree is currently WIP, Not suitable for normal use.
 
 | Type | Models | Description |
 | ---- | ------ | ----------- |
-| Chipset (QEMU x86_64) | Q35 | |
 | Console | Serial console, VirtIO | By default, Serial console is used for printing kernel messages, VirtIO is used for Android shell console. |
 | Disk | USB, VirtIO | Must use VirtIO for boot devices. |
 | Filesystem | virtiofs | virtiofs filesystem with tag "shared" will be automatically mounted at `/mnt/vendor/shared`. |

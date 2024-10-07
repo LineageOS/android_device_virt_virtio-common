@@ -15,6 +15,20 @@ genfscon sysfs /devices/LNXSYSTM:00/LNXPWRBN:00/wakeup/wakeup						u:object_r:sy
 genfscon sysfs /devices/LNXSYSTM:00/LNXSLPBN:00/wakeup/wakeup						u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0013:00/wakeup/wakeup				u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/ARMH0011:00/wakeup/wakeup				u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A03:00/device:00/wakeup/wakeup			u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A03:00/device:01/wakeup/wakeup			u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A03:00/device:02/wakeup/wakeup			u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A03:00/device:03/wakeup/wakeup			u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A03:00/device:04/wakeup/wakeup			u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A03:00/device:05/wakeup/wakeup			u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A03:00/device:06/wakeup/wakeup			u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A03:00/device:07/wakeup/wakeup			u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A03:00/device:08/wakeup/wakeup			u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A03:00/device:09/wakeup/wakeup			u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A03:00/device:0a/wakeup/wakeup			u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A03:00/device:0b/wakeup/wakeup			u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A03:00/device:0c/wakeup/wakeup			u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A03:00/wakeup/wakeup				u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:00/wakeup/wakeup			u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:01/wakeup/wakeup			u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:02/wakeup/wakeup			u:object_r:sysfs_wakeup:s0
@@ -62,4 +76,6 @@ genfscon sysfs /devices/platform/rtc_cmos/rtc/rtc0/alarmtimer.0.auto/wakeup/wake
 genfscon sysfs /devices/platform/rtc_cmos/wakeup/wakeup							u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/pnp0/00:03/rtc/rtc0/alarmtimer.0.auto/wakeup/wakeup				u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/pnp0/00:03/wakeup/wakeup							u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/pnp0/00:04/rtc/rtc0/alarmtimer.0.auto/wakeup/wakeup				u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/pnp0/00:04/wakeup/wakeup							u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/virtual/wakeup/wakeup								u:object_r:sysfs_wakeup:s0
