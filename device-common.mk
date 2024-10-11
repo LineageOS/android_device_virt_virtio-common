@@ -7,6 +7,21 @@
 # Inherit from common
 $(call inherit-product, device/virt/virt-common/virt-common.mk)
 
+# Graphics (Composer)
+PRODUCT_PACKAGES += \
+    android.hardware.graphics.composer@2.4-service \
+    hwcomposer.drm
+
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.hardware.hwcomposer=drm
+
+# Graphics (Gralloc)
+PRODUCT_PACKAGES += \
+    android.hardware.graphics.allocator-service.minigbm \
+    android.hardware.graphics.mapper@4.0-impl.minigbm \
+    gralloc.minigbm \
+    mapper.minigbm
+
 # Graphics (Mesa)
 ifneq ($(wildcard external/mesa/android/Android.mk),)
 PRODUCT_PACKAGES += \
@@ -31,21 +46,6 @@ PRODUCT_VENDOR_PROPERTIES += \
 PRODUCT_SOONG_NAMESPACES += \
     external/mesa3d
 endif
-
-# Graphics (Composer)
-PRODUCT_PACKAGES += \
-    android.hardware.graphics.composer@2.4-service \
-    hwcomposer.drm
-
-PRODUCT_VENDOR_PROPERTIES += \
-    ro.hardware.hwcomposer=drm
-
-# Graphics (Gralloc)
-PRODUCT_PACKAGES += \
-    android.hardware.graphics.allocator-service.minigbm \
-    android.hardware.graphics.mapper@4.0-impl.minigbm \
-    gralloc.minigbm \
-    mapper.minigbm
 
 # Init
 PRODUCT_COPY_FILES += \
