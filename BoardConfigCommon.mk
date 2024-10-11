@@ -16,6 +16,9 @@ TARGET_GRUB_INSTALL_CONFIG := $(COMMON_PATH)/bootmgr/grub/grub-install.cfg
 TARGET_REFIND_BOOT_CONFIG := $(COMMON_PATH)/bootmgr/rEFInd/refind-boot.conf
 TARGET_REFIND_INSTALL_CONFIG := $(COMMON_PATH)/bootmgr/rEFInd/refind-install.conf
 
+# Graphics (Gralloc)
+$(call soong_config_set, minigbm, platform, generic)
+
 # Graphics (Mesa)
 BOARD_MESA3D_GALLIUM_DRIVERS += virgl
 BOARD_MESA3D_VULKAN_DRIVERS += virtio
