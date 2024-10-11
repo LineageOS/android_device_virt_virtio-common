@@ -49,7 +49,7 @@ PRODUCT_PACKAGES += \
 
 # Init
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/config/init.virtio.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.virtio.rc
+    $(LOCAL_PATH)/configs/init/init.virtio.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.virtio.rc
 
 PRODUCT_PACKAGES += \
     fstab.virtio \
@@ -58,8 +58,8 @@ PRODUCT_PACKAGES += \
 
 # Input
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/config/.emptyfile:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/QEMU_QEMU_USB_Tablet.kl \
-    $(LOCAL_PATH)/config/.emptyfile:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/QEMU_Virtio_Tablet.kl
+    $(LOCAL_PATH)/configs/.emptyfile:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/QEMU_QEMU_USB_Tablet.kl \
+    $(LOCAL_PATH)/configs/.emptyfile:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/QEMU_Virtio_Tablet.kl
 
 # Kernel
 TARGET_PREBUILT_KERNEL_USE ?= 6.1
@@ -79,7 +79,7 @@ endif
 
 # Recovery
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/config/init.recovery.virtio.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.virtio.rc
+    $(LOCAL_PATH)/configs/init/init.recovery.virtio.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.virtio.rc
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
