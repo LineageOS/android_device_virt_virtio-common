@@ -54,7 +54,7 @@ BOARD_VENDOR_KERNEL_MODULES := \
 endif
 
 # Recovery
-TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/config/fstab.virtio
+TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/configs/fstab/fstab.virtio
 TARGET_RECOVERY_PIXEL_FORMAT := ARGB_8888
 
 # SELinux
@@ -66,4 +66,4 @@ SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/public
 
 # VINTF
 DEVICE_MANIFEST_FILE += \
-    $(COMMON_PATH)/config/manifest.xml
+    $(COMMON_PATH)/configs/vintf/manifest.xml
