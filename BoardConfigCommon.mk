@@ -22,6 +22,9 @@ else
 $(call soong_config_set,VIRTIO_FSTAB,PARTITION_SCHEME,a)
 endif
 
+# Graphics (Gralloc)
+$(call soong_config_set, minigbm, platform, generic)
+
 # Graphics (Mesa)
 BOARD_MESA3D_GALLIUM_DRIVERS += virgl
 BOARD_MESA3D_VULKAN_DRIVERS += virtio
