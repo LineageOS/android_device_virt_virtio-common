@@ -56,6 +56,9 @@ endif
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/config/init.recovery.virtio.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.virtio.rc
 
+# Shipping API level
+PRODUCT_SHIPPING_API_LEVEL := 35
+
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH)
