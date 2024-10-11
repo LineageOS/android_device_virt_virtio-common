@@ -13,11 +13,7 @@ $(foreach vk_drv, virtio, \
 
 # Graphics (Composer)
 PRODUCT_PACKAGES += \
-    android.hardware.graphics.composer@2.4-service \
-    hwcomposer.drm
-
-PRODUCT_VENDOR_PROPERTIES += \
-    ro.hardware.hwcomposer=drm
+    com.android.hardware.graphics.composer.drm_hwcomposer
 
 # Graphics (Gralloc)
 PRODUCT_PACKAGES += \
