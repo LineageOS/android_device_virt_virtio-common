@@ -47,4 +47,4 @@ vendor_dlkm /vendor_dlkm erofs ro logical,first_stage_mount
 /devices/*/usb* auto auto defaults voldmanaged=usb:auto
 
 # VirtioFS
-shared /mnt/vendor/shared virtiofs nosuid,nodev,noatime nofail
+share /mnt/vendor/shared virtiofs nosuid,nodev,noatime nofail
