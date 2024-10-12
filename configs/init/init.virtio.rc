@@ -2,6 +2,7 @@ import /vendor/etc/init/hw/init.virt.rc
 
 on fs
     mkdir /mnt/vendor/EFI 0770 root root
+    mkdir /mnt/vendor/persist 0770 system system
     mkdir /mnt/vendor/shared 0770 system system
 
     # Mount everything that does not require fsck
