@@ -43,6 +43,9 @@ vendor_dlkm /vendor_dlkm erofs ro logical,first_stage_mount
 # CD-ROM
 /devices/*/block/sr* auto auto defaults voldmanaged=cdrom:auto
 
+# SD card (recovery only)
+/dev/block/sda /sdcard vfat ro,defaults recoveryonly
+
 # USB
 /devices/*/usb* auto auto defaults voldmanaged=usb:auto
 
