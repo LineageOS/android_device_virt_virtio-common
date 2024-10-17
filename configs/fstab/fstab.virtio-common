@@ -1,37 +1,11 @@
 # EFI
 /dev/block/by-name/EFI /mnt/vendor/EFI vfat rw,discard,shortname=lower,uid=0,gid=0,dmask=007,fmask=117,context=u:object_r:efi_file:s0 nofail
 
-# Super
-odm /odm ext4 noatime,ro logical,first_stage_mount
-odm /odm erofs noatime,ro logical,first_stage_mount
-product /product ext4 noatime,ro logical,first_stage_mount
-product /product erofs noatime,ro logical,first_stage_mount
-system /system ext4 noatime,ro logical,first_stage_mount
-system /system erofs noatime,ro logical,first_stage_mount
-system_dlkm /system_dlkm ext4 noatime,ro,errors=panic logical,first_stage_mount
-system_dlkm /system_dlkm erofs ro logical,first_stage_mount
-system_ext /system_ext ext4 noatime,ro logical,first_stage_mount
-system_ext /system_ext erofs noatime,ro logical,first_stage_mount
-vendor /vendor ext4 noatime,ro logical,first_stage_mount
-vendor /vendor erofs noatime,ro logical,first_stage_mount
-vendor_dlkm /vendor_dlkm ext4 noatime,ro,errors=panic logical,first_stage_mount
-vendor_dlkm /vendor_dlkm erofs ro logical,first_stage_mount
-
 # Misc
 /dev/block/by-name/misc /misc emmc defaults defaults
 
 # Metadata
 /dev/block/by-name/metadata /metadata ext4 nodev,noatime,nosuid,discard check,formattable,first_stage_mount
-
-# Cache
-/dev/block/by-name/cache /cache ext4 nodev,noatime,nosuid,discard check,formattable
-/dev/block/by-name/cache /cache f2fs nodev,noatime,nosuid,discard check,formattable
-
-# Boot
-/dev/block/by-name/boot /boot emmc defaults defaults
-
-# Recovery
-/dev/block/by-name/recovery /recovery emmc defaults defaults
 
 # Firmware
 /dev/block/by-name/firmware /vendor/firmware_mnt vfat rw,shortname=lower,uid=0,gid=1000,dmask=007,fmask=117,context=u:object_r:firmware_file:s0 nofail
