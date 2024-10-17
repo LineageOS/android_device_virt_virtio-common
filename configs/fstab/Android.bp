@@ -1,13 +1,46 @@
+soong_config_module_type {
+    name: "virtio_fstab_genrule",
+    module_type: "genrule",
+    config_namespace: "VIRTIO_FSTAB",
+    variables: ["PARTITION_SCHEME"],
+    properties: ["srcs"],
+}
+
+soong_config_string_variable {
+    name: "PARTITION_SCHEME",
+    values: ["a", "ab"],
+}
+
+virtio_fstab_genrule {
+    name: "gen_fstab_virtio",
+    srcs: ["fstab.virtio-common"],
+    out: ["fstab.virtio"],
+    soong_config_variables: {
+        PARTITION_SCHEME: {
+            a: {
+                srcs: ["fstab.virtio-a"],
+            },
+            ab: {
+                srcs: ["fstab.virtio-ab"],
+            },
+            conditions_default: {
+                srcs: ["fstab.virtio-a"],
+            },
+        },
+    },
+    cmd: "cat $(in) > $(out)",
+}
+
 prebuilt_etc {
     name: "fstab.virtio",
-    src: "fstab.virtio",
+    src: ":gen_fstab_virtio",
     vendor: true,
     vendor_ramdisk_available: true,
 }
 
 genrule {
     name: "gen_fstab_virtio_gsi_sda",
-    srcs: ["fstab.virtio"],
+    srcs: [":gen_fstab_virtio"],
     out: ["fstab.virtio.gsi.sda"],
     tool_files: [ "fstab.sed.gsi.sda" ],
     cmd: "sed -f $(location fstab.sed.gsi.sda) $(in) > $(out)",
@@ -15,7 +48,7 @@ genrule {
 
 genrule {
     name: "gen_fstab_virtio_gsi_vdc",
-    srcs: ["fstab.virtio"],
+    srcs: [":gen_fstab_virtio"],
     out: ["fstab.virtio.gsi.vdc"],
     tool_files: [ "fstab.sed.gsi.vdc" ],
     cmd: "sed -f $(location fstab.sed.gsi.vdc) $(in) > $(out)",

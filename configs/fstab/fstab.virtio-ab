@@ -1,0 +1,21 @@
+# Super
+odm /odm ext4 noatime,ro logical,first_stage_mount,slotselect
+odm /odm erofs noatime,ro logical,first_stage_mount,slotselect
+product /product ext4 noatime,ro logical,first_stage_mount,slotselect
+product /product erofs noatime,ro logical,first_stage_mount,slotselect
+system /system ext4 noatime,ro logical,first_stage_mount,slotselect
+system /system erofs noatime,ro logical,first_stage_mount,slotselect
+system_dlkm /system_dlkm ext4 noatime,ro,errors=panic logical,first_stage_mount,slotselect
+system_dlkm /system_dlkm erofs ro logical,first_stage_mount,slotselect
+system_ext /system_ext ext4 noatime,ro logical,first_stage_mount,slotselect
+system_ext /system_ext erofs noatime,ro logical,first_stage_mount,slotselect
+vendor /vendor ext4 noatime,ro logical,first_stage_mount,slotselect
+vendor /vendor erofs noatime,ro logical,first_stage_mount,slotselect
+vendor_dlkm /vendor_dlkm ext4 noatime,ro,errors=panic logical,first_stage_mount,slotselect
+vendor_dlkm /vendor_dlkm erofs ro logical,first_stage_mount,slotselect
+
+# Boot
+/dev/block/by-name/boot /boot emmc defaults slotselect
+
+# GRUB Boot
+/dev/block/by-name/grub_boot /grub_boot emmc defaults slotselect

@@ -16,6 +16,13 @@ TARGET_GRUB_INSTALL_CONFIG := $(COMMON_PATH)/bootmgr/grub/grub-install.cfg
 TARGET_REFIND_BOOT_CONFIG := $(COMMON_PATH)/bootmgr/rEFInd/refind-boot.conf
 TARGET_REFIND_INSTALL_CONFIG := $(COMMON_PATH)/bootmgr/rEFInd/refind-install.conf
 
+# Fstab
+ifeq ($(AB_OTA_UPDATER),true)
+$(call soong_config_set,VIRTIO_FSTAB,PARTITION_SCHEME,ab)
+else
+$(call soong_config_set,VIRTIO_FSTAB,PARTITION_SCHEME,a)
+endif
+
 # Graphics (Mesa)
 ifneq ($(wildcard external/mesa/android/Android.mk),)
 BOARD_MESA3D_USES_MESON_BUILD := true
@@ -54,7 +61,7 @@ BOARD_VENDOR_KERNEL_MODULES := \
 endif
 
 # Recovery
-TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/configs/fstab/fstab.virtio
+TARGET_RECOVERY_FSTAB_GENRULE := gen_fstab_virtio
 TARGET_RECOVERY_PIXEL_FORMAT := ARGB_8888
 
 # SELinux
