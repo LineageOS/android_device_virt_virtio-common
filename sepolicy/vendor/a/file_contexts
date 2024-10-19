@@ -1,0 +1,6 @@
+# Block devices
+/dev/block/vda4		u:object_r:metadata_block_device:s0
+/dev/block/vda5		u:object_r:cache_block_device:s0
+/dev/block/vda6		u:object_r:boot_block_device:s0
+/dev/block/vda7		u:object_r:recovery_block_device:s0
+/dev/block/vda9		u:object_r:persist_block_device:s0
