@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edd4df43_a544526d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 32245
+      },
+      "writtenOn": "2024-10-19T11:14:03Z",
+      "side": 1,
+      "message": "I forgot that GSI doesn\u0027t have boot_devices\u003dany support and needs vdX",
+      "revId": "017dfa754904731328c9cc700fb32b5e4eb0a48e",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
