@@ -13,7 +13,10 @@ soong_config_string_variable {
 
 virtio_fstab_genrule {
     name: "gen_fstab_virtio",
-    srcs: ["fstab.virtio-common"],
+    srcs: [
+        "fstab.virtio-common",
+        ":fstab.virt-common",
+    ],
     out: ["fstab.virtio"],
     soong_config_variables: {
         PARTITION_SCHEME: {
