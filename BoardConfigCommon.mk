@@ -36,7 +36,8 @@ endif
 BOARD_KERNEL_CMDLINE += \
     console=tty0 \
     androidboot.console=hvc0 \
-    androidboot.hardware=virtio
+    androidboot.hardware=virtio \
+    androidboot.partition_map=vdb,userdata
 
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
 TARGET_KERNEL_CONFIG += \
