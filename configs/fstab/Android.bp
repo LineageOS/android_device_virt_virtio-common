@@ -18,13 +18,13 @@ virtio_fstab_genrule {
     soong_config_variables: {
         PARTITION_SCHEME: {
             a: {
-                srcs: ["fstab.virtio-a"],
+                srcs: [":fstab.virt-a"],
             },
             ab: {
-                srcs: ["fstab.virtio-ab"],
+                srcs: [":fstab.virt-ab"],
             },
             conditions_default: {
-                srcs: ["fstab.virtio-a"],
+                srcs: [":fstab.virt-a"],
             },
         },
     },
