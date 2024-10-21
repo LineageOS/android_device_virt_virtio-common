@@ -26,6 +26,7 @@ endif
 # Graphics (Mesa)
 ifneq ($(wildcard external/mesa/android/Android.mk),)
 BOARD_MESA3D_USES_MESON_BUILD := true
+BOARD_MESA3D_BUILD_LIBGBM := true
 BOARD_MESA3D_GALLIUM_DRIVERS := virgl
 BOARD_MESA3D_VULKAN_DRIVERS := virtio
 else
@@ -37,7 +38,8 @@ BOARD_KERNEL_CMDLINE += \
     console=tty0 \
     androidboot.console=hvc0 \
     androidboot.hardware=virtio \
-    androidboot.partition_map=vdb,userdata
+    androidboot.partition_map=vdb,userdata \
+    audit=0 androidboot.selinux=permissive androidboot.insecure_adb=1
 
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
 TARGET_KERNEL_CONFIG += \

@@ -1,2 +1,3 @@
 # Graphics (Gralloc)
+#vendor.gralloc.gbm.device	u:object_r:vendor_gralloc_gbm_prop:s0 TODO
 vendor.minigbm.debug		u:object_r:vendor_minigbm_debug_prop:s0
