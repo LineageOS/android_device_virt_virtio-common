@@ -17,12 +17,18 @@ PRODUCT_VENDOR_PROPERTIES += \
 
 # Graphics (Gralloc)
 PRODUCT_PACKAGES += \
-    android.hardware.graphics.allocator-service.minigbm \
-    android.hardware.graphics.mapper@4.0-impl.minigbm \
-    gralloc.minigbm \
-    mapper.minigbm
+    android.hardware.graphics.allocator@2.0-impl \
+    android.hardware.graphics.allocator@2.0-service \
+    android.hardware.graphics.mapper@2.0-impl-2.1 \
+    gralloc.gbm
+
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.hardware.gralloc=gbm
 
 # Graphics (Mesa)
+PRODUCT_PACKAGES += \
+    dri_gbm
+
 $(foreach vk_drv, virtio, \
     $(eval PRODUCT_PACKAGES += vulkan.$(vk_drv)))
 

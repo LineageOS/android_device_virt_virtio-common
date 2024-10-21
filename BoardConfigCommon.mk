@@ -24,6 +24,7 @@ $(call soong_config_set,VIRTIO_FSTAB,PARTITION_SCHEME,a)
 endif
 
 # Graphics (Mesa)
+BOARD_MESA3D_BUILD_LIBGBM := true
 BOARD_MESA3D_GALLIUM_DRIVERS += virgl
 BOARD_MESA3D_VULKAN_DRIVERS += virtio
 
@@ -32,7 +33,8 @@ BOARD_KERNEL_CMDLINE += \
     console=tty0 \
     androidboot.console=hvc0 \
     androidboot.hardware=virtio \
-    androidboot.partition_map=vdb,userdata
+    androidboot.partition_map=vdb,userdata \
+    audit=0 androidboot.selinux=permissive androidboot.insecure_adb=1
 
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
 BOARD_VENDOR_KERNEL_MODULES_LOAD += \
