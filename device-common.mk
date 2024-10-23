@@ -9,7 +9,11 @@ $(call inherit-product, device/virt/virt-common/virt-common.mk)
 
 # Graphics (Composer)
 PRODUCT_PACKAGES += \
-    com.android.hardware.graphics.composer.drm_hwcomposer
+    android.hardware.graphics.composer@2.4-service \
+    hwcomposer.drm
+
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.hardware.hwcomposer=drm
 
 # Graphics (Gralloc)
 PRODUCT_PACKAGES += \
@@ -57,8 +61,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/init/init.recovery.virtio.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.virtio.rc
 
 # Shipping API level
-PRODUCT_SHIPPING_API_LEVEL := 35
-PRODUCT_SHIPPING_VENDOR_API_LEVEL := 202504
+PRODUCT_SHIPPING_API_LEVEL := 33
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
