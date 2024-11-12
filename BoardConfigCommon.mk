@@ -8,7 +8,6 @@
 include device/virt/virt-common/BoardConfigVirtCommon.mk
 
 USES_DEVICE_VIRT_VIRTIO_COMMON := true
-COMMON_PATH := device/virt/virtio-common
 
 # Boot manager
 TARGET_GRUB_BOOT_CONFIGS += $(COMMON_PATH)/bootmgr/grub/grub-boot.cfg

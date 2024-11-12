@@ -7,6 +7,8 @@
 # Inherit from common
 $(call inherit-product, device/virt/virt-common/virt-common.mk)
 
+COMMON_PATH := device/virt/virtio-common
+
 # Graphics (Composer)
 PRODUCT_PACKAGES += \
     com.android.hardware.graphics.composer.drm_hwcomposer
@@ -24,7 +26,7 @@ $(foreach vk_drv, virtio, \
 
 # Init
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/init/init.virtio.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.virtio.rc
+    $(COMMON_PATH)/configs/init/init.virtio.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.virtio.rc
 
 PRODUCT_PACKAGES += \
     fstab.virtio \
@@ -33,8 +35,8 @@ PRODUCT_PACKAGES += \
 
 # Input
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/.emptyfile:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/QEMU_QEMU_USB_Tablet.kl \
-    $(LOCAL_PATH)/configs/.emptyfile:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/QEMU_Virtio_Tablet.kl
+    $(COMMON_PATH)/configs/.emptyfile:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/QEMU_QEMU_USB_Tablet.kl \
+    $(COMMON_PATH)/configs/.emptyfile:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/QEMU_Virtio_Tablet.kl
 
 # Kernel
 TARGET_PREBUILT_KERNEL_USE ?= 6.6
@@ -54,7 +56,7 @@ endif
 
 # Recovery
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/init/init.recovery.virtio.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.virtio.rc
+    $(COMMON_PATH)/configs/init/init.recovery.virtio.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.virtio.rc
 
 # Shipping API level
 PRODUCT_SHIPPING_API_LEVEL := 35
@@ -62,7 +64,7 @@ PRODUCT_SHIPPING_VENDOR_API_LEVEL := 202504
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
-    $(LOCAL_PATH)
+    $(COMMON_PATH)
 
 # Vendor ramdisk
 PRODUCT_PACKAGES += \
