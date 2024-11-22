@@ -1,0 +1,2 @@
+# Graphics (Composer)
+set_prop(vendor_init, vendor_hwcomposer_prop)
