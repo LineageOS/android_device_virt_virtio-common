@@ -41,3 +41,16 @@ on property:ro.vendor.graphics=mesa
 
 on property:ro.vendor.graphics=mesa_swrast
     setprop ro.hardware.gralloc minigbm
+
+# Serial logging
+service seriallogging /system/bin/logcat -b all -v threadtime -f /dev/hvc1 *:V
+    class main
+    user logd
+    group root logd
+    seclabel u:r:logpersist:s0
+    disabled
+
+on early-boot
+    chown system logd /dev/hvc1
+    chmod 0660 /dev/hvc1
+    start seriallogging

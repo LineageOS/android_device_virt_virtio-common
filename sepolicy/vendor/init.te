@@ -1,0 +1,2 @@
+# Serial logging
+domain_trans(init, logcat_exec, logpersist)
