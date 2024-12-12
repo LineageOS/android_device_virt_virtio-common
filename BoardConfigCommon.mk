@@ -50,7 +50,6 @@ $(call soong_config_set,VIRT_PREINSTALL_CHECK,DRM_CARD_NAME,virtio_gpu)
 TARGET_VENDOR_PROP += $(COMMON_PATH)/configs/properties/vendor.prop
 
 # Recovery
-TARGET_RECOVERY_FSTAB_GENRULE := gen_fstab_virtio
 TARGET_RECOVERY_PIXEL_FORMAT := ARGB_8888
 
 # SELinux

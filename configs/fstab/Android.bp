@@ -44,6 +44,17 @@ prebuilt_etc {
     vendor_ramdisk_available: true,
 }
 
+prebuilt_etc {
+    name: "fstab.virtio.recovery",
+    srcs: [
+        ":gen_fstab_virtio",
+    ],
+    dsts: [
+        "recovery.fstab",
+    ],
+    recovery: true,
+}
+
 genrule {
     name: "gen_fstab_virtio_gsi_sda",
     srcs: [":gen_fstab_virtio"],
