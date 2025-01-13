@@ -10,15 +10,33 @@ $(call inherit-product, device/virt/virt-common/virt-common.mk)
 COMMON_PATH := device/virt/virtio-common
 
 # Graphics (Composer)
+ifeq ($(TARGET_USES_HWCOMPOSER_DRM_MINIGBM),true)
+PRODUCT_PACKAGES += \
+    android.hardware.graphics.composer@2.1-service \
+    hwcomposer.drm_minigbm
+
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.hardware.hwcomposer=drm_minigbm
+else
 PRODUCT_PACKAGES += \
     android.hardware.composer.hwc3-service.drm
+endif
 
 # Graphics (Gralloc)
+ifeq ($(TARGET_USES_HWCOMPOSER_DRM_MINIGBM),true)
+PRODUCT_PACKAGES += \
+    android.hardware.graphics.allocator@2.0-service \
+    android.hardware.graphics.allocator@2.0-impl \
+    android.hardware.graphics.mapper@2.0-impl
+else
 PRODUCT_PACKAGES += \
     android.hardware.graphics.allocator-service.minigbm \
     android.hardware.graphics.mapper@4.0-impl.minigbm \
-    gralloc.minigbm \
     mapper.minigbm
+endif
+
+PRODUCT_PACKAGES += \
+    gralloc.minigbm
 
 # Init
 PRODUCT_COPY_FILES += \
@@ -63,3 +81,9 @@ PRODUCT_PACKAGES += \
     fstab.virtio.vendor_ramdisk \
     fstab.virtio.gsi.sda.vendor_ramdisk \
     fstab.virtio.gsi.vdc.vendor_ramdisk
+
+# Vendor service manager
+ifeq ($(TARGET_USES_HWCOMPOSER_DRM_MINIGBM),true)
+PRODUCT_PACKAGES += \
+    vndservicemanager
+endif
