@@ -10,8 +10,13 @@ $(call inherit-product, device/virt/virt-common/virt-common.mk)
 COMMON_PATH := device/virt/virtio-common
 
 # Graphics (Composer)
+ifeq ($(TARGET_HWCOMPOSER_USE),drm)
 PRODUCT_PACKAGES += \
     android.hardware.composer.hwc3-service.drm
+else
+PRODUCT_PACKAGES += \
+    com.android.hardware.graphics.composer.ranchu
+endif
 
 # Graphics (Gralloc)
 PRODUCT_PACKAGES += \
@@ -56,6 +61,7 @@ PRODUCT_COPY_FILES += \
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
+    device/generic/goldfish-opengl \
     $(COMMON_PATH)
 
 # Vendor ramdisk

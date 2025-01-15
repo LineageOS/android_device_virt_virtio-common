@@ -1,5 +1,13 @@
 # Display
 debug.sf.vsync_reactor_ignore_present_fences=true
 
+# Graphics (Composer)
+ro.vendor.hwcomposer.display_finder_mode=drm
+ro.vendor.hwcomposer.mode=client
+ro.vendor.hwcomposer.pmem=/mnt/vendor/persist/ranchu-hwc3.json
+
+# Graphics (Gralloc)
+ro.hardware.gralloc=minigbm
+
 # Recovery
 ro.recovery.supported_fs=9p,virtiofs
