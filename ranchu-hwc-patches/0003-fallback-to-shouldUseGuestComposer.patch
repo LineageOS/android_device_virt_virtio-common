@@ -1,0 +1,25 @@
+From 220124bdebcc2a92050c5b2b2b84efd3a87bfd6f Mon Sep 17 00:00:00 2001
+From: Yumi Yukimura <me.cafebabe@gmail.com>
+Date: Thu, 16 Jan 2025 05:02:41 +0800
+Subject: [PATCH 3/3] fallback to shouldUseGuestComposer
+
+---
+ system/hwc3/Device.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/system/hwc3/Device.cpp b/system/hwc3/Device.cpp
+index 8f816199..b33915bd 100644
+--- a/system/hwc3/Device.cpp
++++ b/system/hwc3/Device.cpp
+@@ -32,7 +32,7 @@ namespace aidl::android::hardware::graphics::composer3::impl {
+ namespace {
+ 
+ bool shouldUseGuestComposer() {
+-    return ::android::base::GetProperty("ro.hardware.vulkan", "") == "pastel";
++    return true;
+ }
+ 
+ std::string getPmemPath() { return ::android::base::GetProperty("ro.vendor.hwcomposer.pmem", ""); }
+-- 
+2.39.5
+

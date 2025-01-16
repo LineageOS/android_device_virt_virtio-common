@@ -1,0 +1,779 @@
+From d4a7f60cf70db6b3a57e5ddf79bb5e7a4071aada Mon Sep 17 00:00:00 2001
+From: Jason Macnak <natsu@google.com>
+Date: Fri, 10 May 2024 14:56:45 -0700
+Subject: [PATCH 1/3] Support BGRA in GuestFrameComposer
+
+Bug: b/341647448
+Test: hardcode PIXEL_FORMAT_BGRA_8888 in DrmSwapchain
+Test: cvd start --gpu_mode=guest_swiftshader
+Change-Id: Ic19df4c116b08b6739018f9e15f2a450c64abd0e
+---
+ system/hwc3/GuestFrameComposer.cpp | 490 ++++++++++++++++++++---------
+ system/hwc3/GuestFrameComposer.h   |  23 +-
+ 2 files changed, 355 insertions(+), 158 deletions(-)
+
+diff --git a/system/hwc3/GuestFrameComposer.cpp b/system/hwc3/GuestFrameComposer.cpp
+index 24002b89..96a53a0f 100644
+--- a/system/hwc3/GuestFrameComposer.cpp
++++ b/system/hwc3/GuestFrameComposer.cpp
+@@ -27,6 +27,8 @@
+ #include <ui/GraphicBufferAllocator.h>
+ #include <ui/GraphicBufferMapper.h>
+ 
++#include <utility>
++
+ #include "Display.h"
+ #include "DisplayFinder.h"
+ #include "Drm.h"
+@@ -69,28 +71,84 @@ bool LayerNeedsAttenuation(const Layer& layer) {
+ }
+ 
+ struct BufferSpec;
+-typedef int (*ConverterFunction)(const BufferSpec& src, const BufferSpec& dst, bool v_flip);
+-int DoCopy(const BufferSpec& src, const BufferSpec& dst, bool vFlip);
+-int ConvertFromRGB565(const BufferSpec& src, const BufferSpec& dst, bool vFlip);
+-int ConvertFromYV12(const BufferSpec& src, const BufferSpec& dst, bool vFlip);
+ 
+-ConverterFunction GetConverterForDrmFormat(uint32_t drmFormat) {
++using ConverterFunction = int (*)(const BufferSpec& src, const BufferSpec& dst, bool v_flip);
++
++int CopyDrm8888Format(const BufferSpec& src, const BufferSpec& dst, bool vFlip);
++int FlipDrm8888FormatRAndBChannels(const BufferSpec& src, const BufferSpec& dst, bool vFlip);
++
++int ConvertDrmRGB565ToDrmABGR8888(const BufferSpec& src, const BufferSpec& dst, bool vFlip);
++int ConvertDrmRGB565ToDrmARGB8888(const BufferSpec& src, const BufferSpec& dst, bool vFlip);
++
++int ConvertDrmYVU420ToDrmABGR8888(const BufferSpec& src, const BufferSpec& dst, bool vFlip);
++int ConvertDrmYVU420ToDrmARGB8888(const BufferSpec& src, const BufferSpec& dst, bool vFlip);
++
++ConverterFunction GetConverterForDrmFormat(uint32_t srcDrmFormat, uint32_t dstDrmFormat) {
++    switch (dstDrmFormat) {
++        case DRM_FORMAT_ARGB8888: {
++            switch (srcDrmFormat) {
++                case DRM_FORMAT_ARGB8888:
++                case DRM_FORMAT_XRGB8888:
++                    return &CopyDrm8888Format;
++                case DRM_FORMAT_ABGR8888:
++                case DRM_FORMAT_XBGR8888:
++                    return &FlipDrm8888FormatRAndBChannels;
++                case DRM_FORMAT_RGB565:
++                    return &ConvertDrmRGB565ToDrmARGB8888;
++                case DRM_FORMAT_YVU420:
++                    return &ConvertDrmYVU420ToDrmARGB8888;
++                default:
++                    DEBUG_LOG(
++                        "Unsupported source drm format: %d(%s) for destination drm format: %d(%s), "
++                        "returning null converter",
++                        srcDrmFormat, GetDrmFormatString(srcDrmFormat), dstDrmFormat,
++                        GetDrmFormatString(dstDrmFormat));
++                    return nullptr;
++            }
++            break;
++        }
++        case DRM_FORMAT_ABGR8888: {
++            switch (srcDrmFormat) {
++                case DRM_FORMAT_ARGB8888:
++                case DRM_FORMAT_XRGB8888:
++                    return &FlipDrm8888FormatRAndBChannels;
++                case DRM_FORMAT_ABGR8888:
++                case DRM_FORMAT_XBGR8888:
++                    return &CopyDrm8888Format;
++                case DRM_FORMAT_RGB565:
++                    return &ConvertDrmRGB565ToDrmABGR8888;
++                case DRM_FORMAT_YVU420:
++                    return &ConvertDrmYVU420ToDrmABGR8888;
++                default:
++                    DEBUG_LOG(
++                        "Unsupported source drm format: %d(%s) for destination drm format: %d(%s), "
++                        "returning null converter",
++                        srcDrmFormat, GetDrmFormatString(srcDrmFormat), dstDrmFormat,
++                        GetDrmFormatString(dstDrmFormat));
++                    return nullptr;
++            }
++            break;
++        }
++        default: {
++            DEBUG_LOG("Unsupported destination drm format: %d(%s), returning null converter",
++                      dstDrmFormat, GetDrmFormatString(dstDrmFormat));
++            return nullptr;
++        }
++    }
++}
++
++bool IsSupportedSourceDrmFormat(uint32_t drmFormat) {
+     switch (drmFormat) {
++        case DRM_FORMAT_ARGB8888:
++        case DRM_FORMAT_XRGB8888:
+         case DRM_FORMAT_ABGR8888:
+         case DRM_FORMAT_XBGR8888:
+-            return &DoCopy;
+         case DRM_FORMAT_RGB565:
+-            return &ConvertFromRGB565;
+         case DRM_FORMAT_YVU420:
+-            return &ConvertFromYV12;
++            return true;
++        default:
++            return false;
+     }
+-    DEBUG_LOG("Unsupported drm format: %d(%s), returning null converter", drmFormat,
+-              GetDrmFormatString(drmFormat));
+-    return nullptr;
+-}
+-
+-bool IsDrmFormatSupported(uint32_t drmFormat) {
+-    return GetConverterForDrmFormat(drmFormat) != nullptr;
+ }
+ 
+ // Libyuv's convert functions only allow the combination of any rotation
+@@ -150,14 +208,15 @@ struct BufferSpec {
+           strideBytes(strideBytes),
+           sampleBytes(sampleBytes) {}
+ 
+-    BufferSpec(uint8_t* buffer, uint32_t width, uint32_t height, uint32_t strideBytes)
++    BufferSpec(uint8_t* buffer, uint32_t width, uint32_t height, uint32_t drmFormat,
++               uint32_t strideBytes)
+         : BufferSpec(buffer,
+                      /*buffer_ycbcr=*/std::nullopt, width, height,
+                      /*cropX=*/0,
+                      /*cropY=*/0,
+                      /*cropWidth=*/width,
+                      /*cropHeight=*/height,
+-                     /*drmFormat=*/DRM_FORMAT_ABGR8888, strideBytes,
++                     /*drmFormat=*/drmFormat, strideBytes,
+                      /*sampleBytes=*/4) {}
+ };
+ 
+@@ -169,18 +228,51 @@ int DoFill(const BufferSpec& dst, const Color& color) {
+     const uint8_t b = static_cast<uint8_t>(color.b * 255.0f);
+     const uint8_t a = static_cast<uint8_t>(color.a * 255.0f);
+ 
+-    const uint32_t rgba = static_cast<uint32_t>(r) | static_cast<uint32_t>(g) << 8 |
+-                          static_cast<uint32_t>(b) << 16 | static_cast<uint32_t>(a) << 24;
++    uint32_t pixel = 0xFF000000;
++    if (dst.drmFormat == DRM_FORMAT_ABGR8888) {
++        pixel = static_cast<uint32_t>(r) |        //
++                static_cast<uint32_t>(g) << 8 |   //
++                static_cast<uint32_t>(b) << 16 |  //
++                static_cast<uint32_t>(a) << 24;
++    } else if (dst.drmFormat == DRM_FORMAT_ARGB8888) {
++        pixel = static_cast<uint32_t>(b) |        //
++                static_cast<uint32_t>(g) << 8 |   //
++                static_cast<uint32_t>(r) << 16 |  //
++                static_cast<uint32_t>(a) << 24;
++    } else {
++        ALOGE("Unhandled format %s in DoFill", GetDrmFormatString(dst.drmFormat));
++        return -1;
++    }
+ 
+     // Point to the upper left corner of the crop rectangle.
+     uint8_t* dstBuffer = dst.buffer + dst.cropY * dst.strideBytes + dst.cropX * dst.sampleBytes;
+ 
+     libyuv::SetPlane(dstBuffer, static_cast<int>(dst.strideBytes), static_cast<int>(dst.cropWidth),
+-                     static_cast<int>(dst.cropHeight), rgba);
++                     static_cast<int>(dst.cropHeight), pixel);
+     return 0;
+ }
+ 
+-int ConvertFromRGB565(const BufferSpec& src, const BufferSpec& dst, bool vFlip) {
++int FlipDrm8888FormatRAndBChannels(const BufferSpec& src, const BufferSpec& dst, bool vFlip) {
++    ATRACE_CALL();
++
++    // Point to the upper left corner of the crop rectangle
++    uint8_t* srcBuffer = src.buffer + src.cropY * src.strideBytes + src.cropX * src.sampleBytes;
++    const int srcStrideBytes = static_cast<int>(src.strideBytes);
++    uint8_t* dstBuffer = dst.buffer + dst.cropY * dst.strideBytes + dst.cropX * dst.sampleBytes;
++    const int dstStrideBytes = static_cast<int>(dst.strideBytes);
++
++    int width = static_cast<int>(src.cropWidth);
++    int height = static_cast<int>(src.cropHeight);
++    if (vFlip) {
++        height = -height;
++    }
++
++    return libyuv::ABGRToARGB(srcBuffer, srcStrideBytes,  //
++                              dstBuffer, dstStrideBytes,  //
++                              width, height);
++}
++
++int ConvertDrmRGB565ToDrmABGR8888(const BufferSpec& src, const BufferSpec& dst, bool vFlip) {
+     ATRACE_CALL();
+ 
+     // Point to the upper left corner of the crop rectangle
+@@ -200,7 +292,25 @@ int ConvertFromRGB565(const BufferSpec& src, const BufferSpec& dst, bool vFlip)
+                                 width, height);
+ }
+ 
+-int ConvertFromYV12(const BufferSpec& src, const BufferSpec& dst, bool vFlip) {
++int ConvertDrmRGB565ToDrmARGB8888(const BufferSpec& src, const BufferSpec& dst, bool vFlip) {
++    ATRACE_CALL();
++
++    int ret = ConvertDrmRGB565ToDrmABGR8888(src, dst, vFlip);
++    if (ret != 0) {
++        return ret;
++    }
++
++    const int width = static_cast<int>(dst.cropWidth);
++    const int height = static_cast<int>(dst.cropHeight);
++    uint8_t* dstBuffer = dst.buffer + dst.cropY * dst.strideBytes + dst.cropX * dst.sampleBytes;
++    const int dstStrideBytes = static_cast<int>(dst.strideBytes);
++
++    return libyuv::ABGRToARGB(dstBuffer, dstStrideBytes,  //
++                              dstBuffer, dstStrideBytes,  //
++                              width, height);
++}
++
++int ConvertDrmYVU420ToDrm8888(const BufferSpec& src, const BufferSpec& dst, bool vFlip, bool rgba) {
+     ATRACE_CALL();
+ 
+     // The following calculation of plane offsets and alignments are based on
+@@ -242,14 +352,29 @@ int ConvertFromYV12(const BufferSpec& src, const BufferSpec& dst, bool vFlip) {
+     }
+ 
+     // YV12 is the same as I420, with the U and V planes swapped
+-    return libyuv::I420ToARGB(srcY, strideYBytes,  //
+-                              srcV, strideVBytes,  //
+-                              srcU, strideUBytes,  //
+-                              dstBuffer, dstStrideBytes, width, height);
++    if (rgba) {
++        return libyuv::I420ToARGB(srcY, strideYBytes,  //
++                                  srcV, strideVBytes,  //
++                                  srcU, strideUBytes,  //
++                                  dstBuffer, dstStrideBytes, width, height);
++    } else {
++        return libyuv::I420ToABGR(srcY, strideYBytes,  //
++                                  srcV, strideVBytes,  //
++                                  srcU, strideUBytes,  //
++                                  dstBuffer, dstStrideBytes, width, height);
++    }
++}
++
++int ConvertDrmYVU420ToDrmABGR8888(const BufferSpec& src, const BufferSpec& dst, bool vFlip) {
++    return ConvertDrmYVU420ToDrm8888(src, dst, vFlip, /*rgba*/ true);
++}
++
++int ConvertDrmYVU420ToDrmARGB8888(const BufferSpec& src, const BufferSpec& dst, bool vFlip) {
++    return ConvertDrmYVU420ToDrm8888(src, dst, vFlip, /*rgba*/ false);
+ }
+ 
+ int DoConversion(const BufferSpec& src, const BufferSpec& dst, bool v_flip) {
+-    ConverterFunction func = GetConverterForDrmFormat(src.drmFormat);
++    ConverterFunction func = GetConverterForDrmFormat(src.drmFormat, dst.drmFormat);
+     if (!func) {
+         // GetConverterForDrmFormat should've logged the issue for us.
+         return -1;
+@@ -257,7 +382,7 @@ int DoConversion(const BufferSpec& src, const BufferSpec& dst, bool v_flip) {
+     return func(src, dst, v_flip);
+ }
+ 
+-int DoCopy(const BufferSpec& src, const BufferSpec& dst, bool v_flip) {
++int CopyDrm8888Format(const BufferSpec& src, const BufferSpec& dst, bool v_flip) {
+     ATRACE_CALL();
+ 
+     // Point to the upper left corner of the crop rectangle
+@@ -367,7 +492,7 @@ int DoBlending(const BufferSpec& src, const BufferSpec& dst, bool v_flip) {
+ }
+ 
+ std::optional<BufferSpec> GetBufferSpec(GrallocBuffer& buffer, GrallocBufferView& bufferView,
+-                                        const common::Rect& bufferCrop) {
++                                        common::Rect bufferCrop = {}) {
+     auto bufferFormatOpt = buffer.GetDrmFormat();
+     if (!bufferFormatOpt) {
+         ALOGE("Failed to get gralloc buffer format.");
+@@ -416,6 +541,12 @@ std::optional<BufferSpec> GetBufferSpec(GrallocBuffer& buffer, GrallocBufferView
+         bufferStrideBytes = *bufferStrideBytesOpt;
+     }
+ 
++    if (bufferCrop.left == 0 && bufferCrop.right == 0 && bufferCrop.top == 0 &&
++        bufferCrop.bottom == 0) {
++        bufferCrop.right = static_cast<int32_t>(bufferWidth);
++        bufferCrop.bottom = static_cast<int32_t>(bufferHeight);
++    }
++
+     uint32_t bufferCropX = static_cast<uint32_t>(bufferCrop.left);
+     uint32_t bufferCropY = static_cast<uint32_t>(bufferCrop.top);
+     uint32_t bufferCropWidth = static_cast<uint32_t>(bufferCrop.right - bufferCrop.left);
+@@ -685,6 +816,13 @@ HWC3::Error GuestFrameComposer::presentDisplay(
+         return HWC3::Error::NoResources;
+     }
+ 
++    std::optional<uint32_t> compositionResultBufferDrmFormatOpt =
++        compositionResultBufferOpt->GetDrmFormat();
++    if (!compositionResultBufferDrmFormatOpt) {
++        ALOGE("%s: display:%" PRIu32 " failed to query buffer format", __FUNCTION__, displayId);
++        return HWC3::Error::NoResources;
++    }
++
+     std::optional<uint32_t> compositionResultBufferWidthOpt =
+         compositionResultBufferOpt->GetWidth();
+     if (!compositionResultBufferWidthOpt) {
+@@ -720,6 +858,7 @@ HWC3::Error GuestFrameComposer::presentDisplay(
+         return HWC3::Error::NoResources;
+     }
+ 
++    uint32_t compositionResultBufferDrmFormat = *compositionResultBufferDrmFormatOpt;
+     uint32_t compositionResultBufferWidth = *compositionResultBufferWidthOpt;
+     uint32_t compositionResultBufferHeight = *compositionResultBufferHeightOpt;
+     uint32_t compositionResultBufferStride = *compositionResultBufferStrideOpt;
+@@ -744,36 +883,19 @@ HWC3::Error GuestFrameComposer::presentDisplay(
+         }
+         GrallocBuffer& clientTargetBuffer = *clientTargetBufferOpt;
+ 
+-        auto clientTargetBufferViewOpt = clientTargetBuffer.Lock();
+-        if (!clientTargetBufferViewOpt) {
+-            ALOGE("%s: failed to lock client target buffer.", __FUNCTION__);
+-            return HWC3::Error::NoResources;
+-        }
+-        GrallocBufferView& clientTargetBufferView = *clientTargetBufferViewOpt;
+-
+-        auto clientTargetPlaneLayoutsOpt = clientTargetBuffer.GetPlaneLayouts();
+-        if (!clientTargetPlaneLayoutsOpt) {
+-            ALOGE("Failed to get client target buffer plane layouts.");
+-            return HWC3::Error::NoResources;
+-        }
+-        auto& clientTargetPlaneLayouts = *clientTargetPlaneLayoutsOpt;
+-
+-        if (clientTargetPlaneLayouts.size() != 1) {
+-            ALOGE("Unexpected number of plane layouts for client target buffer.");
+-            return HWC3::Error::NoResources;
+-        }
+-
+-        std::size_t clientTargetPlaneSize =
+-            static_cast<std::size_t>(clientTargetPlaneLayouts[0].totalSizeInBytes);
+-
+-        auto clientTargetDataOpt = clientTargetBufferView.Get();
+-        if (!clientTargetDataOpt) {
+-            ALOGE("%s failed to lock gralloc buffer.", __FUNCTION__);
+-            return HWC3::Error::NoResources;
++        HWC3::Error error = composeSourceInto(displayInfo.compositionIntermediateStorage,  //
++                                              &clientTargetBuffer,                         //
++                                              compositionResultBufferData,                 //
++                                              compositionResultBufferDrmFormat,            //
++                                              compositionResultBufferWidth,                //
++                                              compositionResultBufferHeight,               //
++                                              compositionResultBufferStride,               //
++                                              4);
++        if (error != HWC3::Error::None) {
++            ALOGE("%s: display:%" PRIu32 " failed to compose cliet target buffer" PRIu64,
++                  __FUNCTION__, displayId);
++            return error;
+         }
+-        auto* clientTargetData = reinterpret_cast<uint8_t*>(*clientTargetDataOpt);
+-
+-        std::memcpy(compositionResultBufferData, clientTargetData, clientTargetPlaneSize);
+     } else {
+         for (Layer* layer : layers) {
+             const auto layerId = layer->getId();
+@@ -783,13 +905,14 @@ HWC3::Error GuestFrameComposer::presentDisplay(
+                 continue;
+             }
+ 
+-            HWC3::Error error = composeLayerInto(displayInfo.compositionIntermediateStorage,  //
+-                                                 layer,                                       //
+-                                                 compositionResultBufferData,                 //
+-                                                 compositionResultBufferWidth,                //
+-                                                 compositionResultBufferHeight,               //
+-                                                 compositionResultBufferStride,               //
+-                                                 4);
++            HWC3::Error error = composeSourceInto(displayInfo.compositionIntermediateStorage,  //
++                                                  layer,                                       //
++                                                  compositionResultBufferData,                 //
++                                                  compositionResultBufferDrmFormat,            //
++                                                  compositionResultBufferWidth,                //
++                                                  compositionResultBufferHeight,               //
++                                                  compositionResultBufferStride,               //
++                                                  4);
+             if (error != HWC3::Error::None) {
+                 ALOGE("%s: display:%" PRIu32 " failed to compose layer:%" PRIu64, __FUNCTION__,
+                       displayId, layerId);
+@@ -799,11 +922,12 @@ HWC3::Error GuestFrameComposer::presentDisplay(
+     }
+ 
+     if (display->hasColorTransform()) {
+-        HWC3::Error error = applyColorTransformToRGBA(display->getColorTransform(),   //
+-                                                      compositionResultBufferData,    //
+-                                                      compositionResultBufferWidth,   //
+-                                                      compositionResultBufferHeight,  //
+-                                                      compositionResultBufferStride);
++        HWC3::Error error = applyColorTransform(display->getColorTransform(),      //
++                                                compositionResultBufferData,       //
++                                                compositionResultBufferWidth,      //
++                                                compositionResultBufferHeight,     //
++                                                compositionResultBufferDrmFormat,  //
++                                                compositionResultBufferStride);
+         if (error != HWC3::Error::None) {
+             ALOGE("%s: display:%" PRIu32 " failed to apply color transform", __FUNCTION__,
+                   displayId);
+@@ -857,84 +981,125 @@ bool GuestFrameComposer::canComposeLayer(Layer* layer) {
+     }
+     uint32_t bufferFormat = *bufferFormatOpt;
+ 
+-    if (!IsDrmFormatSupported(bufferFormat)) {
++    if (!IsSupportedSourceDrmFormat(bufferFormat)) {
+         return false;
+     }
+ 
+     return true;
+ }
+ 
+-HWC3::Error GuestFrameComposer::composeLayerInto(
++HWC3::Error GuestFrameComposer::composeSourceInto(
+     AlternatingImageStorage& compositionIntermediateStorage,
+-    Layer* srcLayer,                     //
++    CompositionSource src,               //
+     std::uint8_t* dstBuffer,             //
++    std::uint32_t dstBufferDrmFormat,    //
+     std::uint32_t dstBufferWidth,        //
+     std::uint32_t dstBufferHeight,       //
+     std::uint32_t dstBufferStrideBytes,  //
+     std::uint32_t dstBufferBytesPerPixel) {
+     ATRACE_CALL();
+ 
+-    libyuv::RotationMode rotation = GetRotationFromTransform(srcLayer->getTransform());
++    BufferSpec dstBufferSpec(dstBuffer,
++                             /*buffer_ycbcr=*/std::nullopt, dstBufferWidth, dstBufferHeight,
++                             /*cropX=*/0,
++                             /*cropY=*/0,
++                             /*cropWidth=*/dstBufferWidth,
++                             /*cropHeight=*/dstBufferHeight, dstBufferDrmFormat,
++                             dstBufferStrideBytes, dstBufferBytesPerPixel);
+ 
+-    common::Rect srcLayerCrop = srcLayer->getSourceCropInt();
+-    common::Rect srcLayerDisplayFrame = srcLayer->getDisplayFrame();
++    auto& dst = dstBufferSpec;
+ 
+     BufferSpec srcLayerSpec;
+ 
+     std::optional<GrallocBuffer> srcBufferOpt;
+     std::optional<GrallocBufferView> srcBufferViewOpt;
+-
+-    const auto srcLayerCompositionType = srcLayer->getCompositionType();
+-    if (srcLayerCompositionType == Composition::DEVICE) {
+-        srcBufferOpt = mGralloc.Import(srcLayer->waitAndGetBuffer());
+-        if (!srcBufferOpt) {
+-            ALOGE("%s: failed to import layer buffer.", __FUNCTION__);
+-            return HWC3::Error::NoResources;
+-        }
+-        GrallocBuffer& srcBuffer = *srcBufferOpt;
+-
+-        srcBufferViewOpt = srcBuffer.Lock();
++    std::optional<Color> fillColor;
++    std::optional<libyuv::RotationMode> rotation;
++
++    bool needsFill = false;
++    bool needsConversion = false;
++    bool needsScaling = false;
++    bool needsRotation = false;
++    bool needsTranspose = false;
++    bool needsVFlip = false;
++    bool needsAttenuation = false;
++    bool needsBlending = false;
++    bool needsCopy = false;
++
++    if (std::holds_alternative<GrallocBuffer*>(src)) {
++        GrallocBuffer* srcBuffer = std::get<GrallocBuffer*>(src);
++
++        srcBufferViewOpt = srcBuffer->Lock();
+         if (!srcBufferViewOpt) {
+-            ALOGE("%s: failed to lock import layer buffer.", __FUNCTION__);
++            ALOGE("%s: failed to lock client target buffer.", __FUNCTION__);
+             return HWC3::Error::NoResources;
+         }
+         GrallocBufferView& srcBufferView = *srcBufferViewOpt;
+ 
+-        auto srcLayerSpecOpt = GetBufferSpec(srcBuffer, srcBufferView, srcLayerCrop);
++        auto srcLayerSpecOpt = GetBufferSpec(*srcBuffer, srcBufferView);
+         if (!srcLayerSpecOpt) {
+             return HWC3::Error::NoResources;
+         }
+ 
+         srcLayerSpec = *srcLayerSpecOpt;
+-    } else if (srcLayerCompositionType == Composition::SOLID_COLOR) {
+-        // srcLayerSpec not used by `needsFill` below.
+-    }
+-
+-    // TODO(jemoreira): Remove the hardcoded fomat.
+-    bool needsFill = srcLayerCompositionType == Composition::SOLID_COLOR;
+-    bool needsConversion = srcLayerCompositionType == Composition::DEVICE &&
+-                           srcLayerSpec.drmFormat != DRM_FORMAT_XBGR8888 &&
+-                           srcLayerSpec.drmFormat != DRM_FORMAT_ABGR8888;
+-    bool needsScaling = LayerNeedsScaling(*srcLayer);
+-    bool needsRotation = rotation != libyuv::kRotate0;
+-    bool needsTranspose = needsRotation && rotation != libyuv::kRotate180;
+-    bool needsVFlip = GetVFlipFromTransform(srcLayer->getTransform());
+-    bool needsAttenuation = LayerNeedsAttenuation(*srcLayer);
+-    bool needsBlending = LayerNeedsBlending(*srcLayer);
+-    bool needsCopy = !(needsConversion || needsScaling || needsRotation || needsVFlip ||
+-                       needsAttenuation || needsBlending);
+-
+-    BufferSpec dstLayerSpec(
+-        dstBuffer,
+-        /*buffer_ycbcr=*/std::nullopt, dstBufferWidth, dstBufferHeight,
+-        static_cast<uint32_t>(srcLayerDisplayFrame.left),
+-        static_cast<uint32_t>(srcLayerDisplayFrame.top),
+-        static_cast<uint32_t>(srcLayerDisplayFrame.right - srcLayerDisplayFrame.left),
+-        static_cast<uint32_t>(srcLayerDisplayFrame.bottom - srcLayerDisplayFrame.top),
+-        DRM_FORMAT_XBGR8888, dstBufferStrideBytes, dstBufferBytesPerPixel);
++
++        needsConversion = srcLayerSpec.drmFormat != dstBufferDrmFormat;
++        needsCopy = !needsConversion;
++    } else if (std::holds_alternative<Layer*>(src)) {
++        Layer* srcLayer = std::get<Layer*>(src);
++
++        common::Rect srcLayerDisplayFrame = srcLayer->getDisplayFrame();
++        dstBufferSpec.cropX = static_cast<uint32_t>(srcLayerDisplayFrame.left);
++        dstBufferSpec.cropY = static_cast<uint32_t>(srcLayerDisplayFrame.top);
++        dstBufferSpec.cropWidth =
++            static_cast<uint32_t>(srcLayerDisplayFrame.right - srcLayerDisplayFrame.left);
++        dstBufferSpec.cropHeight =
++            static_cast<uint32_t>(srcLayerDisplayFrame.bottom - srcLayerDisplayFrame.top);
++
++        rotation = GetRotationFromTransform(srcLayer->getTransform());
++
++        const auto srcLayerCompositionType = srcLayer->getCompositionType();
++        if (srcLayerCompositionType == Composition::DEVICE) {
++            srcBufferOpt = mGralloc.Import(srcLayer->waitAndGetBuffer());
++            if (!srcBufferOpt) {
++                ALOGE("%s: failed to import layer buffer.", __FUNCTION__);
++                return HWC3::Error::NoResources;
++            }
++            GrallocBuffer& srcBuffer = *srcBufferOpt;
++
++            srcBufferViewOpt = srcBuffer.Lock();
++            if (!srcBufferViewOpt) {
++                ALOGE("%s: failed to lock import layer buffer.", __FUNCTION__);
++                return HWC3::Error::NoResources;
++            }
++            GrallocBufferView& srcBufferView = *srcBufferViewOpt;
++
++            auto srcLayerSpecOpt =
++                GetBufferSpec(srcBuffer, srcBufferView, srcLayer->getSourceCropInt());
++            if (!srcLayerSpecOpt) {
++                return HWC3::Error::NoResources;
++            }
++
++            srcLayerSpec = *srcLayerSpecOpt;
++        } else if (srcLayerCompositionType == Composition::SOLID_COLOR) {
++            fillColor = srcLayer->getColor();
++        }
++
++        needsFill = srcLayerCompositionType == Composition::SOLID_COLOR;
++        needsConversion = srcLayerCompositionType == Composition::DEVICE &&
++                          srcLayerSpec.drmFormat != dstBufferDrmFormat;
++        needsScaling = LayerNeedsScaling(*srcLayer);
++        needsRotation = (*rotation != libyuv::kRotate0);
++        needsTranspose = needsRotation && (*rotation != libyuv::kRotate180);
++        needsVFlip = GetVFlipFromTransform(srcLayer->getTransform());
++        needsAttenuation = LayerNeedsAttenuation(*srcLayer);
++        needsBlending = LayerNeedsBlending(*srcLayer);
++        needsCopy = !(needsConversion || needsScaling || needsRotation || needsVFlip ||
++                      needsAttenuation || needsBlending);
++    }
+ 
+     // Add the destination layer to the bottom of the buffer stack
+-    std::vector<BufferSpec> dstBufferStack(1, dstLayerSpec);
++    std::vector<BufferSpec> dstBufferStack(1, dstBufferSpec);
+ 
+     // If more than operation is to be performed, a temporary buffer is needed for
+     // each additional operation
+@@ -943,24 +1108,27 @@ HWC3::Error GuestFrameComposer::composeLayerInto(
+     // framebuffer) is one of them, so only N-1 temporary buffers are needed.
+     // Vertical flip is not taken into account because it can be done together
+     // with any other operation.
+-    int neededIntermediateImages = (needsFill ? 1 : 0) + (needsConversion ? 1 : 0) +
+-                                   (needsScaling ? 1 : 0) + (needsRotation ? 1 : 0) +
+-                                   (needsAttenuation ? 1 : 0) + (needsBlending ? 1 : 0) +
++    int neededIntermediateImages = (needsFill ? 1 : 0) +         //
++                                   (needsConversion ? 1 : 0) +   //
++                                   (needsScaling ? 1 : 0) +      //
++                                   (needsRotation ? 1 : 0) +     //
++                                   (needsAttenuation ? 1 : 0) +  //
++                                   (needsBlending ? 1 : 0) +     //
+                                    (needsCopy ? 1 : 0) - 1;
+ 
+-    uint32_t mScratchBufferWidth =
+-        static_cast<uint32_t>(srcLayerDisplayFrame.right - srcLayerDisplayFrame.left);
+-    uint32_t mScratchBufferHeight =
+-        static_cast<uint32_t>(srcLayerDisplayFrame.bottom - srcLayerDisplayFrame.top);
+-    uint32_t mScratchBufferStrideBytes =
+-        AlignToPower2(mScratchBufferWidth * dstBufferBytesPerPixel, 4);
+-    uint32_t mScratchBufferSizeBytes = mScratchBufferHeight * mScratchBufferStrideBytes;
++    // Scratch buffers only need to be as large as the actual output area.
++    const uint32_t scratchBufferWidth = dstBufferSpec.cropWidth;
++    const uint32_t scratchBufferHeight = dstBufferSpec.cropHeight;
++
++    const uint32_t scratchBufferStrideBytes =
++        AlignToPower2(scratchBufferWidth * dstBufferBytesPerPixel, 4);
++    const uint32_t scratchBufferSizeBytes = scratchBufferHeight * scratchBufferStrideBytes;
+ 
+     for (uint32_t i = 0; i < neededIntermediateImages; i++) {
+-        BufferSpec mScratchBufferspec(
+-            compositionIntermediateStorage.getRotatingScratchBuffer(mScratchBufferSizeBytes, i),
+-            mScratchBufferWidth, mScratchBufferHeight, mScratchBufferStrideBytes);
+-        dstBufferStack.push_back(mScratchBufferspec);
++        BufferSpec scratchBufferspec(
++            compositionIntermediateStorage.getRotatingScratchBuffer(scratchBufferSizeBytes, i),
++            scratchBufferWidth, scratchBufferHeight, dstBufferDrmFormat, scratchBufferStrideBytes);
++        dstBufferStack.push_back(scratchBufferspec);
+     }
+ 
+     // Filling, conversion, and scaling should always be the first operations, so
+@@ -970,7 +1138,7 @@ HWC3::Error GuestFrameComposer::composeLayerInto(
+     if (needsFill) {
+         BufferSpec& dstBufferSpec = dstBufferStack.back();
+ 
+-        int retval = DoFill(dstBufferSpec, srcLayer->getColor());
++        int retval = DoFill(dstBufferSpec, *fillColor);
+         if (retval) {
+             ALOGE("Got error code %d from DoFill function", retval);
+         }
+@@ -991,12 +1159,12 @@ HWC3::Error GuestFrameComposer::composeLayerInto(
+             // Make width and height match the crop sizes on the source
+             uint32_t srcWidth = srcLayerSpec.cropWidth;
+             uint32_t srcHeight = srcLayerSpec.cropHeight;
+-            uint32_t dst_stride_bytes = AlignToPower2(srcWidth * dstBufferBytesPerPixel, 4);
+-            uint32_t neededSize = dst_stride_bytes * srcHeight;
++            uint32_t dstStrideBytes = AlignToPower2(srcWidth * dstBufferBytesPerPixel, 4);
++            uint32_t neededSize = dstStrideBytes * srcHeight;
+             dstBufferSpec.width = srcWidth;
+             dstBufferSpec.height = srcHeight;
+             // Adjust the stride accordingly
+-            dstBufferSpec.strideBytes = dst_stride_bytes;
++            dstBufferSpec.strideBytes = dstStrideBytes;
+             // Crop sizes also need to be adjusted
+             dstBufferSpec.cropWidth = srcWidth;
+             dstBufferSpec.cropHeight = srcHeight;
+@@ -1041,7 +1209,7 @@ HWC3::Error GuestFrameComposer::composeLayerInto(
+     }
+ 
+     if (needsRotation) {
+-        int retval = DoRotation(srcLayerSpec, dstBufferStack.back(), rotation, needsVFlip);
++        int retval = DoRotation(srcLayerSpec, dstBufferStack.back(), *rotation, needsVFlip);
+         needsVFlip = false;
+         if (retval) {
+             ALOGE("Got error code %d from DoTransform function", retval);
+@@ -1061,7 +1229,7 @@ HWC3::Error GuestFrameComposer::composeLayerInto(
+     }
+ 
+     if (needsCopy) {
+-        int retval = DoCopy(srcLayerSpec, dstBufferStack.back(), needsVFlip);
++        int retval = CopyDrm8888Format(srcLayerSpec, dstBufferStack.back(), needsVFlip);
+         needsVFlip = false;
+         if (retval) {
+             ALOGE("Got error code %d from DoBlending function", retval);
+@@ -1088,10 +1256,18 @@ HWC3::Error GuestFrameComposer::composeLayerInto(
+ namespace {
+ 
+ // Returns a color matrix that can be used with libyuv by converting values
+-// in -1 to 1 into -64 to 64 and transposing.
+-std::array<std::int8_t, 16> ToLibyuvColorMatrix(const std::array<float, 16>& in) {
+-    std::array<std::int8_t, 16> out;
+-
++// in -1 to 1 into -64 to 64 and converting to column-major.
++//
++// The input color transform is of the form:
++//
++// |r.r r.g r.b 0|
++// |g.r g.g g.b 0|
++// |b.r b.g b.b 0|
++// |Tr  Tg  Tb  1|
++//
++// in row-major form: {r.r, r.g, r.b, 0, g.r, ...}.
++HWC3::Error ToLibyuvColorMatrix(const std::array<float, 16>& in, uint32_t drmFormat,
++                                std::array<std::int8_t, 16>& out) {
+     for (size_t r = 0; r < 4; r++) {
+         for (size_t c = 0; c < 4; c++) {
+             size_t indexIn = (4 * r) + c;
+@@ -1102,23 +1278,39 @@ std::array<std::int8_t, 16> ToLibyuvColorMatrix(const std::array<float, 16>& in)
+         }
+     }
+ 
+-    return out;
++    if (drmFormat == DRM_FORMAT_ABGR8888) {
++        // No-op
++    } else if (drmFormat == DRM_FORMAT_ARGB8888) {
++        std::swap(out[0], out[8]);
++        std::swap(out[1], out[9]);
++        std::swap(out[2], out[10]);
++        std::swap(out[3], out[11]);
++    } else {
++        ALOGE("Unhandled format %s for libyuv color matrix.", GetDrmFormatString(drmFormat));
++        return HWC3::Error::BadParameter;
++    }
++    return HWC3::Error::None;
+ }
+ 
+ }  // namespace
+ 
+-HWC3::Error GuestFrameComposer::applyColorTransformToRGBA(
+-    const std::array<float, 16>& transfromMatrix,  //
+-    std::uint8_t* buffer,                          //
+-    std::uint32_t bufferWidth,                     //
+-    std::uint32_t bufferHeight,                    //
+-    std::uint32_t bufferStrideBytes) {
++HWC3::Error GuestFrameComposer::applyColorTransform(const std::array<float, 16>& colorTransform,  //
++                                                    std::uint8_t* buffer,                         //
++                                                    std::uint32_t bufferWidth,                    //
++                                                    std::uint32_t bufferHeight,                   //
++                                                    std::uint32_t bufferDrmFormat,                //
++                                                    std::uint32_t bufferStrideBytes) {
+     ATRACE_CALL();
+ 
+-    const auto transformMatrixLibyuv = ToLibyuvColorMatrix(transfromMatrix);
++    std::array<std::int8_t, 16> colorTransformLibyuv;
++    HWC3::Error result = ToLibyuvColorMatrix(colorTransform, bufferDrmFormat, colorTransformLibyuv);
++    if (result != HWC3::Error::None) {
++        ALOGE("Unable to get color transform.");
++        return result;
++    }
+     libyuv::ARGBColorMatrix(buffer, static_cast<int>(bufferStrideBytes),  //
+                             buffer, static_cast<int>(bufferStrideBytes),  //
+-                            transformMatrixLibyuv.data(),                 //
++                            colorTransformLibyuv.data(),                  //
+                             static_cast<int>(bufferWidth),                //
+                             static_cast<int>(bufferHeight));
+ 
+diff --git a/system/hwc3/GuestFrameComposer.h b/system/hwc3/GuestFrameComposer.h
+index 9a054f10..a47363bd 100644
+--- a/system/hwc3/GuestFrameComposer.h
++++ b/system/hwc3/GuestFrameComposer.h
+@@ -78,11 +78,15 @@ class GuestFrameComposer : public FrameComposer {
+     // Returns true if the given layer's buffer has supported format.
+     bool canComposeLayer(Layer* layer);
+ 
++    // Compositing from either a ClientTarget or a Layer.
++    using CompositionSource = std::variant<GrallocBuffer*, Layer*>;
++
+     // Composes the given layer into the given destination buffer.
+-    HWC3::Error composeLayerInto(AlternatingImageStorage& storage, Layer* layer,
+-                                 std::uint8_t* dstBuffer, std::uint32_t dstBufferWidth,
+-                                 std::uint32_t dstBufferHeight, std::uint32_t dstBufferStrideBytes,
+-                                 std::uint32_t dstBufferBytesPerPixel);
++    HWC3::Error composeSourceInto(AlternatingImageStorage& storage, CompositionSource source,
++                                  std::uint8_t* dstBuffer, std::uint32_t dstBufferDrmFormat,
++                                  std::uint32_t dstBufferWidth, std::uint32_t dstBufferHeight,
++                                  std::uint32_t dstBufferStrideBytes,
++                                  std::uint32_t dstBufferBytesPerPixel);
+ 
+     struct DisplayInfo {
+         // Additional per display buffers for the composition result.
+@@ -103,11 +107,12 @@ class GuestFrameComposer : public FrameComposer {
+     // spamming logcat with DRM commit failures.
+     bool mPresentDisabled = false;
+ 
+-    HWC3::Error applyColorTransformToRGBA(const std::array<float, 16>& colorTransform,  //
+-                                          std::uint8_t* buffer,                         //
+-                                          std::uint32_t bufferWidth,                    //
+-                                          std::uint32_t bufferHeight,                   //
+-                                          std::uint32_t bufferStrideBytes);
++    HWC3::Error applyColorTransform(const std::array<float, 16>& colorTransform,  //
++                                    std::uint8_t* buffer,                         //
++                                    std::uint32_t bufferWidth,                    //
++                                    std::uint32_t bufferHeight,                   //
++                                    std::uint32_t bufferDrmFormat,                //
++                                    std::uint32_t bufferStrideBytes);
+ };
+ 
+ }  // namespace aidl::android::hardware::graphics::composer3::impl
+-- 
+2.39.5
+

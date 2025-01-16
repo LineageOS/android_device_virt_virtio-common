@@ -1,0 +1,35 @@
+From 1a4238042160582873aabe5a796125ba19727086 Mon Sep 17 00:00:00 2001
+From: Yumi Yukimura <me.cafebabe@gmail.com>
+Date: Thu, 16 Jan 2025 04:10:55 +0800
+Subject: [PATCH 2/3] hwc3: Allow creating the "pmem" file if it doesn't
+ already exist
+
+---
+ system/hwc3/Device.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/system/hwc3/Device.cpp b/system/hwc3/Device.cpp
+index 2f03f6ab..8f816199 100644
+--- a/system/hwc3/Device.cpp
++++ b/system/hwc3/Device.cpp
+@@ -127,7 +127,8 @@ HWC3::Error Device::getPersistentKeyValue(const std::string& key, const std::str
+     HWC3::Error error = loadPersistentKeyValues(&dictionary);
+     if (error != HWC3::Error::None) {
+         ALOGE("%s: failed to load pmem json", __FUNCTION__);
+-        return error;
++        *outValue = defaultValue;
++        return HWC3::Error::None;
+     }
+ 
+     if (!dictionary.isMember(key)) {
+@@ -148,7 +149,6 @@ HWC3::Error Device::setPersistentKeyValue(const std::string& key, const std::str
+     HWC3::Error error = loadPersistentKeyValues(&dictionary);
+     if (error != HWC3::Error::None) {
+         ALOGE("%s: failed to load pmem json", __FUNCTION__);
+-        return error;
+     }
+ 
+     dictionary[key] = value;
+-- 
+2.39.5
+
