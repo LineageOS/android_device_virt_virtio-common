@@ -35,7 +35,7 @@ on late-fs
 
 # GPU
 on early-init && property:ro.boot.gpu=vkms
-    exec u:r:modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules vkms.ko
+    exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules vkms.ko
 
 # Graphics (Mesa)
 on property:ro.vendor.graphics=mesa
