@@ -1,0 +1,9 @@
+type vendor_virtgpu_detect, domain;
+type vendor_virtgpu_detect_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(vendor_virtgpu_detect);
+
+set_prop(vendor_virtgpu_detect, vendor_graphics_prop)
+
+allow vendor_virtgpu_detect gpu_device:dir r_dir_perms;
+allow vendor_virtgpu_detect graphics_device:chr_file { getattr ioctl map open read write };
