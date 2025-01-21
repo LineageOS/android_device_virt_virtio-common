@@ -11,7 +11,11 @@ COMMON_PATH := device/virt/virtio-common
 
 # Graphics (Composer)
 PRODUCT_PACKAGES += \
-    android.hardware.composer.hwc3-service.drm
+    android.hardware.graphics.composer@2.4-service \
+    hwcomposer.drm
+
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.hardware.hwcomposer=drm
 
 # Graphics (Gralloc)
 PRODUCT_PACKAGES += \
