@@ -9,6 +9,10 @@ $(call inherit-product, device/virt/virt-common/virt-common.mk)
 
 COMMON_PATH := device/virt/virtio-common
 
+# Graphics
+PRODUCT_PACKAGES += \
+    virtgpu_detect
+
 # Graphics (Composer)
 PRODUCT_PACKAGES += \
     android.hardware.composer.hwc3-service.drm
