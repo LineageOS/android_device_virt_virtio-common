@@ -7,3 +7,6 @@
 
 # Console
 /dev/hvc[0-9]+		u:object_r:console_device:s0
+
+# Executables
+/vendor/bin/virtgpu_detect								u:object_r:vendor_virtgpu_detect_exec:s0

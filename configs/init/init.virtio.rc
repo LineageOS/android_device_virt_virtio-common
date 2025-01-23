@@ -34,16 +34,28 @@ on late-fs
     mount_all --late
 
 # GPU
-on early-init && property:ro.boot.gpu=vkms
+on early-init
+    setprop ro.vendor.graphics.gpu ${ro.boot.gpu:-virtio_gpu}
+
+on init && property:ro.vendor.graphics.gpu=vkms
     exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules vkms.ko
 
+# Graphics
+on early-boot && property:ro.vendor.graphics.gpu=virtio_gpu
+    exec u:r:vendor_virtgpu_detect:s0 system graphics -- /vendor/bin/virtgpu_detect
+    # Fallback
+    setprop ro.vendor.graphics ${ro.boot.graphics:-mesa}
+
 # Graphics (Mesa)
-on property:ro.vendor.graphics=mesa
+on property:ro.vendor.graphics.gpu=virtio_gpu && property:ro.vendor.graphics=mesa
     setprop ro.hardware.gralloc minigbm
     setprop ro.hardware.vulkan virtio
     setprop ro.opengles.version 196610
 
-on property:ro.vendor.graphics=mesa_swrast
+on property:ro.vendor.graphics.gpu=virtio_gpu && property:ro.vendor.graphics=mesa_swrast
+    setprop ro.hardware.gralloc minigbm
+
+on property:ro.vendor.graphics.gpu=vkms && property:ro.vendor.graphics=mesa_swrast
     setprop ro.hardware.gralloc minigbm
 
 # Serial logging
