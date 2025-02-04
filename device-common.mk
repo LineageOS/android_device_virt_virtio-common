@@ -13,16 +13,16 @@ COMMON_PATH := device/virt/virtio-common
 PRODUCT_PACKAGES += \
     virtgpu_detect
 
-# Graphics (Composer)
-PRODUCT_PACKAGES += \
-    android.hardware.composer.hwc3-service.drm
-
-# Graphics (Gralloc)
+# Graphics (Allocator)
 PRODUCT_PACKAGES += \
     android.hardware.graphics.allocator-service.minigbm \
     android.hardware.graphics.mapper@4.0-impl.minigbm \
     gralloc.minigbm \
     mapper.minigbm
+
+# Graphics (Composer)
+PRODUCT_PACKAGES += \
+    android.hardware.composer.hwc3-service.drm
 
 # Init
 PRODUCT_COPY_FILES += \
