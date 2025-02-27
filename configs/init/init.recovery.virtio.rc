@@ -9,6 +9,4 @@ service create_partition_table /system/bin/sh -e /system/bin/create_partition_ta
 
 on early-init
     mkdir /mnt/vendor/shared 0770 root root
-
-on property:ro.boot.install=1
     start create_partition_table
