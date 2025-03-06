@@ -2,4 +2,5 @@
 debug.sf.vsync_reactor_ignore_present_fences=true
 
 # Recovery
+ro.minui.blacklist_input_devices=QEMU QEMU USB Tablet,QEMU Virtio Tablet
 ro.recovery.supported_fs=9p,virtiofs
