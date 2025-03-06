@@ -55,6 +55,11 @@ BOARD_VENDOR_KERNEL_MODULES := \
                  $(wildcard $(VIRTUAL_DEVICE_KERNEL_MODULES_PATH)/*.ko))
 endif
 
+# Pre-install checks
+$(call soong_config_set,VIRT_PREINSTALL_CHECK,BOOT_DISK_NAME,vda)
+$(call soong_config_set,VIRT_PREINSTALL_CHECK,USERDATA_DISK_NAME,vdb)
+$(call soong_config_set,VIRT_PREINSTALL_CHECK,DRM_CARD_NAME,virtio_gpu)
+
 # Properties
 TARGET_VENDOR_PROP += $(COMMON_PATH)/configs/properties/vendor.prop
 
