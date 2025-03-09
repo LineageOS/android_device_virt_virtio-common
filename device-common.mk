@@ -37,7 +37,7 @@ PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/input/excluded-input-devices.xml:$(TARGET_COPY_OUT_VENDOR)/etc/excluded-input-devices.xml
 
 # Kernel
-TARGET_PREBUILT_KERNEL_USE ?= 6.6
+TARGET_PREBUILT_KERNEL_USE ?= 6.12
 TARGET_PREBUILT_KERNEL_DIR := device/virt/kernel-virtio/$(TARGET_PREBUILT_KERNEL_USE)/$(TARGET_PREBUILT_KERNEL_ARCH)/$(TARGET_PREBUILT_KERNEL_PAGE_SIZE)
 TARGET_KERNEL_SOURCE := kernel/virt/virtio
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
