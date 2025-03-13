@@ -57,8 +57,12 @@ PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/init/init.recovery.virtio.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.virtio.rc
 
 # Shipping API level
+ifeq ($(TARGET_AUDIO_HAL_USE),ranchu-hidl)
+PRODUCT_SHIPPING_API_LEVEL := 34
+else
 PRODUCT_SHIPPING_API_LEVEL := 35
 PRODUCT_SHIPPING_VENDOR_API_LEVEL := 202504
+endif
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
