@@ -14,7 +14,7 @@ TARGET_GRUB_BOOT_CONFIGS += $(COMMON_PATH)/bootmgr/grub/grub-boot.cfg
 TARGET_GRUB_INSTALL_CONFIGS += $(COMMON_PATH)/bootmgr/grub/grub-install.cfg
 
 # Bootconfig
-TARGET_BOOTCONFIG_FILES += $(COMMON_PATH)/configs/misc/bootconfig.txt
+BOARD_BOOTCONFIG_FILE += $(COMMON_PATH)/configs/misc/bootconfig.txt
 
 # Fstab
 ifeq ($(AB_OTA_UPDATER),true)
