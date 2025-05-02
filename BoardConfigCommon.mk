@@ -12,8 +12,6 @@ include device/virt/virt-common/BoardConfigVirtCommon.mk
 # Boot manager
 TARGET_GRUB_BOOT_CONFIGS += $(COMMON_PATH)/bootmgr/grub/grub-boot.cfg
 TARGET_GRUB_INSTALL_CONFIGS += $(COMMON_PATH)/bootmgr/grub/grub-install.cfg
-TARGET_REFIND_BOOT_CONFIG := $(COMMON_PATH)/bootmgr/rEFInd/refind-boot.conf
-TARGET_REFIND_INSTALL_CONFIG := $(COMMON_PATH)/bootmgr/rEFInd/refind-install.conf
 
 # Bootconfig
 TARGET_BOOTCONFIG_FILES += $(COMMON_PATH)/configs/misc/bootconfig.txt
