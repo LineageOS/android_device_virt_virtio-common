@@ -40,8 +40,6 @@ on early-init
 # Graphics
 on early-boot && property:ro.vendor.graphics.gpu=virtio_gpu
     exec u:r:vendor_virtgpu_detect:s0 system graphics -- /vendor/bin/virtgpu_detect
-    # Fallback
-    setprop ro.vendor.graphics ${ro.boot.graphics:-mesa}
 
 # Graphics (Mesa)
 on property:ro.vendor.graphics.gpu=virtio_gpu && property:ro.vendor.graphics=mesa && property:ro.vendor.graphics.mesa.is_upstream=true
