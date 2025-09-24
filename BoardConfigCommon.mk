@@ -26,9 +26,6 @@ else
 $(call soong_config_set,VIRTIO_FSTAB,PARTITION_SCHEME,a)
 endif
 
-# Graphics (Allocator)
-$(call soong_config_set, minigbm, platform, generic)
-
 # Graphics (Mesa)
 BOARD_MESA3D_GALLIUM_DRIVERS += virgl
 BOARD_MESA3D_VULKAN_DRIVERS += virtio
@@ -87,7 +84,7 @@ SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/private
 SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/public
 
 # VINTF
-ifeq ($(TARGET_AUDIO_HAL_USE),ranchu-hidl)
+ifeq ($(TARGET_AUDIO_HAL),ranchu)
 DEVICE_MANIFEST_FILE += \
     $(COMMON_PATH)/configs/vintf/manifest_target-level-8.xml
 else

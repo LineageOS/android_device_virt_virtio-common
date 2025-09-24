@@ -13,16 +13,6 @@ COMMON_PATH := device/virt/virtio-common
 PRODUCT_PACKAGES += \
     virtgpu_detect
 
-# Graphics (Allocator)
-PRODUCT_PACKAGES += \
-    android.hardware.graphics.allocator-service.minigbm \
-    gralloc.minigbm \
-    mapper.minigbm
-
-# Graphics (Composer)
-PRODUCT_PACKAGES += \
-    android.hardware.composer.hwc3-service.drm
-
 # Init
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/init/init.virtio.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.virtio.rc
@@ -57,7 +47,7 @@ PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/init/init.recovery.virtio.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.virtio.rc
 
 # Shipping API level
-ifeq ($(TARGET_AUDIO_HAL_USE),ranchu-hidl)
+ifeq ($(TARGET_AUDIO_HAL),ranchu)
 PRODUCT_SHIPPING_API_LEVEL := 34
 else
 PRODUCT_SHIPPING_API_LEVEL := 35
