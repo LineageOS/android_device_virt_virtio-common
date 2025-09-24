@@ -14,14 +14,11 @@ PRODUCT_PACKAGES += \
     virtgpu_detect
 
 # Graphics (Allocator)
-PRODUCT_PACKAGES += \
-    android.hardware.graphics.allocator-service.minigbm \
-    gralloc.minigbm \
-    mapper.minigbm
+TARGET_GRAPHICS_ALLOCATOR_HAL := minigbm
+TARGET_MINIGBM_DO_NOT_SET_AS_DEFAULT := true
 
 # Graphics (Composer)
-PRODUCT_PACKAGES += \
-    android.hardware.composer.hwc3-service.drm
+TARGET_GRAPHICS_COMPOSER_HAL := drm_hwcomposer
 
 # Init
 PRODUCT_COPY_FILES += \
@@ -57,7 +54,7 @@ PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/init/init.recovery.virtio.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.virtio.rc
 
 # Shipping API level
-ifeq ($(TARGET_AUDIO_HAL_USE),ranchu-hidl)
+ifeq ($(TARGET_AUDIO_HAL),ranchu)
 PRODUCT_SHIPPING_API_LEVEL := 34
 else
 PRODUCT_SHIPPING_API_LEVEL := 35
