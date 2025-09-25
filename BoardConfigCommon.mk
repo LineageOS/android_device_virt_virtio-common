@@ -17,7 +17,8 @@ TARGET_GRUB_INSTALL_CONFIGS += $(COMMON_PATH)/bootmgr/grub/grub-install.cfg
 BOARD_BOOTCONFIG += \
     androidboot.console=hvc0 \
     androidboot.hardware=virtio \
-    androidboot.partition_map=\"vdb,userdata\"
+    androidboot.partition_map=\"vdb,userdata\" \
+    androidboot.seriallogging=hvc1
 
 # Fstab
 ifeq ($(AB_OTA_UPDATER),true)
