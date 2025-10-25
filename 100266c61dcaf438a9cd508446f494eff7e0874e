@@ -1,4 +1,22 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2afdc526_1675fb88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 36126
+      },
+      "writtenOn": "2025-10-25T01:02:13Z",
+      "side": 1,
+      "message": "base.apk",
+      "revId": "100266c61dcaf438a9cd508446f494eff7e0874e",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ],
   "submitRequirementResults": []
 }
