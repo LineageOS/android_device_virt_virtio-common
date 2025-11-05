@@ -36,8 +36,7 @@ BOARD_KERNEL_CMDLINE += \
     console=tty0
 
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
-TARGET_KERNEL_CONFIG += \
-    lineageos/virtio.config
+# nothing
 else ifneq ($(wildcard $(TARGET_PREBUILT_KERNEL_DIR)/kernel),)
 BOARD_VENDOR_KERNEL_MODULES := \
     $(wildcard $(TARGET_PREBUILT_KERNEL_DIR)/*.ko)
