@@ -42,11 +42,6 @@ ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
 else ifneq ($(wildcard $(TARGET_PREBUILT_KERNEL_DIR)/kernel),)
     PRODUCT_COPY_FILES += $(TARGET_PREBUILT_KERNEL_DIR)/kernel:kernel
     $(warning Using prebuilt kernel from $(TARGET_PREBUILT_KERNEL_DIR)/kernel)
-else
-    KERNEL_ARTIFACTS_PATH := kernel/prebuilts/$(TARGET_PREBUILT_EMULATOR_KERNEL_USE)/$(TARGET_PREBUILT_KERNEL_ARCH)/$(TARGET_PREBUILT_KERNEL_PAGE_SIZE)
-    EMULATOR_KERNEL_FILE := $(KERNEL_ARTIFACTS_PATH)/kernel-$(TARGET_PREBUILT_EMULATOR_KERNEL_USE)
-    PRODUCT_COPY_FILES += $(EMULATOR_KERNEL_FILE):kernel
-    $(warning Using prebuilt kernel from $(EMULATOR_KERNEL_FILE))
 endif
 
 # Recovery
