@@ -1,6 +1,9 @@
 # Display
 debug.sf.vsync_reactor_ignore_present_fences=true
 
+# Input (tablet2multitouch)
+vendor.tablet2multitouch.device_names=QEMU QEMU USB Tablet,QEMU Virtio Tablet
+
 # Graphics (Composer)
 ro.vendor.hwc.drm.present_fence_not_reliable=true
 
