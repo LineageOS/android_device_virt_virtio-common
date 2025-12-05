@@ -14,6 +14,7 @@ PRODUCT_PACKAGES += \
 
 # Graphics (Allocator)
 TARGET_GRAPHICS_ALLOCATOR_HAL := minigbm-upstream
+TARGET_MINIGBM_PLATFORM := generic
 
 # Graphics (Composer)
 TARGET_GRAPHICS_COMPOSER_HAL := drm_hwcomposer
