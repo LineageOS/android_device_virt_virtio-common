@@ -46,12 +46,5 @@ on early-boot && property:ro.vendor.graphics.gpu=virtio_gpu
 
 # Graphics (Mesa)
 on property:ro.vendor.graphics.gpu=virtio_gpu && property:ro.vendor.graphics=mesa
-    setprop ro.hardware.gralloc minigbm
     setprop ro.hardware.vulkan virtio
     setprop ro.opengles.version 196610
-
-on property:ro.vendor.graphics.gpu=virtio_gpu && property:ro.vendor.graphics=mesa_swrast
-    setprop ro.hardware.gralloc minigbm
-
-on property:ro.vendor.graphics.gpu=vkms && property:ro.vendor.graphics=mesa_swrast
-    setprop ro.hardware.gralloc minigbm
