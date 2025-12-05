@@ -15,6 +15,7 @@ PRODUCT_PACKAGES += \
 # Graphics (Allocator)
 TARGET_GRAPHICS_ALLOCATOR_HAL := minigbm
 TARGET_MINIGBM_DO_NOT_SET_AS_DEFAULT := true
+TARGET_MINIGBM_PLATFORM := generic
 
 # Graphics (Composer)
 TARGET_GRAPHICS_COMPOSER_HAL := drm_hwcomposer
