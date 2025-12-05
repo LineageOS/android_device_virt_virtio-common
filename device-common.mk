@@ -13,7 +13,7 @@ PRODUCT_PACKAGES += \
     virtgpu_detect
 
 # Graphics (Allocator)
-TARGET_GRAPHICS_ALLOCATOR_HAL := minigbm
+TARGET_GRAPHICS_ALLOCATOR_HAL := minigbm-upstream
 
 # Graphics (Composer)
 TARGET_GRAPHICS_COMPOSER_HAL := drm_hwcomposer
