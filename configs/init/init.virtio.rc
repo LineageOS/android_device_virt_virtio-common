@@ -41,8 +41,14 @@ on init && property:ro.vendor.graphics.gpu=vkms
     exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules vkms.ko
 
 # Graphics
+on init && property:ro.vendor.graphics.gpu=virtio_gpu
+    stop vendor.graphics.allocator.minigbm_upstream
+
 on early-boot && property:ro.vendor.graphics.gpu=virtio_gpu
     exec u:r:vendor_virtgpu_detect:s0 system graphics -- /vendor/bin/virtgpu_detect
+
+on property:ro.hardware.vulkan=*
+    enable vendor.graphics.allocator.minigbm_upstream
 
 # Graphics (Mesa)
 on property:ro.vendor.graphics.gpu=virtio_gpu && property:ro.vendor.graphics=mesa
