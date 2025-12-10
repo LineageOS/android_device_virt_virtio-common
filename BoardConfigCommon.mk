@@ -32,6 +32,9 @@ BOARD_MESA3D_VULKAN_DRIVERS += virtio
 BOARD_KERNEL_CMDLINE += \
     console=tty0
 
+TARGET_KERNEL_CONFIG_EXT += \
+    $(COMMON_PATH)/configs/kernel/virtio-common.config
+
 ifneq ($(wildcard $(TARGET_KERNEL_SOURCE)/Makefile),)
 # nothing
 else ifneq ($(wildcard $(TARGET_PREBUILT_KERNEL_DIR)/kernel),)
