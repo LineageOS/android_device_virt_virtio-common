@@ -41,6 +41,9 @@ on init && property:ro.vendor.graphics.gpu=vkms
     exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules vkms.ko
 
 # Graphics
+on early-init && property:ro.vendor.graphics.gpu=virtio_gpu && property:ro.boot.graphics=mesa_swrast
+    setprop ro.vendor.graphics mesa_swrast
+
 on init && property:ro.vendor.graphics.gpu=virtio_gpu
     stop vendor.graphics.allocator.minigbm_upstream
 
