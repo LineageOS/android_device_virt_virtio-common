@@ -1,0 +1,12 @@
+<audiohal>
+    <mixer card="0">
+    </mixer>
+    <device name="speaker">
+        <path name="on">
+        </path>
+        <path name="off">
+        </path>
+    </device>
+    <stream type="pcm" dir="out" card="0" device="0">
+    </stream>
+</audiohal>
