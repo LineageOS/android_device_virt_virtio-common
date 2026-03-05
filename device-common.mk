@@ -8,6 +8,13 @@ $(call inherit-product, device/virt/virt-common/virt-common.mk)
 
 COMMON_PATH := device/virt/virtio-common
 
+# Audio
+PRODUCT_COPY_FILES += \
+    $(COMMON_PATH)/configs/audio/audio.virtio_x86_64.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio.virtio_x86_64.xml
+
+TARGET_AUDIO_HAL := tinyhal
+TARGET_AUDIO_POLICY := cuttlefish
+
 # Graphics
 PRODUCT_PACKAGES += \
     virtgpu_detect
@@ -48,11 +55,7 @@ PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/init/init.recovery.virtio.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.virtio.rc
 
 # Shipping API level
-ifeq ($(TARGET_AUDIO_HAL),ranchu)
 PRODUCT_SHIPPING_API_LEVEL := 34
-else
-PRODUCT_SHIPPING_API_LEVEL := 35
-endif
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
