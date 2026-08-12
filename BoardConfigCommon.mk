@@ -75,5 +75,5 @@ DEVICE_MANIFEST_FILE += \
     $(COMMON_PATH)/configs/vintf/manifest_target-level-8.xml
 else
 DEVICE_MANIFEST_FILE += \
-    $(COMMON_PATH)/configs/vintf/manifest_target-level-202404.xml
+    $(COMMON_PATH)/configs/vintf/manifest_target-level-latest.xml
 endif
