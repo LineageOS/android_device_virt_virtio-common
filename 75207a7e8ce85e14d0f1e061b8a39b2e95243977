@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1261ef4c_691f28ca",
+        "filename": "BoardConfigCommon.mk",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 13648
+      },
+      "writtenOn": "2026-09-03T09:29:21Z",
+      "side": 1,
+      "message": "Why don\u0027t you move this along to device-common.mk?",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 5
+      },
+      "revId": "75207a7e8ce85e14d0f1e061b8a39b2e95243977",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
