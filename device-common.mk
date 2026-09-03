@@ -51,7 +51,7 @@ PRODUCT_COPY_FILES += \
 ifeq ($(TARGET_AUDIO_HAL),ranchu)
 PRODUCT_SHIPPING_API_LEVEL := 34
 else
-PRODUCT_SHIPPING_API_LEVEL := 37
+TARGET_FOLLOWS_LATEST_SHIPPING_API_LEVEL := true
 endif
 
 # Soong namespaces
@@ -63,3 +63,8 @@ PRODUCT_PACKAGES += \
     fstab.virtio.vendor_ramdisk \
     fstab.virtio.gsi.sda.vendor_ramdisk \
     fstab.virtio.gsi.vdc.vendor_ramdisk
+
+# VINTF
+ifneq ($(TARGET_AUDIO_HAL),ranchu)
+TARGET_FOLLOWS_LATEST_VINTF_TARGET_LEVEL := true
+endif

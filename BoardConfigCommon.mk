@@ -73,7 +73,4 @@ SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/public
 ifeq ($(TARGET_AUDIO_HAL),ranchu)
 DEVICE_MANIFEST_FILE += \
     $(COMMON_PATH)/configs/vintf/manifest_target-level-8.xml
-else
-DEVICE_MANIFEST_FILE += \
-    $(COMMON_PATH)/configs/vintf/manifest_target-level-latest.xml
 endif
