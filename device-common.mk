@@ -8,6 +8,9 @@ $(call inherit-product, device/virt/virt-common/virt-common.mk)
 
 COMMON_PATH := device/virt/virtio-common
 
+# Audio
+TARGET_AUDIO_MAINLINE_UCM_PROFILES := none
+
 # Graphics
 PRODUCT_PACKAGES += \
     virtgpu_detect
