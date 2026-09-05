@@ -22,6 +22,30 @@
       },
       "revId": "75207a7e8ce85e14d0f1e061b8a39b2e95243977",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c70e1387_da9fd98c",
+        "filename": "BoardConfigCommon.mk",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 32245
+      },
+      "writtenOn": "2026-09-05T08:33:45Z",
+      "side": 1,
+      "message": "because I prefer letting actual VINTF configuration stay on BoardConfig.mk",
+      "parentUuid": "1261ef4c_691f28ca",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 5
+      },
+      "revId": "75207a7e8ce85e14d0f1e061b8a39b2e95243977",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
